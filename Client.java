@@ -12,13 +12,19 @@ import java.net.UnknownHostException;
 public class Client {
 
 	private DataOutputStream streamOut = null;
-	private Socket clientSocket = null;
+	private static Socket clientSocket = null;
 
 	private String username;
 
 	public Client(String username) throws UnknownHostException, IOException
 	{
 		this.username = username;
+
+	}
+	
+	public Socket getClientSocket()
+	{
+		return clientSocket;
 	}
 //	public void connect() throws UnknownHostException, IOException
 //	{
@@ -34,8 +40,9 @@ public class Client {
 
 	public static void main(String[] args) throws UnknownHostException,
 	IOException {
+		clientSocket = new Socket("localhost", 4444);
 
-		Socket socket = new Socket("localhost", 4444);
+
 		while(true)
 		{
 			//keeps client running forever
