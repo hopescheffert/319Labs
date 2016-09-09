@@ -3,6 +3,7 @@ package messenger;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,7 +12,7 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-	private DataOutputStream streamOut = null;
+	private ObjectOutputStream streamOut = null;
 	private static Socket clientSocket = null;
 
 	private String username;

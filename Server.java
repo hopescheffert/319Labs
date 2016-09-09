@@ -8,8 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-import ServerClientExamples.ServerListener;
-
 public class Server {
 
 	private static String clientName;
@@ -21,7 +19,7 @@ public class Server {
 		return clientName;
 	}
 	public Server() {}
-	
+
 
 	public static void main(String[] args) throws IOException 
 	{
@@ -30,8 +28,8 @@ public class Server {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please enter your name and press enter");
 		clientName = scanner.next();
-		
-		
+
+
 		serverSocket = null;
 		// 1. CREATE A NEW SERVERSOCKET
 		try 
@@ -44,7 +42,7 @@ public class Server {
 
 
 		// 2. LOOP FOREVER - SERVER IS ALWAYS WAITING TO PROVIDE SERVICE!
-	
+
 		while (true) {
 
 			try {
@@ -59,12 +57,12 @@ public class Server {
 				System.out.println("Accept failed: 4444");
 				System.exit(-1);
 			}
-		
+
 		} // end while loop
-		
+
 	} // end of main method
-	
-	
+
+
 	/**
 	 * Method of Decryption:
 	 * For every byte Bn in the received String, Let Bn  = Bn XOR 11110000
@@ -76,17 +74,17 @@ public class Server {
 		System.out.println("gets to decryptMessage()");
 
 		byte[] decryptedBytes = null;
-		
+
 		//for each of the encrypted bytes XOR and put into decryptedBytes
 		for(int i = 0; i < encryptedBytes.length; i ++)
 		{
 			//do XOR with 11110000
 			decryptedBytes[i] = (byte) (encryptedBytes[i] ^ 11110000);
-		
+
 		}
 		return decryptedBytes;
 	}
-	
+
 	/**
 	 * Gets the text message from the client
 	 * It gets the encrypted byte array from the socket, then it reads the bytes, 
@@ -98,7 +96,7 @@ public class Server {
 	public static String getTextMessage() throws IOException
 	{
 		//TODO NOT WORKING with input stream
-		
+
 		System.out.println("in getTextMessage()");
 		String message = "";
 		DataInputStream in = new DataInputStream(clientSocket.getInputStream());
@@ -106,7 +104,7 @@ public class Server {
 		//Scanner in = new Scanner(new BufferedInputStream(clientSocket.getInputStream()));
 
 		int length = in.readInt();
-		
+
 		if(length > 0)
 		{
 			byte[] msg = new byte[length]; //read length of incoming message
@@ -117,12 +115,12 @@ public class Server {
 			System.out.println("in getTextMessage the message is " + message);
 		}
 		return message;
-		
+
 	}
 
-	
-	
-	
+
+
+
 }//end of Server class
 
 

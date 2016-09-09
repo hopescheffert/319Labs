@@ -14,16 +14,16 @@ import java.util.Scanner;
 
 class ClientHandler implements Runnable {
 	private static Socket s; // this is socket on the server side that connects to the CLIENT
-
+	
 	ClientHandler(Socket s) 
 	{
 		this.s = s;
 
 	}
-//	public Socket getClientSocket()
-//	{
-//		return s;
-//	}
+	//	public Socket getClientSocket()
+	//	{
+	//		return s;
+	//	}
 	// This is the client handling code
 	@Override
 	public void run() 
@@ -43,7 +43,7 @@ class ClientHandler implements Runnable {
 		{
 			//TODO send text message to server
 			//TODO make sure message goes to chat.txt
-			
+
 			//send to a new thread
 			Thread t = new Thread(new ClientSendMessage(s));
 			t.start();
@@ -53,12 +53,12 @@ class ClientHandler implements Runnable {
 			//TODO send an image file to the server using java's obj out stream
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-			
+
 				//Object ob = new Object();
 				//oos.writeObject(ob);
-				
+
 				//oos.close();
-			
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -70,22 +70,22 @@ class ClientHandler implements Runnable {
 
 			//byte[] encryptedImage = encryptImage(imgpath);
 
-			
+
 			//get image file from client
 			try 
 			{
 				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 				//Object ob1 = ois.readObject();
-				
-				
-				
+
+
+
 				//ois.close();
 
-			
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 
 		}
 		else
@@ -94,7 +94,7 @@ class ClientHandler implements Runnable {
 	} // end of method run()
 
 
-	
+
 	/**
 	 * IMAGE
 	 * Method of Encryption:
@@ -124,9 +124,9 @@ class ClientHandler implements Runnable {
 		return encryptedBytes;
 
 	}
-	
-	
-	
-	
+
+
+
+
 
 } // end of class ClientHandler
