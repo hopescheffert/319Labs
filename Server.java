@@ -23,11 +23,6 @@ public class Server {
 	public static void main(String[] args) throws IOException 
 	{
 
-		//create scanner for client input
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Please enter your name and press enter");
-		clientName = scanner.next();
-		
 		// 1. CREATE A NEW SERVERSOCKET
 		try 
 		{
@@ -39,7 +34,6 @@ public class Server {
 
 
 		// 2. LOOP FOREVER - SERVER IS ALWAYS WAITING TO PROVIDE SERVICE!
-
 		while (true) {
 			//Socket clientSocket = null;
 
@@ -48,8 +42,8 @@ public class Server {
 				clientSocket = serverSocket.accept();
 
 				// 2.2 SPAWN A THREAD TO HANDLE CLIENT
-				System.out.println("Server is connected to " + clientName);
-				Thread t = new Thread(new ClientHandler(clientSocket));
+				//System.out.println("Server is connected to " + clientName);
+				Thread t = new Thread(new ClientHandler(clientSocket, clientName));
 				t.start();
 			} catch (IOException e) {
 				System.out.println("Accept failed: 4444");

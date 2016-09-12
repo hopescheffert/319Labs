@@ -12,71 +12,51 @@ import java.util.Scanner;
 public class GetMessageFromClient implements Runnable
 {
 	private Socket s;
+	private String username;
 
-	GetMessageFromClient(Socket s)
+	GetMessageFromClient(Socket s, String username)
 	{
 		this.s = s;
+		this.username = username;
 	}
 	
 	@Override
 	public void run() 
 	{
-		//TODO make this work right with the thread
-		String textMessage = "init";
+		String textMessage = "";
 		try 
 		{
 			textMessage = getTextMessage();
-			System.out.println("client text message is: '" + textMessage + "' in GetMessageFromClient line 27");
+			System.out.println(username + " said: " + textMessage);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(Server.getClientName() + " said: " + textMessage);
 		
 	}
 	
 	/**
 	 * Gets the text message from the client
 	 * It gets the encrypted byte array from the socket, then it reads the bytes, 
-	 * decrypts them, then returns the string representation of the bytes. 
+	 * decrypts them, then returns the string representation of the byte's. 
 	 * @param decryptedBytes
 	 * @return message
 	 * @throws IOException
 	 */
 	public String getTextMessage() throws IOException
 	{
-		//TODO NOT WORKING with input stream
-
-		//System.out.println("in GetMessageFromClient getTextMessage(47)");
 		String message = "";
 		//the input stream will get the encrypted message from the client
 
-		//NONE OF THESE ARE WORKING!
-		//DataInputStream in = new DataInputStream(new BufferedInputStream(s.getInputStream()));
-		//Scanner in = new Scanner(new BufferedInputStream(s.getInputStream()));
 		BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		
-		//int length = in.readInt(); //for DataInputStream
-		//int length = in.nextInt(); //for scanner
-		int length = in.read();	//for BufferedReader
-		System.out.println("length is " + length);
-		
+	
+		int length = in.read();	//for BufferedReader		
 		if(length > 0)
 		{
-			//byte[] msg = new byte[length]; //read length of incoming message
-			//int i = 0;
-			//while(i < length)
-			//{
-				//msg[i] = in.nextByte(); //for scanner
-				//msg = in.readLine().getBytes();	//for BufferedReader
-				//i++;
-			//}
-			//in.readFully(msg, 0, msg.length); //for DataInputStream
 			String msg = in.readLine();
-			System.out.println("client message in GetMessageFromClient(59) " + msg);
 			message = decryptMessage(msg.getBytes()); //decrypt the message
-			System.out.println("client message is decrypted as '" + message + "'in GetMessageFromClient (69)");
 		}
-		else System.out.println("----Error in GetMessageFromClient getTextMessage(): length is 0");
+		else System.out.println("----Error in GetMessageFromClient getTextMessage(): message length is 0");
 		return message;
 
 	}
@@ -89,8 +69,6 @@ public class GetMessageFromClient implements Runnable
 	 */
 	public String decryptMessage(byte[] encryptedBytes) throws UnsupportedEncodingException
 	{
-		System.out.println("gets to decryptMessage()");
-
 		byte[] decryptedBytes = new byte[encryptedBytes.length];
 
 		//for each of the encrypted bytes XOR and put into decryptedBytes

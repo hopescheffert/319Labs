@@ -17,27 +17,29 @@ import org.omg.CORBA.portable.OutputStream;
 
 class ClientHandler implements Runnable {
 	private static Socket s; // this is socket on the server side that connects to the CLIENT
+	private String username;
 
-	ClientHandler(Socket s) 
+	ClientHandler(Socket s, String username) 
 	{
 		this.s = s;
+		this.username = username;
 
 	}
-	
+
 	// This is the client handling code
 	// This keeps running handling client requests 
 	// after initially sending some stuff to the client
 	@Override
 	public void run() 
 	{
-		Scanner in;
+		Scanner console;
 		PrintWriter out;
 
 		try
 		{
 			// 1. USE THE SOCKET TO READ WHAT THE CLIENT IS SENDING?
 			//in = new Scanner(new BufferedInputStream(s.getInputStream())); 
-			in = new Scanner(new BufferedInputStream(System.in)); 
+			console = new Scanner(new BufferedInputStream(System.in)); 
 			out = new PrintWriter(new BufferedOutputStream(s.getOutputStream()));
 			//out = new PrintWriter(s.getOutputStream());
 			//display menu to client
@@ -50,25 +52,29 @@ class ClientHandler implements Runnable {
 			//out.flush();
 
 			//keep listening and responding to client requests
-		
-			int choice = in.nextInt();
+
+			int choice = console.nextInt();
 
 			if(choice == 1) //wants to send a message
 			{
-				//TODO send text message to server
 				//TODO make sure message goes to chat.txt
 
 				//send to a new thread to deal with client sending message
-				Thread t = new Thread(new ClientSendMessage(s));
+				//Thread t = new Thread(new ClientListenForMessage(new Client(username), s));
+				Thread t = new Thread(new ClientSendMessage(s, username));
 				t.start();
 			}
+			
+			
+//****IMAGE*****			
+			
 			else if(choice == 2) //wants to send an image
 			{
 				//TODO will look something like this:
 				//Thread t = new Thread(new ClientSendImage(s));
 				//t.start();
-					//TODO put this in new class called ClientSendImage implements Runnable
-					//TODO send an image file to the server using java's object output stream
+				//TODO put this in new class called ClientSendImage implements Runnable
+				//TODO send an image file to the server using java's object output stream
 				try {
 					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 
@@ -76,7 +82,7 @@ class ClientHandler implements Runnable {
 					//oos.writeObject(ob);
 
 					//stuff here
-					
+
 					//oos.close();
 
 				} catch (IOException e) {
@@ -107,7 +113,6 @@ class ClientHandler implements Runnable {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 
 			}
 			else
