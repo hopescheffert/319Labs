@@ -4,17 +4,22 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
-
+/**
+ * "Server Listener"
+ * @author hopescheffert
+ *
+ */
 public class ClientListenForMessage implements Runnable 
 {
 	Client c;
-	Scanner in;
+	Scanner in; //blocking call
 	Socket s;
 
 
 	ClientListenForMessage(Client c, Socket s) throws IOException
 	{
 		this.c = c;
+		//scanner from output of the server
 		in = new Scanner(new BufferedInputStream(s.getInputStream()));
 		this.s = s;
 	}
@@ -27,13 +32,12 @@ public class ClientListenForMessage implements Runnable
 	{
 		while(true) //run forever
 		{
-//			Client is waiting for a message from server
-			//String msg = in.nextLine();
-			//c.handleMessage(msg);
-			
-			//Thread t = new Thread(new ClientSendMessage(s, c.username));
+			//Client is waiting for a message from server
+//			String msg = in.nextLine();
+//			c.handleMessage(msg);
+
+			//Thread t = new Thread(new GetMessageFromClient(s, c.username));
 			//t.start();
-			
 			
 		}
 		

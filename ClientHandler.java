@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import org.omg.CORBA.portable.OutputStream;
@@ -19,7 +20,7 @@ class ClientHandler implements Runnable {
 	private static Socket s; // this is socket on the server side that connects to the CLIENT
 	private String username;
 
-	ClientHandler(Socket s, String username) 
+	ClientHandler(Socket s, String username)
 	{
 		this.s = s;
 		this.username = username;
@@ -45,11 +46,8 @@ class ClientHandler implements Runnable {
 			//display menu to client
 			System.out.println("What would you like to do? "
 					+ "Please choose 1 or 2 and press enter:");
-			//out.flush();
 			System.out.println("1. Send a text message to the server");
-			//out.flush();
 			System.out.println("2. Send an image file to the server");
-			//out.flush();
 
 			//keep listening and responding to client requests
 
@@ -62,11 +60,11 @@ class ClientHandler implements Runnable {
 				//send to a new thread to deal with client sending message
 				//Thread t = new Thread(new ClientListenForMessage(new Client(username), s));
 				Thread t = new Thread(new ClientSendMessage(s, username));
-				t.start();
+				t.start();	
 			}
 			
 			
-//****IMAGE*****			
+			//****IMAGE*****			
 			
 			else if(choice == 2) //wants to send an image
 			{

@@ -3,8 +3,10 @@ package messenger;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.Scanner;
@@ -43,7 +45,7 @@ public class GetMessageFromClient implements Runnable
 	 * @return message
 	 * @throws IOException
 	 */
-	public String getTextMessage() throws IOException
+	public synchronized String getTextMessage() throws IOException
 	{
 		String message = "";
 		//the input stream will get the encrypted message from the client
@@ -55,6 +57,13 @@ public class GetMessageFromClient implements Runnable
 		{
 			String msg = in.readLine();
 			message = decryptMessage(msg.getBytes()); //decrypt the message
+			//write the message to chat.txt
+			File f = new File("chat.txt");
+			PrintWriter fout = new PrintWriter(f);
+			fout.write(username + ": " + message + "\n");
+			fout.flush();
+			fout.close();
+			
 		}
 		else System.out.println("----Error in GetMessageFromClient getTextMessage(): message length is 0");
 		return message;
