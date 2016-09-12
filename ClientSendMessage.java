@@ -1,16 +1,14 @@
 package messenger;
 
+
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientSendMessage implements Runnable 
+public class ClientSendMessage  
 {
 	private Socket s;
 	private String clientName;
@@ -44,76 +42,40 @@ public class ClientSendMessage implements Runnable
 	}
 
 
-	@Override
-	public void run() 
+	public void go() 
 	{
 		//get the message from the client
-		ReadText r = new ReadText();
-		Thread th = new Thread(r);
-		th.start();		
-		String message = r.getMsg();
-		//System.out.println(message);
-
-
-		//		String clientTextMessage;
-		//		System.out.println("Please type your text message and press enter");
-		//		Scanner console = new Scanner(new BufferedInputStream(System.in));
-		//		
-		//		while(console.hasNextLine())
-		//		{
-		//			clientTextMessage = console.nextLine();
-
-
-		//send message to encryption method using a printwriter and outputstream
-		try 
-		{
-			//String encryptedMessage = encryptMessage(clientTextMessage);
-			String encryptedMessage = encryptMessage(message); //get encrypted message
-			//String encryptedMessage = encryptMessage(msg);
-			//send to server
-			PrintWriter out = new PrintWriter(s.getOutputStream()); //new BufferedOutputStream(s.getOutputStream()));
-
-			out.write(encryptedMessage.length()); //write length of the message (an int)
-			out.write(encryptedMessage); //write the message
-			out.flush(); //forces output
-
-		} catch (UnsupportedEncodingException e) 
-		{
-			System.out.println("----Problem with encrypting the message");
-			e.printStackTrace();
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-
-		//	}
-	}
-}
-
-class ReadText implements Runnable
-{
-	private String clientTextMessage;
-
-	public String getMsg()
-	{
-		return clientTextMessage;
-	}
-
-	@Override
-	public void run() 
-	{
+		String clientTextMessage;
 		System.out.println("Please type your text message and press enter");
-
 		Scanner console = new Scanner(new BufferedInputStream(System.in));
+
 		while(console.hasNextLine())
 		{
 			clientTextMessage = console.nextLine();
+
+
+			//send message to encryption method using a printwriter and outputstream
+			try 
+			{
+				String encryptedMessage = encryptMessage(clientTextMessage);
+				//String encryptedMessage = encryptMessage(message); //get encrypted message
+				//String encryptedMessage = encryptMessage(msg);
+				//send to server
+				PrintWriter out = new PrintWriter(s.getOutputStream()); //new BufferedOutputStream(s.getOutputStream()));
+
+				out.write(encryptedMessage.length()); //write length of the message (an int)
+				out.write(encryptedMessage); //write the message
+				out.flush(); //forces output
+
+			} catch (UnsupportedEncodingException e) 
+			{
+				System.out.println("----Problem with encrypting the message");
+				e.printStackTrace();
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+
 		}
-		System.out.println("client text message is " + clientTextMessage + "in ReadText");
-
 	}
-
 }
-
-
-

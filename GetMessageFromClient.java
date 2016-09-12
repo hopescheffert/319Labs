@@ -45,7 +45,7 @@ public class GetMessageFromClient implements Runnable
 	 * @return message
 	 * @throws IOException
 	 */
-	public synchronized String getTextMessage() throws IOException
+	public String getTextMessage() throws IOException
 	{
 		String message = "";
 		//the input stream will get the encrypted message from the client

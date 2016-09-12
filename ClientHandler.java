@@ -1,20 +1,9 @@
 package messenger;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
-
-import org.omg.CORBA.portable.OutputStream;
 
 class ClientHandler implements Runnable {
 	private static Socket s; // this is socket on the server side that connects to the CLIENT
@@ -33,127 +22,74 @@ class ClientHandler implements Runnable {
 	@Override
 	public void run() 
 	{
-		Scanner console;
-		PrintWriter out;
-
-		try
-		{
-			// 1. USE THE SOCKET TO READ WHAT THE CLIENT IS SENDING?
-			//in = new Scanner(new BufferedInputStream(s.getInputStream())); 
-			console = new Scanner(new BufferedInputStream(System.in)); 
-			out = new PrintWriter(new BufferedOutputStream(s.getOutputStream()));
-			//out = new PrintWriter(s.getOutputStream());
-			//display menu to client
-			System.out.println("What would you like to do? "
-					+ "Please choose 1 or 2 and press enter:");
-			System.out.println("1. Send a text message to the server");
-			System.out.println("2. Send an image file to the server");
-
-			//keep listening and responding to client requests
-
-			int choice = console.nextInt();
-
-			if(choice == 1) //wants to send a message
-			{
-				//TODO make sure message goes to chat.txt
-
-				//send to a new thread to deal with client sending message
-				//Thread t = new Thread(new ClientListenForMessage(new Client(username), s));
-				Thread t = new Thread(new ClientSendMessage(s, username));
-				t.start();	
-			}
-			
-			
-			//****IMAGE*****			
-			
-			else if(choice == 2) //wants to send an image
-			{
-				//TODO will look something like this:
-				//Thread t = new Thread(new ClientSendImage(s));
-				//t.start();
-				//TODO put this in new class called ClientSendImage implements Runnable
-				//TODO send an image file to the server using java's object output stream
-				try {
-					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-
-					//Object ob = new Object();
-					//oos.writeObject(ob);
-
-					//stuff here
-
-					//oos.close();
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				//ask client to enter the file name of the image
-				System.out.println("Please enter your image file name and press enter");
-				Scanner img = new Scanner(System.in);
-				String imgpath = img.nextLine();
-				img.close();
-				//TODO convert image to a string sequence and encrypt that
-				//send it to encryption method
-				//byte[] encryptedImage = encryptImage(imgpath);
-
-
-				//get image from the client
-				try 
-				{
-					ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-					//Object ob1 = ois.readObject();
-
-					//stuff here
-
-					//ois.close();
-
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-			else
-			{ System.out.println("Please enter either 1 or 2");}
-
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		// This handling code dies after doing all the printing
+		//handle client messages
+		//if choose 1...getTextMessage()
+		
+		
+		
+		//if choose 2...getImage()
+		
+		
+		
+		
 	} // end of method run()
 
-
-
 	/**
-	 * IMAGE
-	 * Method of Encryption:
-	 * Suppose an image is stored by m bytes
-	 * 
-	 * For every 3 bytes, we have 24 bits
-	 * 		Divide 24 into four 6 bit fragments
-	 * 		Add two bits of 00 to the right of each 6 bits fragment
-	 * 		(then we can get four 8 bit fragments)
-	 * 		Convert the 8 bit fragments into characters and combine them to make a string
-	 * 
-	 * @param path
-	 * @return
+	 * Method of Decryption:
+	 * For every byte Bn in the received String, Let Bn  = Bn XOR 11110000
+	 * e.g. Bn = 01011000, then Bn Xor 11110000 = 10101000
+	 * @throws UnsupportedEncodingException 
 	 */
-	public byte[] encryptImage(String path)
+	public static byte[] decryptMessage(byte[] encryptedBytes) throws UnsupportedEncodingException
 	{
-		byte[] encryptedBytes = path.getBytes();
-		int len = encryptedBytes.length;
-		//for every 3 bytes
+		System.out.println("gets to decryptMessage()");
 
-		for(int i = 0; i < len % 3; i++)
+		byte[] decryptedBytes = null;
+
+		//for each of the encrypted bytes XOR and put into decryptedBytes
+		for(int i = 0; i < encryptedBytes.length; i ++)
 		{
-			//TODO encrypt!
+			//do XOR with 11110000
+			decryptedBytes[i] = (byte) (encryptedBytes[i] ^ 11110000);
 
 		}
+		return decryptedBytes;
+	}
 
-		return encryptedBytes;
+	/**
+	 * Gets the text message from the client
+	 * It gets the encrypted byte array from the socket, then it reads the bytes, 
+	 * decrypts them, then returns the string representation of the bytes. 
+	 * @param decryptedBytes
+	 * @return message
+	 * @throws IOException
+	 */
+	public static String getTextMessage() throws IOException
+	{
+		//TODO NOT WORKING with input stream
+
+		System.out.println("in getTextMessage()");
+		String message = "";
+		DataInputStream in = new DataInputStream(s.getInputStream());
+		//the input stream will get the encrypted message from the client
+		//Scanner in = new Scanner(new BufferedInputStream(clientSocket.getInputStream()));
+
+		int length = in.readInt();
+
+		if(length > 0)
+		{
+			byte[] msg = new byte[length]; //read length of incoming message
+			in.readFully(msg, 0, msg.length);
+			System.out.println("message in bytes " + msg);
+			msg = decryptMessage(msg); //decrypt the message
+			message = new String(msg); //convert to string 
+			System.out.println("in getTextMessage the message is " + message);
+		}
+		return message;
 
 	}
+
+	
 
 
 } // end of class ClientHandler
