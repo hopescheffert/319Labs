@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,6 +37,7 @@ public class Server {
 			System.out.println("Could not listen on port: 1222");
 			System.exit(-1);
 		}
+		int i = 1;
 
 		// 2. LOOP FOREVER - SERVER IS ALWAYS WAITING TO PROVIDE SERVICE!
 		while (true) 
@@ -42,11 +45,10 @@ public class Server {
 			try {
 				// 2.1 WAIT FOR CLIENT TO TRY TO CONNECT TO SERVER
 				clientSocket = serverSocket.accept();
+				System.out.println("Server is connected to client" + (i++));
 
 				// 2.2 SPAWN A THREAD TO HANDLE CLIENT
-				System.out.println("Server is connected to a client");
-
-				Thread t = new Thread(new ServerHandleClient(clientSocket, Client.username));
+				Thread t = new Thread(new ServerHandleClient(clientSocket));
 				t.start();
 
 			} catch (IOException e) {
@@ -65,34 +67,41 @@ class ServerHandleClient implements Runnable
 {
 	private static Socket s; // this is socket on the server side that connects to the CLIENT
 	private String username;
-	private int choice;
 
 	private Scanner  streamIn  =  null;
 	private PrintWriter streamOut = null;
 
-	ServerHandleClient(Socket s, String username) throws IOException, InterruptedException
+
+	ServerHandleClient(Socket s) throws IOException, InterruptedException
 	{
 		this.s = s;
-		this.username = username;
+		streamOut = new PrintWriter(new BufferedOutputStream(s.getOutputStream()));
+
 	}
 
-	//handle given message
-	public synchronized void handle(String input, int choice) throws IOException
+	//handle given message	
+	public synchronized void handle(String input) throws IOException
 	{
-		if(choice == 1) //incoming encrypted message
+		
+		if(input.startsWith("!-!")) //incoming is client's name
 		{
+			username = input.substring(3);
+		}
+		else if(input.startsWith("#")) //incoming encrypted message
+		{
+			input = input.substring(1); //take off # so can decrypt
 			try 
 			{
 				//get encrypted message
-				String encryptedMessage = decryptMessage(input);
+				String decryptedMessage = decryptMessage(input);
 				//send to server
-				streamOut.println(encryptedMessage.length()); //write length of the message (an int)
-				streamOut.println(encryptedMessage); //write the message
+				streamOut.println(username + ": " + decryptedMessage); //write the message
 				streamOut.flush(); //forces output
+				
 			} 
 			catch (UnsupportedEncodingException e) 
 			{
-				System.out.println("----Problem with encrypting the message");
+				System.out.println("----Problem with encrypting the message----");
 				e.printStackTrace();
 			} 
 			catch (IOException e) 
@@ -101,12 +110,21 @@ class ServerHandleClient implements Runnable
 			}
 
 		}
-		else //incoming encrypted image
+		else if(input.startsWith("*"))//incoming encrypted image
 		{
+			input = input.substring(1); //take off *
+
+			//String encryptedImage = decryptImage(input);
+			//send to server
+			//streamOut.println(encryptedImage); //write the message
+			//streamOut.flush(); //forces output
+			//writes to file
+			//fout.write(username + ": " + decryptedMessage + "\n");
+			//fout.flush();
 
 		}
-
-
+		else System.out.println("----ERROR handling encrypted message----");
+		
 	}
 
 	/**
@@ -115,7 +133,7 @@ class ServerHandleClient implements Runnable
 	 * e.g. Bn = 01011000, then Bn Xor 11110000 = 10101000
 	 * @throws UnsupportedEncodingException 
 	 */
-	public synchronized String decryptMessage(String message) throws UnsupportedEncodingException
+	public String decryptMessage(String message) throws UnsupportedEncodingException
 	{
 		byte [] encryptedBytes = message.getBytes();
 		byte[] decryptedBytes = new byte[encryptedBytes.length];
@@ -136,57 +154,29 @@ class ServerHandleClient implements Runnable
 	@Override
 	public void run() 
 	{
-		try {
+		try 
+		{
 			streamIn = new Scanner(new BufferedInputStream(s.getInputStream()));
-			//System.out.println("error");
-		} catch (IOException e1) {
+			
+		} catch (IOException e1) 
+		{
 			e1.printStackTrace();
 		}
 
 		while(true)
 		{
-			//get the choice - if its 1 handle message if its 2 handle image
-			choice = streamIn.nextInt();
 			try 
 			{
-				handle(streamIn.nextLine(), choice);
-
-			} catch (IOException e) {
+				if(streamIn.hasNext()) 
+				{
+					handle(streamIn.nextLine());
+				}
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		}
 
-
 	}// end of method run()
-
-	/**
-	 * IMAGE
-	 * Method of Encryption:
-	 * Suppose an image is stored by m bytes
-	 * 
-	 * For every 3 bytes, we have 24 bits
-	 * 		Divide 24 into four 6 bit fragments
-	 * 		Add two bits of 00 to the right of each 6 bits fragment
-	 * 		(then we can get four 8 bit fragments)
-	 * 		Convert the 8 bit fragments into characters and combine them to make a string
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public byte[] encryptImage(String path)
-	{
-		byte[] encryptedBytes = path.getBytes();
-		int len = encryptedBytes.length;
-		//for every 3 bytes
-
-		for(int i = 0; i < len % 3; i++)
-		{
-			//TODO encrypt!
-		}
-
-		return encryptedBytes;
-
-	}
-
-
 } // end of class ClientHandler

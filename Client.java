@@ -2,14 +2,10 @@ package messenger;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
@@ -25,11 +21,12 @@ public class Client
 	private PrintWriter streamOut = null;
 	private static Socket serverSocket = null;
 	ClientListenForServerMessage listen;
-	ClientSendMessageToServer sendmsg;
-	static String username;
+	private static String username;
 	private ArrayList<Client> clientList = new ArrayList<Client>();
-	private int choice;
 	private Scanner streamIn;
+	File f = new File("chat.txt");
+
+
 
 
 	Client(String username) throws UnknownHostException, IOException
@@ -37,49 +34,115 @@ public class Client
 		//CONNECT TO SERVER
 		serverSocket = new Socket("localhost", 1222);
 		this.username = username;
+		//INIT STREAMS
+		streamIn = new Scanner(new BufferedInputStream(serverSocket.getInputStream()));
+		streamOut = new PrintWriter(new BufferedOutputStream(serverSocket.getOutputStream()));
+		//TELL SERVER CLIENT'S USERNAME (defined by starting with !-!)
+		streamOut.println("!-!" + username);
+
+		//ADD CLIENT TO CLIENT LIST
 		clientList.add(this);
 
-		//SPAWN A LISTENER FOR THE SERVER. THIS WILL KEEP RUNNING
+		//TODO SPAWN A LISTENER FOR THE SERVER. THIS WILL KEEP RUNNING
 		listen = new ClientListenForServerMessage(this, serverSocket);
-//		new Thread(listen).start();
-		
+		new Thread(listen).start();
+
 		//DISPLAY MENU TO CLIENT
-		System.out.println("What would you like to do? "
-				+ "Please choose 1 or 2 and press enter:");
-		System.out.println("1. Send a text message to the server");
-		System.out.println("2. Send an image file to the server");
-		Scanner in = new Scanner(System.in);
-		streamOut = new PrintWriter(new BufferedOutputStream(serverSocket.getOutputStream()));
-		
-		choice = in.nextInt();
-		handleChoice(choice);
-		//tell the server your choice
-		streamOut.println(choice);
-		streamOut.flush();
-	}
-	
-	public void handleChoice(int choice) throws IOException
-	{
-		streamIn = new Scanner(new BufferedInputStream(serverSocket.getInputStream()));
-
-		if(choice == 1) //wants to send a message
+		if(username.equals("admin")) //if they are admin: have special menu
 		{
-			streamOut.println("Please type your message");
-			streamOut.flush();
-			
+			System.out.println("What would you like to do? Please choose 1, 2, or 3.");
+			System.out.println("1. Brodcast message to all clients");
+			System.out.println("2. List messages so far");
+			System.out.println("3. Delete a specified message (please give a message number)");
+			Scanner scanner = new Scanner(System.in);
+			int choice = scanner.nextInt();
+			if(choice == 1)
+			{
+				//TODO broadcast message to all clients in clientList
+				//broadcast(scanner.nextLine());
+			}
+			else if(choice == 2)
+			{
+				//TODO list messages so far from chat.txt
+				getMessagesSoFar();
+			}
+			else if(choice == 3)
+			{
+				//TODO delete specified message (get message number from scanner)
+				int messageNum = scanner.nextInt();
+				deleteMessage(messageNum);
 
-			//TODO make sure message goes to chat.txt
-			handle(streamIn.nextLine());
+			}
+			else System.out.println("Please choose either 1, 2, or 3");
+			scanner.close();
+
+		}
+		else //regular user
+		{
+			//DISPLAY MENU FOR USER TO TAKE ACTION
+			MenuAndAsk();
 		}
 
 
+	}
+	private void deleteMessage(int messageNum) 
+	{
+		//FileWriter 
+
+	}
+	public ArrayList<Client> getClientList()
+	{
+		return clientList;
+	}
 
 
-		//****IMAGE*****			
+	public void MenuAndAsk() throws IOException
+	{
+		//DISPLAY MENU TO NORMAL CLIENT
+		System.out.println("What would you like to do? Please choose 1 or 2 and press enter:");
+		System.out.println("1. Send a text message to the server");
+		System.out.println("2. Send an image file to the server");
+		Scanner s = new Scanner(System.in);
+		//HANDLE CHOICE - HELPER METHOD
+		//TODO not waiting for the users input
+		while(s.hasNext())
+		{
+			int choice = s.nextInt();
+			handleChoice(choice);
+		}
 
-		else if(choice == 2) //wants to send an image
+
+	}
+
+	public void handleChoice(int choice) throws IOException
+	{
+
+		if(choice == 1) //SEND MESSAGE
+		{
+			System.out.println("Please type your message and press enter");			
+			Scanner scanMsg = new Scanner(System.in);
+			String msg = "";
+			//while(scanMsg.hasNext()) 
+			{
+				msg = scanMsg.nextLine();
+			}
+			sendMsg(msg);
+			scanMsg.close();
+
+		}		
+		else if(choice == 2) //SEND IMAGE
 		{
 			//TODO send an image file to the server using java's object output stream
+			//ask client to enter the file name of the image
+			System.out.println("Please enter your image file name and press enter");
+			Scanner img = new Scanner(System.in);
+			String imgpath = "";
+			//while(img.hasNext())
+			{	
+				imgpath = img.nextLine();
+			}
+			sendImg(imgpath);
+			//img.close();
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(serverSocket.getOutputStream());
 
@@ -94,15 +157,10 @@ public class Client
 				e.printStackTrace();
 			}
 
-			//ask client to enter the file name of the image
-			System.out.println("Please enter your image file name and press enter");
-			Scanner img = new Scanner(System.in);
-			String imgpath = img.nextLine();
-			img.close();
+
 			//TODO convert image to a string sequence and encrypt that
 			//send it to encryption method
 			//byte[] encryptedImage = encryptImage(imgpath);
-
 
 			//get image from the client
 			try 
@@ -121,35 +179,40 @@ public class Client
 
 		}
 		else
-		{ System.out.println("Error: Please enter either 1 or 2");}
+		{
+			System.out.println("Error: Please enter either 1 or 2");
+		}
 	}
 
-	public static String getUsername()
+	public String getUsername()
 	{
 		return username;
 	}
 
-	public void handle(String msg) throws IOException
+
+	/**
+	 * Encrypts message and sends to server as well as chat.txt
+	 * @param imgpath
+	 * @throws IOException
+	 */
+
+	public void sendImg(String imgpath) throws IOException
 	{
 		//System.out.println(msg);
 
 		//write the message to chat.txt
-		String encrypted = encryptMessage(msg);
+		String encrypted = encryptImage(imgpath);
 		streamOut.println(encrypted);
 		streamOut.flush();
-		File f = new File("chat.txt");
-		FileWriter fout = new FileWriter(f);
-		fout.write(username + ": " + encrypted + "\n");
-		fout.flush();
-		//fout.close();
+
 	}
-	
+
 	//broadcasts messages to all clients in the clientList
 	public synchronized void broadcast(String message) throws IOException
 	{
 		for(Client c : clientList)
 		{
-			c.handle(message);
+			c.sendMsg(message);
 		}
 	}
 
@@ -161,42 +224,17 @@ public class Client
 		System.out.println("Please enter your name and press enter");
 		username = scanner.next();
 		new Client(username);	
-		//check if they are admin: have special menu
-		if(username.equals("admin"))
-		{
-			System.out.println("What would you like to do? Please choose 1, 2, or 3.");
-			System.out.println("1. Brodcast message to all clients");
-			System.out.println("2. List messages so far");
-			System.out.println("3. Delete a specified message (please give a message number)");
 
-			int choice = scanner.nextInt();
-			if(choice == 1)
-			{
-				//TODO broadcast message to all clients in clientList
-				//broadcast(scanner.nextLine());
-			}
-			else if(choice == 2)
-			{
-				//TODO list messages so far from chat.txt
-				//getMessagesSoFar();
-			}
-			else if(choice == 3)
-			{
-				//TODO delete specified message (get message number from scanner)
-				//int messageNum = scanner.nextInt();
-			}
-			else System.out.println("Please choose either 1, 2, or 3");
-		}
+
 		//scanner.close();
 
 		while(true)
 		{
 			//keeps client running forever
-
 		}
 
 	}
-	
+
 	//get messages from chat.txt
 	public synchronized void getMessagesSoFar() throws FileNotFoundException
 	{
@@ -205,13 +243,27 @@ public class Client
 		String messages = "";
 		while(file.hasNext())
 		{
-			messages += file.nextLine();
+			messages += file.nextLine() + "\n";
 		}
-		streamOut.print(messages);
-		
+		System.out.print(messages);
+		file.close();
 	}
 
-	
+
+	/**
+	 * Encrypts image path and sends to server
+	 * @param msg
+	 * @throws IOException
+	 */
+	public void sendMsg(String msg) throws IOException
+	{
+		//write the message to chat.txt
+		String encrypted = encryptMessage(msg);
+		streamOut.println(encrypted);
+		streamOut.flush();
+
+	}
+
 	/**
 	 * MESSAGE
 	 * Gets the client's text message and outputs an encrypted byte array 
@@ -222,16 +274,46 @@ public class Client
 	 */
 	public String encryptMessage(String message) throws UnsupportedEncodingException
 	{
-		byte[] encryptedBytes = message.getBytes();
-		//TODO change to ascii values then encrypt
-		//int ascii = (int) character
-		for(int i = 0; i < encryptedBytes.length; i ++)
+
+		byte[] msg = message.getBytes();
+		byte[] encryptedBytes = new byte[msg.length];
+		for(int i = 0; i < msg.length; i ++)
 		{
 			//do XOR with 11110000
-			encryptedBytes[i] = (byte) (encryptedBytes[i] ^ 11110000);
+			encryptedBytes[i] = (byte) (msg[i] ^ 11110000);
 		}
+		//give it a pound sign to notify server that it is a message
+		return "#" + new String(encryptedBytes);
+	}
 
-		return new String(encryptedBytes);
+	/**
+	 * IMAGE
+	 * Method of Encryption:
+	 * Suppose an image is stored by m bytes
+	 * 
+	 * For every 3 bytes, we have 24 bits
+	 * 		Divide 24 into four 6 bit fragments
+	 * 		Add two bits of 00 to the right of each 6 bits fragment
+	 * 		(then we can get four 8 bit fragments)
+	 * 		Convert the 8 bit fragments into characters and combine them to make a string
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public String encryptImage(String path)
+	{
+		byte[] encryptedBytes = path.getBytes();
+		int len = encryptedBytes.length;
+		//for every 3 bytes
+
+		for(int i = 0; i < len % 3; i++)
+		{
+			//TODO encrypt!
+		}
+		//give a * sign to notify server that it is an image
+
+		return "*" + new String(encryptedBytes);
+
 	}
 
 }
@@ -241,15 +323,20 @@ class ClientListenForServerMessage implements Runnable
 	Client c;
 	Scanner in; //blocking call
 	Socket s;
+	String username;
+	private File f = new File("chat.txt");
+
 
 
 	ClientListenForServerMessage(Client c, Socket s) throws IOException
 	{
 		this.c = c;
+		username = c.getUsername();
 		//scanner for output of the server
-//		in = new Scanner(new BufferedInputStream(s.getInputStream()));
+		in = new Scanner(new BufferedInputStream(s.getInputStream()));
 		this.s = s;
 	}
+
 
 	/**
 	 * Sole purpose is to listen for a message from the server at all times
@@ -257,20 +344,56 @@ class ClientListenForServerMessage implements Runnable
 	@Override
 	public void run()
 	{
-		
+		FileWriter fout = null;
+		try {
+			fout = new FileWriter(f, true);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		int msgNum = 1;
+
 		while(true) //run forever
 		{
+			if(in.hasNext())
+			{
+
+				//send to all clients in the clientList
+				//for(Client c : c.getClientList())
+				{
+					String msg = (in.nextLine());
+					System.out.println(">>>" + msg);
+					try 
+					{
+						//TODO add message number to chat.txt for admin reasons (counter)
+						fout.append(msgNum + " " + msg + "\n");
+					} 
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+					try 
+					{
+						fout.flush();
+					} 
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			//display menu and ask again what they would like to do 
 			try 
 			{
-				c.handle(in.nextLine());
+				c.MenuAndAsk();
 			} 
-			catch (UnsupportedEncodingException | FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			catch (IOException e) 
+			{
+				System.out.println("----Problem with continuing conversation----");
 				e.printStackTrace();
 			}
-		}
 
+
+		}
 
 	}
 
