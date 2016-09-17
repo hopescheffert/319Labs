@@ -30,11 +30,11 @@ public class Server {
 		// 1. CREATE A NEW SERVERSOCKET
 		try 
 		{
-			serverSocket = new ServerSocket(1222); // provide MYSERVICE at port 4444
+			serverSocket = new ServerSocket(5000); // provide MYSERVICE at port 4444
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Could not listen on port: 1222");
+			System.out.println("Could not listen on port: 4444");
 			System.exit(-1);
 		}
 		int i = 1;
@@ -114,13 +114,11 @@ class ServerHandleClient implements Runnable
 		{
 			input = input.substring(1); //take off *
 
-			//String encryptedImage = decryptImage(input);
+			String decryptedImage = decryptImage(input);
 			//send to server
-			//streamOut.println(encryptedImage); //write the message
-			//streamOut.flush(); //forces output
 			//writes to file
-			//fout.write(username + ": " + decryptedMessage + "\n");
-			//fout.flush();
+			streamOut.write(username + ": " + decryptedImage + "\n");
+			streamOut.flush();
 
 		}
 		else System.out.println("----ERROR handling encrypted message----");
@@ -148,6 +146,20 @@ class ServerHandleClient implements Runnable
 		return new String(decryptedBytes);
 	}
 
+	public String decryptImage(String message) throws UnsupportedEncodingException
+	{
+		byte [] encryptedBytes = message.getBytes();
+		byte[] decryptedBytes = new byte[encryptedBytes.length];
+
+		//for each of the encrypted bytes XOR and put into decryptedBytes
+		for(int i = 0; i < encryptedBytes.length; i ++)
+		{
+			//do XOR with 11110000
+			decryptedBytes[i] = (byte) (encryptedBytes[i] ^ 11110000);
+
+		}
+		return new String(decryptedBytes);
+	}
 
 	//This is the client handling code
 	//This keeps running handling client requests 

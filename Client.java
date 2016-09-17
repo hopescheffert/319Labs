@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -32,7 +33,7 @@ public class Client
 	Client(String username) throws UnknownHostException, IOException
 	{
 		//CONNECT TO SERVER
-		serverSocket = new Socket("localhost", 1222);
+		serverSocket = new Socket("localhost", 5000);
 		this.username = username;
 		//INIT STREAMS
 		streamIn = new Scanner(new BufferedInputStream(serverSocket.getInputStream()));
@@ -133,16 +134,6 @@ public class Client
 		else if(choice == 2) //SEND IMAGE
 		{
 			//TODO send an image file to the server using java's object output stream
-			//ask client to enter the file name of the image
-			System.out.println("Please enter your image file name and press enter");
-			Scanner img = new Scanner(System.in);
-			String imgpath = "";
-			//while(img.hasNext())
-			{	
-				imgpath = img.nextLine();
-			}
-			sendImg(imgpath);
-			//img.close();
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(serverSocket.getOutputStream());
 
@@ -157,10 +148,22 @@ public class Client
 				e.printStackTrace();
 			}
 
-
+			//ask client to enter the file name of the image
+			System.out.println("Please enter your image file name and press enter");
+			Scanner img = new Scanner(System.in);
+			String imgpath = img.nextLine();
+			img.close();
+			
+			//Users/jacobneyens/Documents/BackgroundImages/iowa.jpg
+			File image = new File(imgpath);
+			//byte[] imageBytes = Files.readAllBytes(image.toPath());
+			//System.out.println("the image bytes are:  " + imageBytes);
+			sendImg(image);
+			
 			//TODO convert image to a string sequence and encrypt that
 			//send it to encryption method
-			//byte[] encryptedImage = encryptImage(imgpath);
+			
+
 
 			//get image from the client
 			try 
@@ -176,7 +179,6 @@ public class Client
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 		else
 		{
@@ -196,12 +198,12 @@ public class Client
 	 * @throws IOException
 	 */
 
-	public void sendImg(String imgpath) throws IOException
+	public void sendImg(File f) throws IOException
 	{
 		//System.out.println(msg);
 
 		//write the message to chat.txt
-		String encrypted = encryptImage(imgpath);
+		String encrypted = encryptImage(f);
 		streamOut.println(encrypted);
 		streamOut.flush();
 
@@ -282,6 +284,7 @@ public class Client
 			//do XOR with 11110000
 			encryptedBytes[i] = (byte) (msg[i] ^ 11110000);
 		}
+		System.out.println("the encrypted bytes are" + encryptedBytes);
 		//give it a pound sign to notify server that it is a message
 		return "#" + new String(encryptedBytes);
 	}
@@ -299,20 +302,23 @@ public class Client
 	 * 
 	 * @param path
 	 * @return
+	 * @throws IOException 
 	 */
-	public String encryptImage(String path)
+	public String encryptImage(File f) throws IOException
 	{
-		byte[] encryptedBytes = path.getBytes();
-		int len = encryptedBytes.length;
+		byte[] imageBytes = Files.readAllBytes(f.toPath());
+		System.out.println("the encrypted bytes are" + imageBytes);
+		byte[] encryptedBytes = new byte[imageBytes.length];
 		//for every 3 bytes
-
-		for(int i = 0; i < len % 3; i++)
+		
+		for(int i = 0; i < encryptedBytes.length % 3; i++)
 		{
-			//TODO encrypt!
+			encryptedBytes[i] = (byte) (00 + (encryptedBytes[i] ^ 11110000));
+			System.out.println("the encrypted bytes are" + encryptedBytes[i]);
 		}
-		//give a * sign to notify server that it is an image
 
-		return "*" + new String(encryptedBytes);
+
+		return "*" + new String(imageBytes);
 
 	}
 
