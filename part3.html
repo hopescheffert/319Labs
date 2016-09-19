@@ -1,0 +1,21 @@
+
+<html>
+http://www.competa.com/blog/2015/05/how-to-build-a-snake-game-using-javascript-and-html5-canvas/
+<button onClick="start()">Start</button>
+<button onClick="turnLeft()">Turn Left</button>
+<button onClick="turnRight()"Turn Right</button>
+
+
+<canvas id="myCanvas" width="200" height="100" "border:1px solid #000000;" </canvas>
+
+<script>
+function start()
+{
+	var canvas = document.getElementById("myCanvas");
+	var c = canvas.getContext("2d");
+	c.strokeStyle="#FF0000";
+	c.moveTo(0,0);
+	c.lineTo(200,100);
+	c.stroke();
+}
+</html>
