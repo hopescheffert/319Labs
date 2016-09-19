@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Validation Form</title>
+</head>
+
+<body>
+
+<form id="userinfo" onsubmit="return validate()">
+  Email:<br>
+  <input type="text" name="email" required/>
+  <br>
+  Phone:<br>
+  <input type="text" name="phone"/>
+  <br>
+  Address:<br>
+  <textarea form="userinfo" name="address" rows="4" required></textarea>
+  <br>
+  <input type="submit" name="submitbtn"/>
+</form>
+
+<script src="validation2.js"></script>
+
+</body>
+
+</html>
