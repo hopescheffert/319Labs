@@ -1,56 +1,69 @@
 function validateForm()
 {
+
+	var correctpic = "/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/correct.png";
+	var wrongpic = "/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/wrong.png";
+	var valid = true;
+
 	//first name: only alphabetical or numeric chars
-	var fname = document.getElementById("fName");
-	console.log("hello");
+	fname = document.getElementById("fName");
 	if(testAlphanumeric(fname, "Must be only alphabetical or numeric characters"))
 	{
-		//document.write("okay");
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/correct.png", "Correct!", 40, 40, "fName");
+		
+		showImg(correctpic, "Correct!", "firstp");
 	}
 	else
 	{ 
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/wrong.png", "Wrong!", 40, 40, "fName");
-
+		showImg(wrongpic, "Wrong!", "firstp");
+		valid = false;
 	}
 	setCookie("firstName", fname);
 	
-	//last name: only alphabetical or numeric chars
+	// last name: only alphabetical or numeric chars
 	var lname = document.getElementById("lName");
 	if(testAlphanumeric(lname, "Must be only alphabetical or numeric characters"))
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/correct.png","Correct!", 100, 100, "lName");
+		showImg(correctpic, "Correct!",  "lastp");
 	}
 	else
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/wrong.png","Wrong!", 100, 100, "lName");
+		showImg(wrongpic,"Wrong!", "lastp");
+		valid = false;
+
 	}
 	setCookie("lastName", lname);
 
 	//gender: required
 	var gender = document.getElementById("gender");
-	if(gender.checked == true)
+	if(document.getElementById("gender").value == "selgender")
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/correct.png","Correct!", 100, 100, "gender"); 
+		showImg(wrongpic,"Wrong!", "genderp");
+		valid = false;
 	}
 	else
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/wrong.png","Wrong!", 100, 100, "gender");
+		showImg(correctpic, "Correct!", "genderp"); 
 	}
 	setCookie("gender", gender);
 
 	//state: select from all given list and save selected one to JSCookies
 	var state = document.getElementById("state");
-	if(state.checked == true)
+	if(document.getElementById("state").value == "selstate")
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/correct.png","Correct!", 100, 100, "state"); 
+		showImg(wrongpic, "Wrong!", "statep");
+		valid = false;
 	}
 	else
 	{
-		createImageElement("/Users/hopescheffert/Documents/COMS319/Lab2/Exercise02_jsFormCanvas/wrong.png","Wrong!", 100, 100, "state");
+		showImg(correctpic, "Correct!",  "statep"); 
 	}
 	setCookie("state", state);
-		
+	
+	if(valid)
+	{
+		return true;
+	}
+	return false;
 }
 
 function setCookie(cname, cvalue) 
@@ -71,18 +84,17 @@ function testAlphanumeric(inputtext, alertMsg)
 	else
 	{
 		alert(alertMsg);
-		//document.getElementById("fName").innerText = alertMsg;
-		//inputtext.focus();
 		return false;
 	}
 }
 
-function createImageElement(src, alt, width, height, id)
+function showImg(src, alt, id)
 {
-	document.createElement("img");
+	
+	var img = document.getElementById(id);
 	img.src = src;
 	img.alt = alt;
-	img.width = width;
-	img.height = height;
-	document.getElementById(id).appendChild(img);
+	img.style.display = "inline";
+	
 }
+	

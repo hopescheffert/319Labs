@@ -1,41 +1,63 @@
 <html>
 <head>
-<title>Validation Form</title>
-   <script src="validation1.js"></script>
+	<title>Validation Form</title>
+	<script src="validation1.js" type="text/javascript"></script>
+	
+	<style>
+	/* 
+	hide feedback image initially
+	 */
+	img.hidden 
+		{
+			display: none;
+		}
+	</style>
+
+
 </head>
 <body>
 
-<form>
-First Name<br>
-<input id="fName" type= "text" name="first" required</input>
-<br>
-Last Name<br>
-<input id="lName" type = "text" name="last"  required</input>
-<br>
-Gender<br>
-<select id= "gender" name="gender" required>
-	<option value="female">Female</option>
-	<option value="male">Male</option>
-</select>
-<br>
-State<br>
-<select id="state" name="state" required>
-	<option value="california">California</option>
-	<option value="florida">Florida</option>
-	<option value="new york">New York</option>
-	<option value="texas">Texas</option>
-	<option value="hawaii">Hawaii</option>
-	<option value="washington">Washington</option>
-	<option value="colorado">Colorado</option>
-	<option value="virginia">Virginia</option>
-	<option value="iowa">Iowa</option>
-	<option value="arizona">Arizona</option>
-</select>
-<br>
-<br>
+<form name="user" onsubmit="return validateForm()">
+	First Name<br>
+	<input id="fName" type= "text" name="first" required</input> 
+	<img class="hidden" id="firstp" height='30' width='30'</img>
 
-<input type="submit" name="submit" value="Continue" onclick="validateForm()"</input>
+	<br>
+	Last Name<br>
+	<input id="lName" type = "text" name="last" required </input>
+	<img class="hidden" id="lastp" height='30' width='30'</img>
 
-</body>
-</form>
+	<br>
+	Gender<br>
+	<select id="gender" name="selgender" >
+		<option value="selgender">Select</option>
+		<option value="female">Female</option>
+		<option value="male">Male</option>
+	</select>
+	<img class="hidden" id="genderp" height='30' width='30'</img>
+
+
+	<br>
+	State<br>
+	<select id="state" name="selstate" >
+		<option value="selstate">Select</option>
+		<option value="california">California</option>
+		<option value="florida">Florida</option>
+		<option value="new york">New York</option>
+		<option value="texas">Texas</option>
+		<option value="hawaii">Hawaii</option>
+		<option value="washington">Washington</option>
+		<option value="colorado">Colorado</option>
+		<option value="virginia">Virginia</option>
+		<option value="iowa">Iowa</option>
+		<option value="arizona">Arizona</option>
+	</select>
+	<img class="hidden" id="statep" height='30' width='30''</img>
+
+	<br>
+	<br>
+	<input type="submit" name="submit" value="Continue"</input>
+
+	</body>
+	</form>
 </html>
