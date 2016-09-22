@@ -1,25 +1,38 @@
-<!DOCTYPE html>
 <html>
 <head>
 <title>Validation Form</title>
+<script src="validation2.js" type="text/javascript"></script>
+	<style>
+	/* 
+	hide feedback image initially
+	 */
+	img.hidden 
+		{
+			display: none;
+		}
+	</style>
+
 </head>
 
 <body>
 
-<form id="userinfo" onsubmit="return validate()">
+<form id="userinfo">
   Email:<br>
-  <input type="text" name="email" required/>
+  <input id="emailin" type="text" name="email" required/>
+  <img class="hidden" id="emailp" height='30' width='30'</img>
+
   <br>
   Phone:<br>
-  <input type="text" name="phone"/>
+  <input id="phonein" type="text" name="phone"/>
+  <img class="hidden" id="phonep" height='30' width='30'</img>
+
   <br>
   Address:<br>
-  <textarea form="userinfo" name="address" rows="4" required></textarea>
+  <textarea form="userinfo" id="addressin" name="address" rows="4" required></textarea>
+  <img class="hidden" id="addresp" height='30' width='30'</img>
   <br>
-  <input type="submit" name="submitbtn"/>
+  <input type="button" name="submitbtn" value="Submit" onclick="return validate()"/>
 </form>
-
-<script src="validation2.js"></script>
 
 </body>
 

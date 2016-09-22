@@ -9,29 +9,27 @@ function validateForm()
 	fname = document.getElementById("fName");
 	if(testAlphanumeric(fname, "Must be only alphabetical or numeric characters"))
 	{
-		
 		showImg(correctpic, "Correct!", "firstp");
+		setCookie("firstName", fname);
 	}
 	else
 	{ 
 		showImg(wrongpic, "Wrong!", "firstp");
 		valid = false;
 	}
-	setCookie("firstName", fname);
 	
 	// last name: only alphabetical or numeric chars
 	var lname = document.getElementById("lName");
 	if(testAlphanumeric(lname, "Must be only alphabetical or numeric characters"))
 	{
 		showImg(correctpic, "Correct!",  "lastp");
+		setCookie("lastName", lname);
 	}
 	else
 	{
 		showImg(wrongpic,"Wrong!", "lastp");
 		valid = false;
-
 	}
-	setCookie("lastName", lname);
 
 	//gender: required
 	var gender = document.getElementById("gender");
@@ -43,8 +41,9 @@ function validateForm()
 	else
 	{
 		showImg(correctpic, "Correct!", "genderp"); 
+		setCookie("gender", gender);
+
 	}
-	setCookie("gender", gender);
 
 	//state: select from all given list and save selected one to JSCookies
 	var state = document.getElementById("state");
@@ -55,15 +54,18 @@ function validateForm()
 	}
 	else
 	{
-		showImg(correctpic, "Correct!",  "statep"); 
+		showImg(correctpic, "Correct!",  "statep");
+		setCookie("state", state);
+
 	}
-	setCookie("state", state);
 	
 	if(valid)
 	{
+		
 		return true;
+		//TODO redirect 
 	}
-	return false;
+	else return false;
 }
 
 function setCookie(cname, cvalue) 
