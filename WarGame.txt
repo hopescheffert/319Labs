@@ -13,6 +13,7 @@ Goal:
 Start:
 ------ 
 	-Each player starts with 26 cards face down
+	-push all 26 (random) cards to each Queue 
 	
 	
 ------	
@@ -31,6 +32,8 @@ Rules:
 					
 						-if this happens again, both players again lay one card face down and one card face up
 							-player with the higher card will take both piles (now 10 cards)
+							
+	***If you don't have enough cards to complete the war, you lose. If neither player has enough cards, the one who runs out first loses
 				
 ---------
 Graphics:
@@ -54,7 +57,8 @@ Buttons/OnClickEvents:
 Functionality:
 --------------
 
-	-computer plays a random card (from their given stack - Array of cards objects?)
+	-computer plays a random card (from their given stack - Array of 26 cards objects each player)
+	http://stackoverflow.com/questions/1590247/how-do-you-implement-a-stack-and-a-queue-in-javascript
 	-each time the user lays their card down, the array pops that card off
 		-whoever wins the turn pushes those cards in their array (at the bottom)
 	
