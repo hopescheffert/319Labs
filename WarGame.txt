@@ -7,34 +7,34 @@ War Card Game
 Goal:
 -----
 	-Be the first player to win all 52 cards
-	
-	
+
+
 ------
 Start:
------- 
+------
 	-Each player starts with 26 cards face down
-	-push all 26 (random) cards to each Queue 
-	
-	
-------	
+	-push all 26 (random) cards to each Queue
+
+
+------
 Rules:
 ------
 
 	-two players (assume one player and one "computer")
 	-each player lays their card face up at the same time
 		-person with higher card rank (highest is Ace, lowest is 2) wins that turn
-			-whoever "wins" that turn takes both of the cards just played and puts them at the 
+			-whoever "wins" that turn takes both of the cards just played and puts them at the
 			 bottom of their stack
-			
+
 				-if cards are of same rank: WAR!
 					-both players lay one card face down and one card face up
 					-the player with the higher card will take both piles (6 total cards)
-					
+
 						-if this happens again, both players again lay one card face down and one card face up
 							-player with the higher card will take both piles (now 10 cards)
-							
+
 	***If you don't have enough cards to complete the war, you lose. If neither player has enough cards, the one who runs out first loses
-				
+
 ---------
 Graphics:
 ---------
@@ -43,10 +43,10 @@ Graphics:
 	-Img for the back of a card
 	-Img for the "deck"
 	-Img for the background
-	
+
 
 ----------------------
-Buttons/OnClickEvents: 
+Buttons/OnClickEvents:
 ----------------------
 
 	-Lay down a card
@@ -61,12 +61,6 @@ Functionality:
 	http://stackoverflow.com/questions/1590247/how-do-you-implement-a-stack-and-a-queue-in-javascript
 	-each time the user lays their card down, the array pops that card off
 		-whoever wins the turn pushes those cards in their array (at the bottom)
-	
-	-needs to keep score in some kind of div element at the top right corner - updates every time the 
-	 card is laid down - game is over when one player has all 52 cards
-	
-		
-	
-	
-	
 
+	-needs to keep score in some kind of div element at the top right corner - updates every time the
+	 card is laid down - game is over when one player has all 52 cards
