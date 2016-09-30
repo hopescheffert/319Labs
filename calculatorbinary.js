@@ -22,7 +22,6 @@ var Calc =
         buttonnot : {id: "buttonnot", type: "button", value:"~", onclick:""},
         //row 2
         buttonplus : {id: "buttonplus", type: "button", value: "+", onclick:""},
-        buttonmod : {id: "buttonmod", type: "button", value: "%", onclick:""},
         buttonshiftleft : {id: "buttonshiftleft", type: "button", value: "<<", onclick:""},
         //row 3
         buttonshiftright : {id: "buttonshiftright", type: "button", value: ">>", onclick:""},
@@ -101,6 +100,7 @@ var Calc =
 
             console.log("operands in equals: " + operands);
             console.log("operators in equals: " + operators);
+
             var result;
             switch(operators[0])
             {
@@ -121,10 +121,6 @@ var Calc =
                 break;
 
                 case "~":
-                //TODO result =
-                break;
-
-                case "%":
                 //TODO result =
                 break;
 
@@ -185,7 +181,6 @@ var Calc =
         s += Calc.displayElement(Calc.View.buttonnot);
         s += "<tr><td>"
         s += Calc.displayElement(Calc.View.buttonplus);
-        s += Calc.displayElement(Calc.View.buttonmod);
         s += Calc.displayElement(Calc.View.buttonshiftleft);
         s += "<tr><td>"
         s += Calc.displayElement(Calc.View.buttonshiftright);
@@ -215,7 +210,6 @@ var Calc =
         Calc.View.buttonC.onclick = "Calc.Controller.buttonHandler(this)";
         Calc.View.buttonnot.onclick = "Calc.Controller.buttonHandler(this)";
         Calc.View.buttondiv.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonmod.onclick = "Calc.Controller.buttonHandler(this)";
         Calc.View.buttonmult.onclick = "Calc.Controller.buttonHandler(this)";
         Calc.View.buttonminus.onclick = "Calc.Controller.buttonHandler(this)";
         Calc.View.buttonplus.onclick = "Calc.Controller.buttonHandler(this)";

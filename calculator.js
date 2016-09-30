@@ -51,9 +51,6 @@ var Calc =
 
         buttonHandler : function(that)
         {
-
-
-
             //if that.value is a number or there is a dot, it's an operand
             if(!isNaN(that.value) || that.value == ".")
             {
@@ -74,7 +71,8 @@ var Calc =
                 else
                 {
                     //put the value into the array of operands
-                    Calc.Model.operands.push(Number(that.value));
+                    //Calc.Model.operands.push(Number(that.value));
+                    Calc.Model.operands.push(that.value);
                 }
 
                 console.log("operands "+ Calc.Model.operands.toString());
@@ -86,6 +84,8 @@ var Calc =
                 {
                     case "C":
                     calcDisplay.value = "";
+                    //clear operands array
+                    Calc.Model.operands = [];
                     break;
 
                     case "MC":
@@ -100,20 +100,13 @@ var Calc =
 
                     case "M-":
                     //TODO whatever is on screen gets subtracted from memory
-                    Calc.Model.memory = Calc.Model.memory - (calcDisplay.value);
+                    Calc.Model.memory = (Calc.Model.memory - calcDisplay.value);
                     break;
 
                     case "M+":
                     //TODO whatever is on screen gets added to memory
-                    Calc.Model.memory = Calc.Model.memory + (calcDisplay.value);
+                    Calc.Model.memory = (Calc.Model.memory + calcDisplay.value);
                     break;
-
-                    // case ".":
-                    // //not an operator...part of operand
-                    // Calc.Model.operands.push(that.value);
-                    // calcDisplay.value += that.value;
-                    // break;
-
 
                     case "=":
                     //TODO if repeated presses, will just show
@@ -122,7 +115,6 @@ var Calc =
                     //set the calcDisplay to the result of operation
                     calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
                     break;
-
 
                     //default: add the value to the calcDisplay
                     default: val = that.value;
@@ -141,17 +133,43 @@ var Calc =
 
             console.log("operands in equals: " + operands);
             console.log("operators in equals: " + operators);
-            // var isDot = operands.indexOf(".");
-            // if(isDot != -1)
-            // {
-            //     //there is a . in the expression
-            //     //TODO combine operands at index-1 and index+1
-            // }
 
-            if(operands.indexOf(".") == -1)
+            var i = operands.indexOf("."); //returns index where it finds "."
+            console.log("i is "+ i);
+            while(i != -1) //there is a dot
             {
-                var x = operands.shift();
-                operands.push(x + ".");
+                if(operands[i - 1] == undefined) //this is a leading .
+                {
+                    //operands[i] = operands[i] + ".";
+                    operands.push(operands[i] + ".");
+                    operands.shift();
+                }
+                else if(operands[i - 1] != undefined && operands[i + 1] != undefined) //append to # before and after . form 1.5
+                {
+                    //operands[i] = (operands[i - 1] + "." + operands[i + 1]);
+
+                    operands.push((operands[i - 1] + "." + operands[i + 1]));
+                    operands.shift();
+                    operands.shift();
+                    operands.shift();
+
+                    console.log("operands[i] " + operands[i]);
+                    console.log("operands in equals: " + operands);
+
+                }
+                else if(operands[i - 1] != undefined && operands[i + 1] == undefined)
+                {
+                    //operands[i] = operands[i - 1] + "." + operands[i];
+                    operands.push(operands[i - 1] + "." + operands[i]);
+
+                    operands.shift();
+                    operands.shift();
+                    operands.shift();
+                }
+                i = operands.indexOf(".",i); //check for another decimal
+                console.log("now i is " + i);
+                console.log("operands in equals: " + operands);
+
 
             }
 
@@ -159,7 +177,7 @@ var Calc =
             switch(operators[0])
             {
                 case "+":
-                result = (operands[0] + operands[1]);
+                result = (Number(operands[0]) + Number(operands[1]));
                 break;
 
                 case "-":
@@ -178,6 +196,7 @@ var Calc =
             Calc.Model.operators.shift(operands[0]);
             Calc.Model.operands.shift(operands[0]);
             Calc.Model.operands.shift(operands[1]);
+
             return result;
         }
 
