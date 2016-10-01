@@ -8,6 +8,7 @@ var Calc =
         //arrays for operators and operands
         operators : [],
         operands : [],
+        expr: "",
         memory: 0
     },
 
@@ -51,31 +52,12 @@ var Calc =
 
         buttonHandler : function(that)
         {
-            //if that.value is a number or there is a dot, it's an operand
-            if(!isNaN(that.value) || that.value == ".")
+            if((that.value != "C") && (that.value != "MC") && (that.value != "MR") &&
+            (that.value != "M-") && (that.value != "M+") && (that.value != "="))
             {
-                //otherwise it's a number button aka an operand
+                //Calc.Model.expr.push(that.value);
+                Calc.Model.expr += that.value;
                 calcDisplay.value += that.value;
-                if(that.value == ".")
-                {
-                    //TODO the value is a decimal
-                    //possibly use parseFloat(string) ??
-                    //either of form somethign.something
-                    //or .something
-                    //ex: 1.5 or .5
-                    //these need to be counted as one operand
-
-                    Calc.Model.operands.push(".");
-
-                }
-                else
-                {
-                    //put the value into the array of operands
-                    //Calc.Model.operands.push(Number(that.value));
-                    Calc.Model.operands.push(that.value);
-                }
-
-                console.log("operands "+ Calc.Model.operands.toString());
             }
             else
             {
@@ -84,8 +66,9 @@ var Calc =
                 {
                     case "C":
                     calcDisplay.value = "";
-                    //clear operands array
+                    //clear operands & operators arrays
                     Calc.Model.operands = [];
+                    Calc.Model.operators = [];
                     break;
 
                     case "MC":
@@ -95,24 +78,25 @@ var Calc =
 
                     case "MR":
                     //TODO shows memory value on screen
-                    calcDisplay.value = Calc.Model.memory;
+                    calcDisplay.value = Number(Calc.Model.memory);
                     break;
 
                     case "M-":
                     //TODO whatever is on screen gets subtracted from memory
-                    Calc.Model.memory = (Calc.Model.memory - calcDisplay.value);
+                    Calc.Model.memory = Number(Calc.Model.memory - calcDisplay.value);
                     break;
 
                     case "M+":
                     //TODO whatever is on screen gets added to memory
-                    Calc.Model.memory = (Calc.Model.memory + calcDisplay.value);
+                    Calc.Model.memory = Number(Calc.Model.memory + calcDisplay.value);
                     break;
 
                     case "=":
                     //TODO if repeated presses, will just show
                     //result of last operation
-                    console.log("operands before calling equals " + Calc.Model.operands);
                     //set the calcDisplay to the result of operation
+                    console.log("calling equals");
+                    Calc.Controller.parseExpression(Calc.Model.expr);
                     calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
                     break;
 
@@ -124,25 +108,124 @@ var Calc =
                     //operators.push(that.value);
                     Calc.Model.operators.push(that.value);
                 }
-
             }
 
         },
+        parseExpression : function(expr)
+        {
+            //get operators
+            for(var j = 0; j < expr.length; j ++)
+            {
+                if((expr.charAt(j) == '+') || (expr.charAt(j) == '-') || (expr.charAt(j) == '*') || (expr.charAt(j) == '/'))
+                {
+                    Calc.Model.operators.push(expr.charAt(j));
+                }
+            }
+            //get operands
+            console.log("expression " + expr);
+
+            for(var i = 0; i < expr.length; i++)
+            {
+                var op = parseFloat(expr);
+                Calc.Model.operands.push(parseFloat(expr));
+                expr = expr.substring(op.toString().length);
+            }
+
+            //console.log("in parseExpression operators: " + Calc.Model.operators);
+            console.log("in parseExpression operands: [" + Calc.Model.operands + "]");
+
+        },
+
+
+        //     //if that.value is a number or there is a dot, it's an operand
+        //     if(!isNaN(that.value) || that.value == ".")
+        //     {
+        //         //otherwise it's a number button aka an operand
+        //         calcDisplay.value += that.value;
+        //         if(that.value == ".")
+        //         {
+        //             Calc.Model.operands.push(".");
+        //         }
+        //         else
+        //         {
+        //             //put the value into the array of operands
+        //             //Calc.Model.operands.push(Number(that.value));
+        //             Calc.Model.operands.push(that.value);
+        //         }
+        //
+        //         console.log("operands "+ Calc.Model.operands.toString());
+        //     }
+        //     else
+        //     {
+        //         //special buttons
+        //         switch(that.value)
+        //         {
+        //             case "C":
+        //             calcDisplay.value = "";
+        //             //clear operands & operators arrays
+        //             Calc.Model.operands = [];
+        //             Calc.Model.operators = [];
+        //             break;
+        //
+        //             case "MC":
+        //             //TODO clears memory value
+        //             Calc.Model.memory = 0;
+        //             break;
+        //
+        //             case "MR":
+        //             //TODO shows memory value on screen
+        //             calcDisplay.value = Number(Calc.Model.memory);
+        //             break;
+        //
+        //             case "M-":
+        //             //TODO whatever is on screen gets subtracted from memory
+        //             Calc.Model.memory = Number(Calc.Model.memory - calcDisplay.value);
+        //             break;
+        //
+        //             case "M+":
+        //             //TODO whatever is on screen gets added to memory
+        //             Calc.Model.memory = Number(Calc.Model.memory + calcDisplay.value);
+        //             break;
+        //
+        //             case "=":
+        //             //TODO if repeated presses, will just show
+        //             //result of last operation
+        //             //set the calcDisplay to the result of operation
+        //             calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
+        //             break;
+        //
+        //             //default: add the value to the calcDisplay
+        //             default: val = that.value;
+        //             calcDisplay.value += val;
+        //
+        //             //put the value into the array of operators
+        //             //operators.push(that.value);
+        //             Calc.Model.operators.push(that.value);
+        //         }
+        //
+        //     }
+        //
+        //  },
+
+
         equals : function(operands, operators)
         {
 
-            console.log("operands in equals: " + operands);
-            console.log("operators in equals: " + operators);
+            console.log("operands in equals starts as: " + operands);
+            console.log("operators in equals starts as: " + operators);
 
             var i = operands.indexOf("."); //returns index where it finds "."
             console.log("i is "+ i);
             while(i != -1) //there is a dot
             {
-                if(operands[i - 1] == undefined) //this is a leading .
+                if(operands[i - 1] == undefined && operands[i + 2] != undefined) //this is a leading .
                 {
                     //operands[i] = operands[i] + ".";
-                    operands.push(operands[i] + ".");
+                    operands.push(operands[i] +  operands[i + 1]);
                     operands.shift();
+                    operands.shift();
+                    console.log("operands when before isn't there but after is: " + operands);
+
                 }
                 else if(operands[i - 1] != undefined && operands[i + 1] != undefined) //append to # before and after . form 1.5
                 {
@@ -153,8 +236,7 @@ var Calc =
                     operands.shift();
                     operands.shift();
 
-                    console.log("operands[i] " + operands[i]);
-                    console.log("operands in equals: " + operands);
+                    console.log("operands when both before and after are there: " + operands);
 
                 }
                 else if(operands[i - 1] != undefined && operands[i + 1] == undefined)
@@ -164,11 +246,13 @@ var Calc =
 
                     operands.shift();
                     operands.shift();
-                    operands.shift();
+                    //operands.shift();
+                    console.log("operands when before is there but no after: " + operands);
+
                 }
                 i = operands.indexOf(".",i); //check for another decimal
                 console.log("now i is " + i);
-                console.log("operands in equals: " + operands);
+                console.log("operands after if statements/before next while: " + operands);
 
 
             }
@@ -181,15 +265,15 @@ var Calc =
                 break;
 
                 case "-":
-                result = (operands[0] - operands[1]);
+                result = (Number(operands[0]) - Number(operands[1]));
                 break;
 
                 case "*":
-                result = (operands[0] * operands[1]);
+                result = (Number(operands[0]) * Number(operands[1]));
                 break;
 
                 case "/":
-                result = (operands[0] / operands[1]);
+                result = (Number(operands[0]) / Number(operands[1]));
                 break;
 
             }
@@ -202,7 +286,6 @@ var Calc =
 
 
     },
-
     run : function()
     {
 
