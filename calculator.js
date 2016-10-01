@@ -52,10 +52,10 @@ var Calc =
 
         buttonHandler : function(that)
         {
+            //if it's an operand: add it to the calcDisplay and expression
             if((that.value != "C") && (that.value != "MC") && (that.value != "MR") &&
             (that.value != "M-") && (that.value != "M+") && (that.value != "="))
             {
-                //Calc.Model.expr.push(that.value);
                 Calc.Model.expr += that.value;
                 calcDisplay.value += that.value;
             }
@@ -66,37 +66,34 @@ var Calc =
                 {
                     case "C":
                     calcDisplay.value = "";
-                    //clear operands & operators arrays
+                    //clear operands & operators arrays & expr string
                     Calc.Model.operands = [];
                     Calc.Model.operators = [];
+                    Calc.Model.expr = "";
                     break;
 
                     case "MC":
-                    //TODO clears memory value
                     Calc.Model.memory = 0;
                     break;
 
                     case "MR":
-                    //TODO shows memory value on screen
                     calcDisplay.value = Number(Calc.Model.memory);
                     break;
 
                     case "M-":
-                    //TODO whatever is on screen gets subtracted from memory
                     Calc.Model.memory = Number(Calc.Model.memory - calcDisplay.value);
                     break;
 
                     case "M+":
-                    //TODO whatever is on screen gets added to memory
                     Calc.Model.memory = Number(Calc.Model.memory + calcDisplay.value);
                     break;
 
                     case "=":
-                    //TODO if repeated presses, will just show
-                    //result of last operation
-                    //set the calcDisplay to the result of operation
-                    console.log("calling equals");
+                    //TODO if repeated presses, will just show result of last operation
+
+                    //send to parseExpression to get operators and operands
                     Calc.Controller.parseExpression(Calc.Model.expr);
+                    //set the calcDisplay to the result of operation
                     calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
                     break;
 
@@ -105,109 +102,54 @@ var Calc =
                     calcDisplay.value += val;
 
                     //put the value into the array of operators
-                    //operators.push(that.value);
                     Calc.Model.operators.push(that.value);
                 }
             }
 
         },
+        //parse the expression given for the operands and operators
+        //*modifies expr so after this function is called expr is an empty string
         parseExpression : function(expr)
         {
+            var isSubtraction = false;
             //get operators
             for(var j = 0; j < expr.length; j ++)
             {
                 if((expr.charAt(j) == '+') || (expr.charAt(j) == '-') || (expr.charAt(j) == '*') || (expr.charAt(j) == '/'))
                 {
                     Calc.Model.operators.push(expr.charAt(j));
+                    if(expr.charAt(j) == '-') isSubtraction = true; //TODO what if meant to be negative not minus?
                 }
             }
             //get operands
-            console.log("expression " + expr);
-
-            for(var i = 0; i < expr.length; i++)
+            var i = 0;
+            while(expr.length > 0)
             {
+                //get first number from expr string
                 var op = parseFloat(expr);
-                Calc.Model.operands.push(parseFloat(expr));
-                expr = expr.substring(op.toString().length);
+                if(!(isNaN(op)))
+                {
+                    if(op < 0 && isSubtraction)
+                    {
+                        //TODO if it's negative, make it positive for subtraction
+                        //but this makes something like -2 * 2 == 4 instead of -4
+                        op = -op;
+                    }
+                    Calc.Model.operands.push(op);
+                    //shorten expr string
+                    expr = expr.substring(op.toString().length);
+                    i++;
+                }
+                else
+                {
+                    //skip this character (it's an operator)
+                    expr = expr.substring(i);
+                    i = 0;
+                }
             }
 
-            //console.log("in parseExpression operators: " + Calc.Model.operators);
-            console.log("in parseExpression operands: [" + Calc.Model.operands + "]");
-
         },
-
-
-        //     //if that.value is a number or there is a dot, it's an operand
-        //     if(!isNaN(that.value) || that.value == ".")
-        //     {
-        //         //otherwise it's a number button aka an operand
-        //         calcDisplay.value += that.value;
-        //         if(that.value == ".")
-        //         {
-        //             Calc.Model.operands.push(".");
-        //         }
-        //         else
-        //         {
-        //             //put the value into the array of operands
-        //             //Calc.Model.operands.push(Number(that.value));
-        //             Calc.Model.operands.push(that.value);
-        //         }
-        //
-        //         console.log("operands "+ Calc.Model.operands.toString());
-        //     }
-        //     else
-        //     {
-        //         //special buttons
-        //         switch(that.value)
-        //         {
-        //             case "C":
-        //             calcDisplay.value = "";
-        //             //clear operands & operators arrays
-        //             Calc.Model.operands = [];
-        //             Calc.Model.operators = [];
-        //             break;
-        //
-        //             case "MC":
-        //             //TODO clears memory value
-        //             Calc.Model.memory = 0;
-        //             break;
-        //
-        //             case "MR":
-        //             //TODO shows memory value on screen
-        //             calcDisplay.value = Number(Calc.Model.memory);
-        //             break;
-        //
-        //             case "M-":
-        //             //TODO whatever is on screen gets subtracted from memory
-        //             Calc.Model.memory = Number(Calc.Model.memory - calcDisplay.value);
-        //             break;
-        //
-        //             case "M+":
-        //             //TODO whatever is on screen gets added to memory
-        //             Calc.Model.memory = Number(Calc.Model.memory + calcDisplay.value);
-        //             break;
-        //
-        //             case "=":
-        //             //TODO if repeated presses, will just show
-        //             //result of last operation
-        //             //set the calcDisplay to the result of operation
-        //             calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
-        //             break;
-        //
-        //             //default: add the value to the calcDisplay
-        //             default: val = that.value;
-        //             calcDisplay.value += val;
-        //
-        //             //put the value into the array of operators
-        //             //operators.push(that.value);
-        //             Calc.Model.operators.push(that.value);
-        //         }
-        //
-        //     }
-        //
-        //  },
-
-
+        //does evaluation of expression after parseExpression finds operands and operators
         equals : function(operands, operators)
         {
 
@@ -215,8 +157,8 @@ var Calc =
             console.log("operators in equals starts as: " + operators);
 
             var i = operands.indexOf("."); //returns index where it finds "."
-            console.log("i is "+ i);
-            while(i != -1) //there is a dot
+            //console.log("i is "+ i);
+            while(i != -1) //there is a "."
             {
                 if(operands[i - 1] == undefined && operands[i + 2] != undefined) //this is a leading .
                 {
@@ -362,7 +304,5 @@ var Calc =
         Calc.View.buttonMminus.onclick = "Calc.Controller.buttonHandler(this)";
 
     },
-
-
 
 } // end of Calc;
