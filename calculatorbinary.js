@@ -8,6 +8,7 @@ var Calc =
         //arrays for operators and operands
         operators : [],
         operands : [],
+        expr: "",
         memory: 0
     },
 
@@ -45,185 +46,230 @@ var Calc =
     {
 
         buttonHandler : function(that)
+        {//if it's an operand: add it to the calcDisplay and expression
+        if((that.value != "C") && (that.value != "MC") && (that.value != "MR") &&
+        (that.value != "M-") && (that.value != "M+") && (that.value != "="))
         {
-
+            Calc.Model.expr += that.value;
+            calcDisplay.value += that.value;
+        }
+        else
+        {
             //special buttons
             switch(that.value)
             {
                 case "C":
                 calcDisplay.value = "";
+                //clear operands & operators arrays & expr string
+                Calc.Model.operands = [];
+                Calc.Model.operators = [];
+                Calc.Model.expr = "";
                 break;
 
                 case "MC":
-                //TODO clears memory value
                 Calc.Model.memory = 0;
                 break;
 
                 case "MR":
-                //TODO shows memory value on screen
-                calcDisplay.value = Calc.Model.memory;
+                calcDisplay.value = Number(Calc.Model.memory);
                 break;
 
                 case "M-":
-                //TODO whatever is on screen gets subtracted from memory
-                Calc.Model.memory = Calc.Model.memory - (calcDisplay.value);
+                Calc.Model.memory = Number(Calc.Model.memory - calcDisplay.value);
                 break;
 
                 case "M+":
-                //TODO whatever is on screen gets added to memory
-                Calc.Model.memory = Calc.Model.memory + (calcDisplay.value);
+                Calc.Model.memory = Number(Calc.Model.memory + calcDisplay.value);
                 break;
 
                 case "=":
-                //TODO if repeated presses, will just show
-                //result of last operation
-                console.log("operands before calling equals " + Calc.Model.operands);
+                //TODO if repeated presses, will just show result of last operation
+
+                //send to parseExpression to get operators and operands
+                Calc.Controller.parseExpression(Calc.Model.expr);
                 //set the calcDisplay to the result of operation
                 calcDisplay.value = Calc.Controller.equals(Calc.Model.operands, Calc.Model.operators);
                 break;
 
-
                 //default: add the value to the calcDisplay
                 default: val = that.value;
-                calcDisplay.value += val;
+                calcDisplay.value += val + " ";
 
                 //put the value into the array of operators
-                //operators.push(that.value);
                 Calc.Model.operators.push(that.value);
             }
-
-        },
-
-
-        equals : function(operands, operators)
-        {
-
-            console.log("operands in equals: " + operands);
-            console.log("operators in equals: " + operators);
-
-            var result;
-            switch(operators[0])
-            {
-                case "+":
-                result = (operands[0] + operands[1]);
-                break;
-
-                case "-":
-                result = (operands[0] - operands[1]);
-                break;
-
-                case "*":
-                result = (operands[0] * operands[1]);
-                break;
-
-                case "/":
-                result = (operands[0] / operands[1]);
-                break;
-
-                case "~":
-                //TODO result =
-                break;
-
-                case "<<":
-                //TODO result =
-                break;
-
-                case ">>":
-                //TODO result =
-                break;
-
-                case "&":
-                //TODO result =
-                break;
-
-                case "|":
-                //TODO result =
-                break;
-
-
-            }
-            Calc.Model.operators.shift(operands[0]);
-            Calc.Model.operands.shift(operands[0]);
-            Calc.Model.operands.shift(operands[1]);
-            return result;
         }
 
-
     },
-
-    run : function()
+    //parse the expression given for the operands and operators
+    //*modifies expr so after this function is called expr is an empty string
+    parseExpression : function(expr)
     {
-        Calc.attachHandlers();
-        return Calc.display();
+        //get operators
+        for(var j = 0; j < expr.length; j ++)
+        {
+            if((expr.charAt(j) == '+') || (expr.charAt(j) == '-') || (expr.charAt(j) == '*') || (expr.charAt(j) == '/')
+                || (expr.charAt(j) == '~') || (expr.charAt(j) == '<<') || (expr.charAt(j) == '>>') || (expr.charAt(j) == '&')
+                || (expr.charAt(j) == '|'))
+            {
+                Calc.Model.operators.push(expr.charAt(j));
+            }
+        }
+        //get operands
+        var i = 0;
+        while(expr.length > 0)
+        {
+            console.log("expr is " + expr);
+            //get first number from expr string
+            var oplength = parseInt(expr).toString().length;
+            var op = parseInt(expr, 2);
+            console.log("op is " + op);
+            if(!(isNaN(op)))
+            {
+                Calc.Model.operands.push(op);
+                //shorten expr string
+                expr = expr.substring(oplength);
+                i++;
+            }
+            else
+            {
+                //skip this character (it's an operator)
+                expr = expr.substring(i);
+                i = 0;
+            }
+            console.log("i is " + i +" and expr is " + expr);
+        }
+
     },
-
-
-    displayElement : function (element)
+    //evaluates expr
+    equals : function(operands, operators)
     {
-        var s = "<input ";
-        s += " id=\"" + element.id + "\"";
-        s += " type=\"" + element.type + "\"";
-        s += " value= \"" + element.value + "\"";
-        s += " onclick= \"" + element.onclick + "\"";
-        s += ">";
-        return s;
 
-    },
+        console.log("operands in equals: " + operands);
+        console.log("operators in equals: " + operators);
 
-    display : function()
-    {
-        var s;
-        s = "<table id=\"myTable\" border=2>"
-        s += "<tr><td>" + Calc.displayElement(Calc.View.calcDisplay) + "</td></tr>";
-        s += "<tr><td>";
-        s += Calc.displayElement(Calc.View.button1);
-        s += Calc.displayElement(Calc.View.button0);
-        s += Calc.displayElement(Calc.View.buttonnot);
-        s += "<tr><td>"
-        s += Calc.displayElement(Calc.View.buttonplus);
-        s += Calc.displayElement(Calc.View.buttonshiftleft);
-        s += "<tr><td>"
-        s += Calc.displayElement(Calc.View.buttonshiftright);
-        s += Calc.displayElement(Calc.View.buttonminus);
-        s += Calc.displayElement(Calc.View.buttonand);
-        s += "<tr><td>"
-        s += Calc.displayElement(Calc.View.buttonor);
-        s += Calc.displayElement(Calc.View.buttonmult);
-        s += Calc.displayElement(Calc.View.buttondiv);
-        s += "<tr><td>"
-        s += Calc.displayElement(Calc.View.buttonMR);
-        s += Calc.displayElement(Calc.View.buttonMminus);
-        s += Calc.displayElement(Calc.View.buttonMplus);
-        s += "<tr><td>"
-        s += Calc.displayElement(Calc.View.buttonC);
-        s += Calc.displayElement(Calc.View.buttonMC);
-        s += Calc.displayElement(Calc.View.buttonequals);
-        s += "</tr></td></table>";
-        return s;
-    },
+        var result;
+        switch(operators[0])
+        {
+            case "+":
+            result = (operands[0] + operands[1]);
+            break;
 
-    attachHandlers : function()
-    {
-        //ATTACH HANDLER FOR EACH BUTTON
-        Calc.View.button0.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.button1.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonC.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonnot.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttondiv.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonmult.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonminus.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonplus.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonequals.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonMC.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonMR.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonMplus.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonMminus.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonand.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonor.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonshiftleft.onclick = "Calc.Controller.buttonHandler(this)";
-        Calc.View.buttonshiftright.onclick = "Calc.Controller.buttonHandler(this)";
+            case "-":
+            result = (operands[0] - operands[1]);
+            break;
 
-    },
+            case "*":
+            result = (operands[0] * operands[1]);
+            break;
+
+            case "/":
+            result = (operands[0] / operands[1]);
+            break;
+
+            case "~":
+            //TODO result =
+            break;
+
+            case "<<":
+            //TODO result =
+            break;
+
+            case ">>":
+            //TODO result =
+            break;
+
+            case "&":
+            //TODO result =
+            break;
+
+            case "|":
+            //TODO result =
+            break;
+
+
+        }
+        Calc.Model.operators.shift(operands[0]);
+        Calc.Model.operands.shift(operands[0]);
+        Calc.Model.operands.shift(operands[1]);
+        return result;
+    }
+
+
+},
+run : function()
+{
+    Calc.attachHandlers();
+    return Calc.display();
+},
+
+
+displayElement : function (element)
+{
+    var s = "<input ";
+    s += " id=\"" + element.id + "\"";
+    s += " type=\"" + element.type + "\"";
+    s += " value= \"" + element.value + "\"";
+    s += " onclick= \"" + element.onclick + "\"";
+    s += ">";
+    return s;
+
+},
+
+display : function()
+{
+    var s;
+    s = "<table id=\"myTable\" border=2>"
+    s += "<tr><td>" + Calc.displayElement(Calc.View.calcDisplay) + "</td></tr>";
+    s += "<tr><td>";
+    s += Calc.displayElement(Calc.View.button1);
+    s += Calc.displayElement(Calc.View.button0);
+    s += Calc.displayElement(Calc.View.buttonnot);
+    s += "<tr><td>"
+    s += Calc.displayElement(Calc.View.buttonplus);
+    s += Calc.displayElement(Calc.View.buttonshiftleft);
+    s += "<tr><td>"
+    s += Calc.displayElement(Calc.View.buttonshiftright);
+    s += Calc.displayElement(Calc.View.buttonminus);
+    s += Calc.displayElement(Calc.View.buttonand);
+    s += "<tr><td>"
+    s += Calc.displayElement(Calc.View.buttonor);
+    s += Calc.displayElement(Calc.View.buttonmult);
+    s += Calc.displayElement(Calc.View.buttondiv);
+    s += "<tr><td>"
+    s += Calc.displayElement(Calc.View.buttonMR);
+    s += Calc.displayElement(Calc.View.buttonMminus);
+    s += Calc.displayElement(Calc.View.buttonMplus);
+    s += "<tr><td>"
+    s += Calc.displayElement(Calc.View.buttonC);
+    s += Calc.displayElement(Calc.View.buttonMC);
+    s += Calc.displayElement(Calc.View.buttonequals);
+    s += "</tr></td></table>";
+    return s;
+},
+
+attachHandlers : function()
+{
+    //ATTACH HANDLER FOR EACH BUTTON
+    Calc.View.button0.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.button1.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonC.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonnot.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttondiv.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonmult.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonminus.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonplus.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonequals.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonMC.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonMR.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonMplus.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonMminus.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonand.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonor.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonshiftleft.onclick = "Calc.Controller.buttonHandler(this)";
+    Calc.View.buttonshiftright.onclick = "Calc.Controller.buttonHandler(this)";
+
+},
 
 
 
