@@ -152,39 +152,39 @@ var Calc =
         switch(operators[0])
         {
             case "+":
-            result = (operands[0] + operands[1]);
+            result = ((operands[0] + operands[1]) >>> 0).toString(2);
             break;
 
             case "-":
-            result = (operands[0] - operands[1]);
+            result = ((operands[0] + operands[1]) >>> 0).toString(2);
             break;
 
             case "*":
-            result = (operands[0] * operands[1]);
+            result = ((operands[0] * operands[1]) >>> 0).toString(2);
             break;
 
             case "/":
-            result = (operands[0] / operands[1]);
+            result = ((operands[0] / operands[1]) >>> 0).toString(2);
             break;
 
             case "~":
-            //TODO result =
+            result = (~ operands[0]).toString(2);
             break;
 
             case "<<":
-            //TODO result =
+            result = (operands[0] << 1).toString(2);
             break;
 
             case ">>":
-            //TODO result =
+            result = (operands[0] >> 1).toString(2);
             break;
 
             case "&":
-            //TODO result =
+            result = (operands[0] & 1).toString(2);
             break;
 
             case "|":
-            //TODO result =
+            result = (operands[0] | 1).toString(2);
             break;
 
 
