@@ -1,6 +1,11 @@
 //booksLibrary.js EDIT
 
-//three classes: Library, Shelf, and Book
+//TODO LIBRARIAN: Ability to add specific book to specific shelf.
+//TODO UNDERGRADUATE STUDENT: Undergraduate student can borrow at most two books each time.
+//So, a student can select on at most two books
+
+
+
 
 //library constructor
 function Library(username)
@@ -52,10 +57,7 @@ Library.prototype.logIn = function(username, password)
         alert("Incorrect username or password");
         return;
     }
-    console.log("lib " + lib.allBooks);
     //display library as table in html
-    //do we need to pass the library to this function?
-    //document.getElementById("myLibrary").innerHTML = Library.prototype.displayLibrary(lib);
     document.getElementById("myLibrary").innerHTML = Library.prototype.initTable(lib);
     Library.prototype.displayLibrary(lib);
 
@@ -74,7 +76,6 @@ Library.prototype.createLoginPage = function()
     return s;
 }
 //display the library as a table
-//***note that this is only for these specific books and book id's (this library only)***
 Library.prototype.displayLibrary = function(lib)
 {
     for(var i = 0; i < 6; i++)
@@ -82,14 +83,14 @@ Library.prototype.displayLibrary = function(lib)
         if(lib.literatureShelf.booksOnShelf[i] != undefined)
         {
             document.getElementById(lib.literatureShelf.booksOnShelf[i].toString()).innerHTML
-                    = Library.prototype.displayBook(lib.literatureShelf.booksOnShelf[i]);
+            = Library.prototype.displayBook(lib.literatureShelf.booksOnShelf[i]);
             lib.attachHandlers(lib.literatureShelf.booksOnShelf[i]);
         }
 
         if(lib.scienceShelf.booksOnShelf[i] != undefined)
         {
             document.getElementById(lib.scienceShelf.booksOnShelf[i].toString()).innerHTML
-                    = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[i]);
+            = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[i]);
             lib.attachHandlers(lib.scienceShelf.booksOnShelf[i]);
 
         }
@@ -97,7 +98,7 @@ Library.prototype.displayLibrary = function(lib)
         if(lib.sportsShelf.booksOnShelf[i] != undefined)
         {
             document.getElementById(lib.sportsShelf.booksOnShelf[i].toString()).innerHTML
-                    = Library.prototype.displayBook(lib.sportsShelf.booksOnShelf[i]);
+            = Library.prototype.displayBook(lib.sportsShelf.booksOnShelf[i]);
             lib.attachHandlers(lib.sportsShelf.booksOnShelf[i]);
 
         }
@@ -105,15 +106,19 @@ Library.prototype.displayLibrary = function(lib)
         if(lib.artShelf.booksOnShelf[i] != undefined)
         {
             document.getElementById(lib.artShelf.booksOnShelf[i].toString()).innerHTML
-                    = Library.prototype.displayBook(lib.artShelf.booksOnShelf[i]);
+            = Library.prototype.displayBook(lib.artShelf.booksOnShelf[i]);
             lib.attachHandlers(lib.artShelf.booksOnShelf[i]);
 
         }
     }
     document.getElementById(lib.scienceShelf.booksOnShelf[6].toString()).innerHTML
-            = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
+    = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
+    lib.attachHandlers(lib.scienceShelf.booksOnShelf[6]);
+
     document.getElementById(lib.artShelf.booksOnShelf[6].toString()).innerHTML
-            = Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
+    = Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
+    lib.attachHandlers(lib.artShelf.booksOnShelf[6]);
+
 
 
 }
@@ -158,14 +163,11 @@ Library.prototype.initTable = function(lib)
     }
     s += "<tr>";
     s += "<td></td><td <td id=\"" + lib.scienceShelf.booksOnShelf[6].toString() + "\">";
-    //s += Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
     s += "</td>";
     s += "<td></td><td <td id=\"" + lib.artShelf.booksOnShelf[6].toString() + "\">";
-    //s += Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
     s += "</td>";
     s += "</tr>";
     s += "</table>";
-    console.log(s);
     return s;
 
 }
@@ -184,7 +186,6 @@ Library.prototype.displayBook = function(bookObj)
     s += " id=\"" + bookObj.toString() + "\"";
     s += " type='text'";
     s += " value= \"" + bookObj.toString() + "\"";
-    //s += " onclick='Book.prototype.click(\"" + bookObj + "\")'";
     s += " readonly>";
     return s;
 }
@@ -197,9 +198,7 @@ function Book(bookid, bookType, library)
     this.type = bookType; //5 reference, 20 ordinary in this library
     this.category = "literature";
     this.library = library;
-    //TODO note that reference books cannot be checked out
     this.putOnShelf(library); //assign art, science, sport, or literature
-    //this.borrowedBy = undefined; //at first borrowedBy none of the students
     //USE LOCAL STORAGE in order to save presence and borrowedBy attribute for each book
     this.borrowedBy = localStorage.setItem("borrowedBy", "nobody"); //borrowedBy is the username of student who borrowed book
     //presence(1) or borrowed(0) situation of book
@@ -221,8 +220,6 @@ Book.prototype.getPresence = function()
 //onclick function for when book is clicked
 Book.prototype.click = function(book)
 {
-    console.log("in click and book is " + book);
-
     if(book.library.userType == "librarian") //it's a librarian so clicking on the book should display book information
     {
         alert("Book " + book.toString() + " is on shelf " + book.category +
@@ -230,29 +227,58 @@ Book.prototype.click = function(book)
     }
     else //it's an undergrad so clicking the book should result in checking that book out
     {
+        if(book.getPresence() == 1 && book.getBorrowedBy() == "nobody")
+        {
+            console.log("need to check it out");
+            //the book has not been checked out or borrowed by anyone so let the undergrad check it out
+            book.checkOutBook(book);
+        }
+
+        else if(book.getBorrowedBy() == book.library.username) //if they already have the book, check it back in
+        {
+            console.log("need to check it in");
+            book.checkBookIn(book);
+        }
+        else
+        {
+            alert("There are no copies of " + book.toString() + " left, it has been checked out by: " + book.getBorrowedBy());
+        }
         //TODO undergrad can borrow at most two books at once
-        //TODO if it's already been checked out should then check it back in
-        book.checkOutBook();
     }
 
 }
-Book.prototype.checkOutBook = function()
+//checks in the book:
+//changes borrwedBy to nobody
+//changes presence to 1 (availabe)
+Book.prototype.checkBookIn = function(book)
 {
-    console.log("this id  is " + document.getElementById(this.toString()));
-    document.getElementById(this.toString()).style.backgroundColor = "red";
-    if(this.type == "ordinary")
+    //change the borrowedBy to nobody
+    book.borrowedBy = localStorage.setItem("borrowedBy", "nobody");
+
+    //change the presence attribute to 1 (available)
+    book.presence = localStorage.setItem("presence", 1);
+    document.getElementById(book.toString()).style.backgroundColor = "white";
+
+}
+
+//checks out the book:
+//changes borrwedBy to username
+//changes presence to 0 (borrowed)
+Book.prototype.checkOutBook = function(book)
+{
+    if(book.type == "ordinary")
     {
         //change the borrowedBy to that users username
-        this.borrowedBy = localStorage.setItem("borrowedBy", this.library.username);
+        book.borrowedBy = localStorage.setItem("borrowedBy", book.library.username);
         //change the presence attribute to 0 (borrowed)
-        this.presence = localStorage.setItem("presence", 0);
-        //TODO NOT WORKING - change the color of the cell to red to show it has been checked out
-        document.getElementById(this.toString()).style.backgroundColor = "red";
+        book.presence = localStorage.setItem("presence", 0);
+        document.getElementById(book.toString()).style.backgroundColor = "red";
     }
     else //cannot borrow a reference book
     {
         alert("I'm sorry, but you cannot check out a reference book");
     }
+
 }
 
 //add the book to the correct shelf based on category
