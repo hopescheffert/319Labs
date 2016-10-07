@@ -1,12 +1,13 @@
-//booksLibrary.js
+//booksLibrary.js EDIT
 
 //three classes: Library, Shelf, and Book
 
 //library constructor
-function Library()
+function Library(username)
 {
     //types of books: 5 reference, 20 ordinary
     //reference books cannot be checked out
+    this.username = username;
     this.userType = "undergrad"; //initialize as undergrad
     this.artShelf = new Shelf("art");
     this.sportsShelf = new Shelf("sports");
@@ -34,7 +35,7 @@ Library.prototype.logIn = function(username, password)
     if(username == "admin" && password == "admin")
     {
         //log in as a librarian
-        var lib = new Library();
+        var lib = new Library(username);
         lib.userType = "librarian";
         //console.log("lib is " + lib.allBooks);
 
@@ -42,7 +43,7 @@ Library.prototype.logIn = function(username, password)
     else if(username.startsWith("u",0))
     {
         //log in as an undergrad student
-        var lib = new Library();
+        var lib = new Library(username);
         lib.userType = "undergrad";
         //console.log("library consists of " + lib.allBooks.toString());
     }
@@ -54,7 +55,9 @@ Library.prototype.logIn = function(username, password)
     console.log("lib " + lib.allBooks);
     //display library as table in html
     //do we need to pass the library to this function?
-    document.getElementById("myLibrary").innerHTML = Library.prototype.displayLibrary(lib);
+    //document.getElementById("myLibrary").innerHTML = Library.prototype.displayLibrary(lib);
+    document.getElementById("myLibrary").innerHTML = Library.prototype.initTable(lib);
+    Library.prototype.displayLibrary(lib);
 
 }
 //shows the login page in html
@@ -74,15 +77,48 @@ Library.prototype.createLoginPage = function()
 //***note that this is only for these specific books and book id's (this library only)***
 Library.prototype.displayLibrary = function(lib)
 {
-    //each column is a Shelf, each cell is a book on that shelf
-    console.log("literature shelf is : " + lib.literatureShelf.booksOnShelf);
-    console.log("science shelf is : " + lib.scienceShelf.booksOnShelf);
-    console.log("sports shelf is : " + lib.sportsShelf.booksOnShelf);
-    console.log("art shelf is : " + lib.artShelf.booksOnShelf);
-    console.log("lengths are " + lib.literatureShelf.booksOnShelf.length  + " " +
-    lib.scienceShelf.booksOnShelf.length + " " + lib.sportsShelf.booksOnShelf.length + " " +
-    lib.artShelf.booksOnShelf.length);
+    for(var i = 0; i < 6; i++)
+    {
+        if(lib.literatureShelf.booksOnShelf[i] != undefined)
+        {
+            document.getElementById(lib.literatureShelf.booksOnShelf[i].toString()).innerHTML
+                    = Library.prototype.displayBook(lib.literatureShelf.booksOnShelf[i]);
+            lib.attachHandlers(lib.literatureShelf.booksOnShelf[i]);
+        }
 
+        if(lib.scienceShelf.booksOnShelf[i] != undefined)
+        {
+            document.getElementById(lib.scienceShelf.booksOnShelf[i].toString()).innerHTML
+                    = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[i]);
+            lib.attachHandlers(lib.scienceShelf.booksOnShelf[i]);
+
+        }
+
+        if(lib.sportsShelf.booksOnShelf[i] != undefined)
+        {
+            document.getElementById(lib.sportsShelf.booksOnShelf[i].toString()).innerHTML
+                    = Library.prototype.displayBook(lib.sportsShelf.booksOnShelf[i]);
+            lib.attachHandlers(lib.sportsShelf.booksOnShelf[i]);
+
+        }
+
+        if(lib.artShelf.booksOnShelf[i] != undefined)
+        {
+            document.getElementById(lib.artShelf.booksOnShelf[i].toString()).innerHTML
+                    = Library.prototype.displayBook(lib.artShelf.booksOnShelf[i]);
+            lib.attachHandlers(lib.artShelf.booksOnShelf[i]);
+
+        }
+    }
+    document.getElementById(lib.scienceShelf.booksOnShelf[6].toString()).innerHTML
+            = Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
+    document.getElementById(lib.artShelf.booksOnShelf[6].toString()).innerHTML
+            = Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
+
+
+}
+Library.prototype.initTable = function(lib)
+{
     var s;
     //make table and table headers for the shelves...background is green
     s = "<table id=\"myTable\" border='1px solid black'>";
@@ -90,61 +126,65 @@ Library.prototype.displayLibrary = function(lib)
     s += "<th style='background-color:green'>Science Shelf</th>";
     s += "<th style='background-color:green'>Sports Shelf</th>";
     s += "<th style='background-color:green'>Art Shelf</th>";
+
     for(var i = 0; i < 6; i++)
     {
-        s += "<tr>";
+        s += "<tr id='" + i + "'>";
         if(lib.literatureShelf.booksOnShelf[i] != undefined)
         {
-            //TODO the onclick isn't working right...won't do an alert for some reason but is logging the desired output
-            //TODO also need it to only do onclick when the book is clicked for more info...
-            //right now, the onclick is being called as soon as this line executes (WRONG)
-            s += "<td onclick='\"" + function() {alert(lib.literatureShelf.booksOnShelf[i].click())} + "\"'>";
-            s += Library.prototype.displayBook(lib.literatureShelf.booksOnShelf[i]);
+            s += "<td id=\"" + lib.literatureShelf.booksOnShelf[i].toString() + "\">";
             s += "</td>";
         }
 
         if(lib.scienceShelf.booksOnShelf[i] != undefined)
         {
-            s += "<td onclick='\"" + alert(lib.scienceShelf.booksOnShelf[i].click()) + "\"'>";
-            s += Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[i]);
+            s += "<td id=\"" + lib.scienceShelf.booksOnShelf[i].toString() + "\">";
             s += "</td>";
         }
 
         if(lib.sportsShelf.booksOnShelf[i] != undefined)
         {
-            s += "<td onclick='\"" + alert(lib.sportsShelf.booksOnShelf[i].click()) + "\"'>";
-            s += Library.prototype.displayBook(lib.sportsShelf.booksOnShelf[i]);
+            s += "<td id=\"" + lib.sportsShelf.booksOnShelf[i].toString() + "\">";
             s += "</td>";
         }
 
         if(lib.artShelf.booksOnShelf[i] != undefined)
         {
-            s += "<td onclick='\"" + alert(lib.artShelf.booksOnShelf[i].click()) + "\"'>";
-            s += Library.prototype.displayBook(lib.artShelf.booksOnShelf[i]);
+            s += "<td id=\"" + lib.artShelf.booksOnShelf[i].toString() + "\">";
             s += "</td>";
         }
         s+= "</tr>";
 
     }
     s += "<tr>";
-    s += "<td></td><td>";
-    s += Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
+    s += "<td></td><td <td id=\"" + lib.scienceShelf.booksOnShelf[6].toString() + "\">";
+    //s += Library.prototype.displayBook(lib.scienceShelf.booksOnShelf[6]);
     s += "</td>";
-    s += "<td></td><td>";
-    s += Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
+    s += "<td></td><td <td id=\"" + lib.artShelf.booksOnShelf[6].toString() + "\">";
+    //s += Library.prototype.displayBook(lib.artShelf.booksOnShelf[6]);
     s += "</td>";
     s += "</tr>";
     s += "</table>";
+    console.log(s);
     return s;
+
+}
+Library.prototype.attachHandlers = function(book)
+{
+    var o = document.getElementById(book.toString());
+    o.onclick = function ()
+    {
+        Book.prototype.click(book);
+    }
 }
 //display a book for inside the library table
 Library.prototype.displayBook = function(bookObj)
 {
     var s = "<input ";
-    s += " id=\"" + bookObj.id + "\"";
+    s += " id=\"" + bookObj.toString() + "\"";
     s += " type='text'";
     s += " value= \"" + bookObj.toString() + "\"";
-    //s += " onclick= \"" + bookObj.click(this) + "\"";
+    //s += " onclick='Book.prototype.click(\"" + bookObj + "\")'";
     s += " readonly>";
     return s;
 }
@@ -156,6 +196,7 @@ function Book(bookid, bookType, library)
     this.id = bookid;
     this.type = bookType; //5 reference, 20 ordinary in this library
     this.category = "literature";
+    this.library = library;
     //TODO note that reference books cannot be checked out
     this.putOnShelf(library); //assign art, science, sport, or literature
     //this.borrowedBy = undefined; //at first borrowedBy none of the students
@@ -164,22 +205,54 @@ function Book(bookid, bookType, library)
     //presence(1) or borrowed(0) situation of book
     this.presence = localStorage.setItem("presence", 1); //all books start with presence (1)
 }
+
 //get borrwed by attribute of book from local storage
 Book.prototype.getBorrowedBy = function()
 {
     return localStorage.getItem("borrowedBy");
 }
+
 //get presence attribute of book from local storage
 Book.prototype.getPresence = function()
 {
     return localStorage.getItem("presence");
 }
-//onclick function that displays book information when book is clicked on
-Book.prototype.click = function()
+
+//onclick function for when book is clicked
+Book.prototype.click = function(book)
 {
-    console.log("in click");
-    return ("Book " + this.toString() + " is on shelf " + this.category +
-    " and book has presence " + this.getPresence() + " and is borrowed by " + this.getBorrowedBy());
+    console.log("in click and book is " + book);
+
+    if(book.library.userType == "librarian") //it's a librarian so clicking on the book should display book information
+    {
+        alert("Book " + book.toString() + " is on shelf " + book.category +
+        " and book has presence " + book.getPresence() + " and is borrowed by " + book.getBorrowedBy());
+    }
+    else //it's an undergrad so clicking the book should result in checking that book out
+    {
+        //TODO undergrad can borrow at most two books at once
+        //TODO if it's already been checked out should then check it back in
+        book.checkOutBook();
+    }
+
+}
+Book.prototype.checkOutBook = function()
+{
+    console.log("this id  is " + document.getElementById(this.toString()));
+    document.getElementById(this.toString()).style.backgroundColor = "red";
+    if(this.type == "ordinary")
+    {
+        //change the borrowedBy to that users username
+        this.borrowedBy = localStorage.setItem("borrowedBy", this.library.username);
+        //change the presence attribute to 0 (borrowed)
+        this.presence = localStorage.setItem("presence", 0);
+        //TODO NOT WORKING - change the color of the cell to red to show it has been checked out
+        document.getElementById(this.toString()).style.backgroundColor = "red";
+    }
+    else //cannot borrow a reference book
+    {
+        alert("I'm sorry, but you cannot check out a reference book");
+    }
 }
 
 //add the book to the correct shelf based on category
