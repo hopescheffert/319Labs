@@ -13,6 +13,7 @@ function Library(username)
     //types of books: 5 reference, 20 ordinary
     //reference books cannot be checked out
     this.username = username;
+    this.numBooksCheckedOut = 0; //user has this many books checked out
     this.userType = "undergrad"; //initialize as undergrad
     this.artShelf = new Shelf("art");
     this.sportsShelf = new Shelf("sports");
@@ -227,22 +228,30 @@ Book.prototype.click = function(book)
     }
     else //it's an undergrad so clicking the book should result in checking that book out
     {
-        if(book.getPresence() == 1 && book.getBorrowedBy() == "nobody")
+        if(book.library.numBooksCheckedOut < 2) //allowed to check out another book
         {
-            console.log("need to check it out");
-            //the book has not been checked out or borrowed by anyone so let the undergrad check it out
-            book.checkOutBook(book);
-        }
+            console.log("in click presence is " + book.getPresence());
 
-        else if(book.getBorrowedBy() == book.library.username) //if they already have the book, check it back in
-        {
-            console.log("need to check it in");
-            book.checkBookIn(book);
+            if(book.getPresence() == 1 && book.getBorrowedBy() == "nobody")
+            {
+                //the book has not been checked out or borrowed by anyone so let the undergrad check it out
+                book.checkOutBook(book);
+            }
+
+            else if(book.getBorrowedBy() == book.library.username) //if they already have the book, check it back in
+            {
+                book.checkBookIn(book);
+            }
+            else
+            {
+                alert("There are no copies of " + book.toString() + " left, it has been checked out by: " + book.getBorrowedBy());
+            }
         }
         else
         {
-            alert("There are no copies of " + book.toString() + " left, it has been checked out by: " + book.getBorrowedBy());
+            alert("I'm sorry, but you can only check out 2 books at a time");
         }
+
         //TODO undergrad can borrow at most two books at once
     }
 
@@ -257,7 +266,12 @@ Book.prototype.checkBookIn = function(book)
 
     //change the presence attribute to 1 (available)
     book.presence = localStorage.setItem("presence", 1);
+    book.library.numBooksCheckedOut -= 1;
+    console.log("in checkbookin presence should be 1 but is " + book.getPresence());
+
+
     document.getElementById(book.toString()).style.backgroundColor = "white";
+
 
 }
 
@@ -272,6 +286,9 @@ Book.prototype.checkOutBook = function(book)
         book.borrowedBy = localStorage.setItem("borrowedBy", book.library.username);
         //change the presence attribute to 0 (borrowed)
         book.presence = localStorage.setItem("presence", 0);
+        book.library.numBooksCheckedOut += 1;
+        console.log("in check out presence shoudld be 0 but is " + book.getPresence());
+
         document.getElementById(book.toString()).style.backgroundColor = "red";
     }
     else //cannot borrow a reference book
