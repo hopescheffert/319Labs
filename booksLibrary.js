@@ -2,9 +2,6 @@
 
 //TODO LIBRARIAN: Ability to add specific book to specific shelf.
 //TODO UNDERGRADUATE STUDENT: Undergraduate student can borrow at most two books each time.
-//So, a student can select on at most two books
-
-
 
 
 //library constructor
@@ -13,7 +10,10 @@ function Library(username)
     //types of books: 5 reference, 20 ordinary
     //reference books cannot be checked out
     this.username = username;
-    this.numBooksCheckedOut = 0; //user has this many books checked out
+    if(localStorage.getItem(this.username) == null)
+    {
+        this.numBooksCheckedOut = localStorage.setItem(this.username, 0); //user has this many books checked out initalliy
+    }
     this.userType = "undergrad"; //initialize as undergrad
     this.artShelf = new Shelf("art");
     this.sportsShelf = new Shelf("sports");
@@ -129,6 +129,7 @@ Library.prototype.displayLibrary = function(lib)
             Library.prototype.addNewBook(lib);
         }
 
+
     }
 
 }
@@ -222,7 +223,12 @@ Library.prototype.attachHandlers = function(book)
     {
         Book.prototype.click(book);
     }
+    if((localStorage.getItem("p" + book.toString()) == 0) && (localStorage.getItem("b" + book.toString()) != "nobody"))
+    {
+        document.getElementById(book.toString()).style.backgroundColor = "red";
+    }
 }
+
 //display a book for inside the library table
 Library.prototype.displayBook = function(bookObj)
 {
@@ -235,6 +241,8 @@ Library.prototype.displayBook = function(bookObj)
 }
 
 
+
+
 //book constructor
 function Book(bookid, bookType, library)
 {
@@ -244,17 +252,24 @@ function Book(bookid, bookType, library)
     this.library = library;
     this.putOnShelf(library); //assign art, science, sport, or literature
     //USE LOCAL STORAGE in order to save presence and borrowedBy attribute for each book
-    this.borrowedBy = localStorage.setItem("b" + this.toString(), "nobody"); //borrowedBy is the username of student who borrowed book
-    //presence(1) or borrowed(0) situation of book
-    this.presence = localStorage.setItem("p" + this.toString(), 1); //all books start with presence (1)
+    if(localStorage.getItem("b" + this.toString()) == null) //make sure localStorage is only initialized once
+    {
+        this.borrowedBy = localStorage.setItem("b" + this.toString(), "nobody"); //borrowedBy is the username of student who borrowed book
+    }
+    if(localStorage.getItem("p" + this.toString()) == null) //make sure localStorage is only initialized once
+    {
+        //presence(1) or borrowed(0) situation of book
+        this.presence = localStorage.setItem("p" + this.toString(), 1); //all books start with presence (1)
+    }
+
 }
 
 //get borrowed by attribute of book from local storage
 Book.prototype.getBorrowedBy = function(book)
 {
-    console.log("in get borrowed by");
     return localStorage.getItem("b" + book.toString());
 }
+//set borrowed by attribute of book to local storage
 Book.prototype.setBorrowedBy = function(book, username)
 {
     book.borrowedBy = localStorage.setItem("b" + book.toString(), username);
@@ -265,53 +280,73 @@ Book.prototype.getPresence = function(book)
 {
     return localStorage.getItem("p" + book.toString());
 }
+//set presence attribute of book to local storage
 Book.prototype.setPresence = function(book, pres)
 {
     book.presence = localStorage.setItem("p" + book.toString(), pres);
+}
+
+//get users number of books checked out from local storage
+Book.prototype.getNumBooksCheckedOut = function(username)
+{
+    return localStorage.getItem(username);
+}
+//set users number of books checked out to local storage
+Book.prototype.updateNumBooksCheckedOut = function(book, username, action)
+{
+    var before = Book.prototype.getNumBooksCheckedOut(username);
+    if(action == "in")
+    {
+        var sub = parseInt(before) - 1;
+        book.library.numBooksCheckedOut = localStorage.setItem(username, sub);
+
+    }
+    else if(action == "out")//checked out a book
+    {
+        var add = parseInt(before) + 1;
+        book.library.numBooksCheckedOut = localStorage.setItem(username, add);
+
+    }
 }
 
 //onclick function for when book is clicked
 Book.prototype.click = function(book)
 {
 
-
-    //TODO undergrad can borrow at most two books at once
-
-
-
     if(book.library.userType == "librarian") //it's a librarian so clicking on the book should display book information
     {
         alert("Book " + book.toString() + " is on shelf " + book.category +
-        " and book has presence " + book.getPresence(book) + " and is borrowed by " + book.getBorrowedBy(book));
+        " and book has presence " +Book.prototype.getPresence(book) + " and is borrowed by " + Book.prototype.getBorrowedBy(book));
     }
     else //it's an undergrad so clicking the book should result in checking that book out
     {
         console.log("*********in click book is " + book.toString());
-        if((book.library.numBooksCheckedOut == 2) && (book.getBorrowedBy = "nobody") && (book.getPresence(book) == 1)) //trying to check out a book with already two books checked out
+        console.log("*** at first:" + Book.prototype.getBorrowedBy(book));
+        console.log("*** at first:" + Book.prototype.getPresence(book));
+        console.log("*** at first num books checked out:" + Book.prototype.getNumBooksCheckedOut(book.library.username));
+
+        if((Book.prototype.getPresence(book) == 0) && (Book.prototype.getBorrowedBy(book) != book.library.username)) //trying to check out a book that someone else already has
+        {
+            alert("There are no copies of " + book.toString() + " left, it has been checked out by: " + Book.prototype.getBorrowedBy(book));
+        }
+        else if((Book.prototype.getNumBooksCheckedOut(book.library.username) >= 2) && (Book.prototype.getBorrowedBy(book) == "nobody") && (Book.prototype.getPresence(book) == 1)) //trying to check out a book with already two books checked out
         {
             alert("I'm sorry, but you can only check out 2 books at a time");
         }
 
-        if(book.getPresence(book) == 1 && book.getBorrowedBy(book) == "nobody" && book.library.numBooksCheckedOut < 2)
+        else if((Book.prototype.getPresence(book) == 1) && (Book.prototype.getBorrowedBy(book) == "nobody") && (Book.prototype.getNumBooksCheckedOut(book.library.username) < 2))
         {
             console.log("check it out");
             //the book has not been checked out or borrowed by anyone so let the undergrad check it out
             book.checkOutBook(book);
-            console.log("now borrowed by is " + book.getBorrowedBy(book) + " and presence is " + book.getPresence(book));
+            console.log("******** now borrowed by is " + Book.prototype.getBorrowedBy(book) + " and presence is " + Book.prototype.getPresence(book));
         }
-        else if(book.getBorrowedBy(book) == (book.library.username)) //if they already have the book, check it back in
+        else if(Book.prototype.getBorrowedBy(book) == book.library.username) //if they already have the book, check it back in
         {
             console.log("check it in");
             book.checkBookIn(book);
-            console.log("now borrowed by is " + book.getBorrowedBy(book) + " and presence is " + book.getPresence(book));
-
+            console.log("********* now borrowed by is " + Book.prototype.getBorrowedBy(book) + " and presence is " + Book.prototype.getPresence(book));
         }
-        else
-        {
-            alert("There are no copies of " + book.toString() + " left, it has been checked out by: " + book.getBorrowedBy(book));
-        }
-
-
     }
 
 }
@@ -320,18 +355,16 @@ Book.prototype.click = function(book)
 //changes presence to 1 (availabe)
 Book.prototype.checkBookIn = function(book)
 {
-    //console.log("in check in book is " + book.toString());
-
     //change the borrowedBy to nobody
-    //book.borrowedBy = localStorage.setItem("borrowedBy", "nobody");
-    book.setBorrowedBy(book, "nobody");
+    Book.prototype.setBorrowedBy(book, "nobody");
 
     //change the presence attribute to 1 (available)
-    //book.presence = localStorage.setItem("presence", 1);
-    book.setPresence(book, 1);
+    Book.prototype.setPresence(book, 1);
 
-    book.library.numBooksCheckedOut -= 1;
-    //console.log("in checkbookin presence is " + book.getPresence(book) + " and borrowed by is " + book.getBorrowedBy(book));
+    //subtract 1 from numBooksCheckedOut
+    Book.prototype.updateNumBooksCheckedOut(book, book.library.username, "in");
+
+    //change back to white
     document.getElementById(book.toString()).style.backgroundColor = "white";
 
 
@@ -342,20 +375,17 @@ Book.prototype.checkBookIn = function(book)
 //changes presence to 0 (borrowed)
 Book.prototype.checkOutBook = function(book)
 {
-    //console.log("in check out book is " + book.toString());
     if(book.type == "ordinary")
     {
         //change the borrowedBy to that users username
-        //book.borrowedBy = localStorage.setItem("borrowedBy", book.library.username);
-        book.setBorrowedBy(book, book.library.username);
+        Book.prototype.setBorrowedBy(book, book.library.username);
 
         //change the presence attribute to 0 (borrowed)
-        //book.presence = localStorage.setItem("presence", 0);
-        book.setPresence(book, 0);
+        Book.prototype.setPresence(book, 0);
 
-        book.library.numBooksCheckedOut += 1;
-        //console.log("in check out presence is " + book.getPresence(book) + " and borrowed by is " + book.getBorrowedBy(book));
-
+        //add 1 to numBooksCheckedOut
+        Book.prototype.updateNumBooksCheckedOut(book, book.library.username, "out");
+        //change to red
         document.getElementById(book.toString()).style.backgroundColor = "red";
     }
     else //cannot check out a reference book
