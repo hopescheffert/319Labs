@@ -1,9 +1,5 @@
 //booksLibrary.js EDIT
 
-//TODO LIBRARIAN: Ability to add specific book to specific shelf.
-//TODO UNDERGRADUATE STUDENT: Undergraduate student can borrow at most two books each time.
-
-
 //library constructor
 function Library(username)
 {
@@ -153,7 +149,37 @@ Library.prototype.addNewBook = function(lib)
     else cell = -1;
     //problem with inserting the book into the already made table
 
-    var row = document.getElementById("myTable").insertRow(-1).insertCell(cell).innerHTML = Library.prototype.displayBook(newbook);
+    var row = document.getElementById("myTable").insertRow(-1);
+    if (cell == 0)
+    {
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = Library.prototype.displayBook(newbook);
+    }
+    else if (cell == 1)
+    {
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = Library.prototype.displayBook(newbook);
+      row.insertCell(0).innerHTML = "";
+    }
+    else if (cell == 2)
+    {
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = Library.prototype.displayBook(newbook);
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+    }
+    else if (cell == 3)
+    {
+      row.insertCell(0).innerHTML = Library.prototype.displayBook(newbook);
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+      row.insertCell(0).innerHTML = "";
+    }
+    //document.getElementById("myTable").insertCell(0) = Library.prototype.displayBook(newbook);
+    lib.attachHandlers(newbook);
 
     //document.getElementById(newbook.toString()).innerHTML = Library.prototype.displayBook(newbook);
 
