@@ -1,0 +1,41 @@
+<!-- login.html
+- use ajax call to /checkLogin.php file to check user/password
+– on success go to viewPosts.php
+– on failure – ask the user to correct the username and password
+-->
+<html>
+
+<head>
+    <meta http-equiv="refresh" content="2;url=login.html">
+</head>
+<body>
+    <!-- is this a form or not? -->
+    <form action="checkLogin.php" enctype="multipart/form-data" method="GET">
+        <input type="text" id="username" name="usernameField" />
+        <input type="password" id="password" name="passwordField" />
+        <input type="submit" id="login" name="login"/>
+
+        <script>
+        var loginButton = $("#login");
+        var user = $("#username");
+        var pass = $("#password");
+        //AJAX CALL TO checkLogin.php TO CHECK USER/PASSWORD
+        loginButton.click(function()
+        {
+            $.get("checkLogin.php?username=" + user + "&password=" + pass,
+            function(data)
+            {
+                // ON SUCCESS GO TO VIEWPOSTS.php
+                window.location = "viewPosts.php";
+            });
+            //TODO ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
+        });
+
+
+    </script>
+
+
+</body>
+
+
+</html>

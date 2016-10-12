@@ -1,0 +1,44 @@
+<html>
+<head>
+<script>
+
+// WAYS OF CREATING OBJECTS ---
+// This is yet another way to create objects that
+// avoid duplicate functions.
+// IGNORE if you do not feel up to understanding this one.
+
+// -----------------
+// Prototype pattern
+// -----------------
+function Person() {};
+
+Person.prototype.name = "Nicholas";
+Person.prototype.foo = function() {console.log("hi");};
+Person.prototype.friends = ["Tom","Sally"];
+
+var p1 = new Person();
+var p2 = new Person();
+
+// Is function duplicated?
+console.log(p1.foo === p2.foo); // NO! They are same
+
+console.log("p1's prototype is " + JSON.stringify(Object.getPrototypeOf(p1)));
+
+console.log("p2's prototype is " + JSON.stringify(Object.getPrototypeOf(p2)));
+
+// Problem: references point to same place
+p1.friends.push("Jerry");
+console.log("p2's friends are: " + p2.friends + "\nshould it have Jerry?"); // show p2's friends
+
+// TODO: Note that the methods are not duplicated. That's good.
+// TODO: Are the constructors same? prototypes?
+// TODO: Find out what's the problem with the prototype pattern?
+// The problem is that references (such as friends array) are same.
+// Hence, if one friend pushes - it gets pushed for all Persons.
+
+
+</script>
+</head>
+<body>
+</body>
+</html>

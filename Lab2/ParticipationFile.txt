@@ -1,0 +1,6 @@
+Participation File:
+
+Jacob Neyens
+Hope Scheffert
+
+We both worked on the validation forms, Jacob worked on the "Snake" game.

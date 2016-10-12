@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<script src="./01_example1.js"></script>
+</head>
+
+<body>
+<h1>
+Hello! This is another example using the Javascript language.
+<h1>
+
+
+<input id="txt1" type="text" value="0" />
+<input id="txt2" type="text" value="0" />
+
+<input type="button" value="Add" onclick="myFunction();" />
+
+
+<script>
+   function myFunction() {
+     var text1 = document.getElementById("txt1").value;
+     var text2 = document.getElementById("txt2").value;
+     var x = text1 + text2;
+     alert ("Adding as strings:" +  x);
+
+     // notice how the "type" of variable x changes from string to int!
+     x =  parseInt(text1) + parseInt(text2);
+     alert ("Adding as numbers:" + x);
+   }
+</script>
+
+<h1>
+The End!
+</h>
+
+</body>
+
+</html>

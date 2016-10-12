@@ -1,0 +1,36 @@
+<html>
+<head>
+<script>
+
+// WAYS OF CREATING OBJECTS ---
+
+// -----------------
+// Mixture of Constructor and Prototype pattern
+// -----------------
+// declare data in Constructor and Methods in prototype
+
+function Person() {
+  this.name = "Nicholas";
+  this.friends = ["Sam","Molly"];
+}
+Person.prototype.foo = function() {alert("hi");};
+var p1 = new Person();
+p1.name = "Sally";
+var p2 = new Person();
+
+alert("p1's constructor is " + p1.constructor);
+alert("p1's prototype is " + p1.prototype);
+alert("p2's constructor is " + p2.constructor);
+alert("p2's prototype is " + p2.prototype);
+
+p1.friends.push("Jerry");
+alert("p1's friends are: " + p1.friends
+  + "\np2's friends are: " + p2.friends);
+
+// --- END --- YAY! ------
+
+</script>
+</head>
+<body>
+</body>
+</html>

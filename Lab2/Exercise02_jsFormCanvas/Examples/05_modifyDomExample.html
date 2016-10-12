@@ -1,0 +1,41 @@
+<html>
+<head>
+</head>
+
+<body>
+<h1>
+Hello! 
+<h1>
+<p id="myPara">
+This space is going to be changed based on operations
+</p>
+
+<input id="txt1" type="text" value="0" />
+<input id="txt2" type="text" value="0" />
+<input id="btn1" type="button" value="Add"  />
+
+<h1>
+The End!
+</h>
+
+
+<script>
+  // You can also attach a handler to the button!
+  var s;
+  var btn = document.getElementById("btn1");
+  btn.onclick = function () { 
+     var x = document.getElementById("txt1").value;
+     var y = document.getElementById("txt2").value;
+
+     s = "Adding as strings: " + x + y;
+
+     var sum = parseInt(x) + parseInt(y);
+     s = s + "<br>Adding as numbers: " + sum;
+
+     document.getElementById("myPara").innerHTML = s;
+    }
+
+</script>
+</body>
+
+</html>

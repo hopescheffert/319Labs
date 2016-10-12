@@ -1,0 +1,70 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+//    jquery is a javascript library that allows one to
+//    SELECT DOM elements and then take some ACTION on them.
+//    In javascript, we can use document.getElementId("id") to access a DOM
+//    element. This is cumbersome and jquery is much more concise and
+//    powerful.
+//
+//    Do remember that DOM objects are different from the normal
+//    javascript objects that you create - say using { }.
+//
+//    Many different types of ACTIONs possible
+//      - attach event handlers
+//      - do special effects (like hide, show)
+//      - change style (use .css)
+//      - get and modify DOM elements
+//      - traverse DOM
+//
+//    Selection $("p") means select all DOM elements with tag p
+//    Selection $(".s") means select all DOM elements with class attribute s.
+//    Selection $("#s") means select all DOM elements with id atrribute s.
+//    Selection $("this") means get current DOM element
+//
+
+// Typically we write jQuery inside $(document).ready so that all DOM elements are
+// loaded and available before we try to select them
+//
+</script>
+</head>
+<body>
+
+<p id="p1"> Whats going on here! </p>
+Nothing much!
+
+<div id="div1">
+  <p id="p2">jQuery is lots of fun!!  </p>
+  <button>Click me</button>
+</div>
+
+<p id="p3"> When you hover over this </p>
+
+<script>
+$(document).ready(function()
+  {
+     // 1. Here we attach click handler to ALL p elements
+     $("p").click( function() {
+          // here we change style of specific element and hide it!
+          // query call chaining is important concept
+          // we also hide the element and thats an effect
+          $(this).css("color","red").hide();
+       });
+
+
+     // 2. we unhide the p element and make it blue
+     $("button").click( function() {
+          $("p").css("color","blue").click(function() {alert("hi");}).show();
+       });
+
+     // TODO: 3. using jquery when we hover over p with id p3,
+     // make it very large (i.e. change its font size)
+     // use w3schools.com to find out how to change the font size
+
+
+
+  }); // end of ready
+
+</script>
+</body>
+</html>

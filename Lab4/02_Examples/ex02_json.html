@@ -1,0 +1,56 @@
+<html>
+<head>
+</head>
+
+<body>
+<script id="myScript"> 
+
+try {
+
+// JSON IS SIMPLY A DATA FORMAT.
+// 1. CREATE A JSON STRING
+var myText = "{ \"name\" : \"Tom\" }";
+
+// HERE WE WILL LEARN HOW TO CONVERT A JSON STRING TO A JAVASCRIPT
+// OBJECT AND ALSO HOW TO CONVERT A JAVASCRIPT OBJECT TO A JSON STRING
+
+
+// 2. CONVERT TO object
+var myObj = JSON.parse(myText);
+
+// CHECK IF IT WORKS
+console.log(myObj.name);
+console.log(myObj["name"]);
+
+// 3. CONVERT back to STRING
+var myConvertedObject = JSON.stringify(myObj);
+console.log(myConvertedObject);
+
+// 4. HERE IS A TEST OBJECT.
+var testObj = {
+ a : "abc",
+ b : "def",
+ f : function () { console.log("hi") },
+ g : [1,2,3,4,"hi"]
+};
+
+var myConvertedObject = JSON.stringify(testObj);
+console.log(myConvertedObject);
+// TODO: 5. CONVERT testobj to a JSON String format
+// var text =  ??? ;
+// console.log(text);
+
+
+//TODO: 6. CONVERT the JSON text to a JAVASCRIPT object 
+//var convertedObj = ??? ;
+//console.log(convertedObj["a"]);
+//console.log(convertedObj.b);
+//console.log(convertedObj.g);
+
+} 
+catch (error) {
+  console.log("error: " + error.message);
+}
+</script>
+</body>
+</html>

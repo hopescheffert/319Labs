@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Validation Form</title>
+<script src="validation2.js" type="text/javascript"></script>
+	<style>
+	/* 
+	hide feedback image initially
+	 */
+	img.hidden 
+		{
+			display: none;
+		}
+	</style>
+
+</head>
+
+<body>
+
+<form id="userinfo">
+  Email:<br>
+  <input id="emailin" type="text" name="email" required/>
+  <img class="hidden" id="emailp" height='30' width='30'</img>
+
+  <br>
+  Phone:<br>
+  <input id="phonein" type="text" name="phone"/>
+  <img class="hidden" id="phonep" height='30' width='30'</img>
+
+  <br>
+  Address:<br>
+  <textarea form="userinfo" id="addressin" name="address" rows="4" required></textarea>
+  <img class="hidden" id="addressp" height='30' width='30'</img>
+  <br>
+  <input type="button" name="submitbtn" value="Submit" onclick="return validate()"/>
+</form>
+
+</body>
+
+</html>

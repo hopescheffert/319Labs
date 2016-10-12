@@ -1,0 +1,74 @@
+<html>
+<head>
+<!-- 
+  THE PURPOSE OF THIS EXAMPLE IS TO SHOW TWO THINGS:
+  a) The order in which js scripts are run and pages are rendered
+  b) understand local and global variables in js
+
+  Document is "ready" as soon as  DOM is ready. However, Onload action
+  happens after all external files have been loaded (mainly image files
+  etc) - and is later than when the DOM is ready.
+
+  Note that although use of var for a variable may occur AFTER a use of
+  the variable - it is STILL considered a LOCAL variable.
+  Take the example of i in function test(). It is set to 3, and then
+  a var is used. It is a local variable and the print of i OUTSIDE test
+  shows 2 (the global variable result).
+
+-->
+<!-- understanding the order in which js is loaded, executed, etc -->
+
+<script> i=1; </script>
+
+<script src="js/test0.js"> </script>
+
+<script> 
+// TODO: IT IS FUN TO TRY TO MAKE A LIST OF WHAT WILL GET SHOWN ON
+// SCREEN AND IN WHAT ORDER. FIGURE OUT WHAT IS HAPPENING.
+
+console.log(i++," In head element");
+
+// We are adding an event listener for the READY event here
+// We will learn (later) other ways to add such listeners
+document.addEventListener('DOMContentLoaded', function () {
+  console.log(i++, " document is now ready", new Date().getTime()); 
+});
+
+</script>
+</head>
+
+<body onload="test(' document has now been loaded completely!');">
+
+Hello 1!
+
+<script> 
+console.log(i++, " in script1 in body");
+
+// This gets hoisted
+function test(s) {
+  console.log (i++, s, new Date().getTime()); 
+} // end of test method
+
+</script>
+
+Hello 2!
+
+<script> 
+  console.log (i++, " in script2 in body");
+</script>
+
+<script src="js/test0.js"> </script>
+
+Hello 3!
+
+<!-- put some pictures test1.jpg etc that are several MBs -->
+<!-- that should make onload event fire much later than ready event -->
+<img src="1.jpg">
+<img src="2.jpg">
+<img src="3.jpg">
+<img src="4.jpg">
+
+<script src="js/test0.js"> </script>
+
+</body>
+</html>

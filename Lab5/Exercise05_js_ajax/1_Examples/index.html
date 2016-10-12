@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<style>
+body {
+        counter-reset: h2counter;
+    }
+    h1 {
+        counter-reset: h2counter;
+    }
+    h2:before {
+        counter-increment: h2counter;
+        content: counter(h2counter) ".\0000a0\0000a0";
+        counter-reset: h3counter;
+    }
+    h3:before {
+        counter-increment: h3counter;
+        content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    }
+</style>
+</HEAD>
+<BODY>
+<h1>Example Codes</h1>
+
+<!-- Simple Form Data Submission -->
+<h2>Simple Form data submission and procession</h2>
+There are two files: 
+<ul>
+<li> <a href="showFile.php?name=00_SimpleForm.html">the html file</a>
+<li> <a href="showFile.php?name=00_SimpleForm.php">the php file</a>
+</ul>
+<br>
+This example demonstrates a simple html FORM that when submitted calls a
+php file - which just echoes back the globals data.
+<br>
+Play with the example by clicking on the link
+<a href="00_SimpleForm.html">Simple Form</a>
+<br>
+<br>
+Note how globals array has the eight remaining php "superglobals",
+namely, _GET,_POST,_REQUEST,_FILES,_COOKIES,_SERVER,_SESSION,and _ENV
+<!--------------------------------->
+
+
+
+<!-- MIXING HTML AND PHP -->
+<h2>A PHP file with HTML mixed in
+</h2>
+There is one file: 
+<ul>
+<li> <a href="showFile.php?name=01_MixingPhPAndHTML.php">the php file</a>
+</ul>
+<br>
+Play with the example by clicking on the link
+<a href="01_MixingPhPAndHTML.php">Mixed php and html</a>
+<br>
+<br>
+<!--------------------------------->
+
+
+
+<!-- basics of PHP -->
+<h2>Basics of PHP (variables, arrays, functions etc)</h2>
+There is one file:
+<ul>
+<li> <a href="showFile.php?name=02_introToPhp.php">the php file</a>
+</ul>
+<br>
+This example takes you through some PHP basics like variables, arrays,
+functions.
+<br>
+Play with the example by clicking on the link
+<a href="02_introToPhp.php">PHP Basics</a>
+<br>
+<br>
+<!--------------------------------->
+
+<!-- SUPER GLOBALS -->
+<h2>SUPER GLOBALS
+</h2>
+There are three files:
+<ul>
+<li> <a href="showFile.php?name=03_superGlobals.php">superGlobals.php file</a>
+<li> <a href="showFile.php?name=04_1_getAndPost.html">getAndPost.html file</a>
+<li> <a href="showFile.php?name=04_2_file.html">file.html file</a>
+</ul>
+<br>
+Here you can explore the NINE superglobals a bit more.
+These variables are available in ALL php code run by the server.
+<br>
+Play with the example by clicking on the links <br>
+<a href="03_superGlobals.php">PHP SuperGlobals</a> <br>
+<a href="04_1_getAndPost.html">get and post forms</a> <br>
+<a href="04_2_file.html">file form</a> <br>
+<br>
+<br>
+<!--------------------------------->
+
+<!-- Sessions -->
+<h2>SESSIONS</h2>
+There are three files:
+<ul>
+<li> <a href="showFile.php?name=05_1_session.php">session.php file</a>
+<li> <a href="showFile.php?name=05_2_nextPage.php">nextPage.php file</a>
+<li> <a href="showFile.php?name=05_3_endSession.php">endSession.php file</a>
+<li> <a href="showFile.php?name=05_4_newRequest.php">newRequest.php file</a>
+</ul>
+<br>
+Keeping information across requests from a user is done by using session
+object. In this example, the multiple user information (such as favorite
+color) etc is stored across http requests (made by the user clicking to
+go to a new page). The last php file destroys the session (this should
+happen when the user logs out for example).
+
+<br>
+Play with the example by clicking on the link <br>
+<a href="05_1_session.php">PHP Sessions</a> <br>
+<br>
+<br>
+<!--------------------------------->
+
+<!-- jQuery and AJAX -->
+<h2>jQUERY and AJAX (USING GET)</h2>
+There is one file:
+<ul>
+<li> <a href="showFile.php?name=06_1_simplestAjax.html">simplestAjax.html file</a>
+<li> <a href="showFile.php?name=06_2_simplestAjax.php">simplestAjax.php file</a>
+</ul>
+<br>
+This examples shows you several jQuery features: finding DOM objects,
+dynamically associating handlers to DOM objects, making ajax call,
+changing DOM data.
+<br>
+Play with the example by clicking on the link
+<a href="06_1_simplestAjax.html">Using jQuery GET</a>
+<hr>
+<br>
+<br>
+<!--------------------------------->
+
+<!-- jQuery and AJAX -->
+<h2>jQUERY and AJAX (USING POST)</h2>
+There is one file:
+<ul>
+<li> <a href="showFile.php?name=07_1_AjaxPost.html">AjaxPost.html file</a>
+<li> <a href="showFile.php?name=06_2_simplestAjax.php">simplestAjax.php file</a>
+</ul>
+<br>
+This example is similar to the previous example - except that here we
+use POST instead of GET
+<br>
+Play with the example by clicking on the link
+<a href="07_1_AjaxPost.html">Using jQuery POST</a>
+<hr>
+<br>
+<br>
+<!--------------------------------->
+
+
+</BODY>
+</HTML>

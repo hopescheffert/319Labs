@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</HEAD>
+
+<BODY>
+
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+
+<div id="colorThis">
+<h1>
+The below section will be populated by data from a separate request to
+the server when we click the button. The server takes a while to respond
+and so for a while nothing will happen but you can do other things (like
+clicking the second button which will toggle the color of this text).
+</h1>
+</div>
+
+<hr>
+<div id="myDiv"></div>
+
+
+<script> 
+$(document).ready(function() {
+// the code is inside the ready function - 
+// makes sure that DOM is loaded before using jQuery
+console.log("In ready");
+
+// GET THE DOM OBJECTS
+var btn1 = $("#button1");
+var btn2 = $("#button2"); // jquery is easier to use
+console.log(btn2);
+
+// ATTACH HANDLERS
+// First way - attach name of a function
+btn2.click(toggleColor);
+
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  var colorDiv = $("#colorThis");
+
+  if (toggleColor.status) {
+    colorDiv.css("color", "blue");
+    toggleColor.status = false;
+  }
+  else {
+    colorDiv.css("color", "red");
+    toggleColor.status = true;
+  }
+}
+
+// second way - attach ANONYMOUS handler 
+// (makes sense to not give names to one-time time use handlers)
+console.log("About to attach handler");
+btn1.click (function () {
+  alert("Now going to make a GET ajax call - results will appear soon");
+  $.get("06_2_simplestAjax.php?name=simanta", 
+        function(data,status) {
+           $("#myDiv").html(data);
+
+   });
+   // that's a callback function!
+});
+
+}); // end of document ready function
+console.log("JS");
+
+</script>
+</BODY>
+</HTML>

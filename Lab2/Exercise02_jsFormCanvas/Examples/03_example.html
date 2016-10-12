@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<script src="./01_example.js"></script>
+</head>
+
+<body>
+<h1>
+Hello! This is the Third Example
+<h1>
+
+<input id="txt1" type="text" value="0" />
+<input id="txt2" type="text" value="0" />
+<input id="btn1" type="button" value="Add"  />
+
+<h1>
+The End!
+</h>
+
+
+<script>
+  // You can also attach a handler to the button!
+  var btn = document.getElementById("btn1");
+  btn.onclick = function () { 
+     var x = document.getElementById("txt1").value;
+     var y = document.getElementById("txt2").value;
+
+     alert("Adding as strings: " + x + y);
+
+     var sum = parseInt(x) + parseInt(y);
+     alert("Adding as numbers: " + sum);
+    }
+
+  // You can add a handler to the input txt as well!
+  var txt1 = document.getElementById('txt1');
+  txt1.onchange = function() {
+     var x = document.getElementById("txt1").value;
+     alert ("Text box 1 has the value " + x); 
+     document.getElementById("txt1").style.color = "blue";
+    }
+
+  // You can add a handler to the input txt as well!
+  var txt2 = document.getElementById('txt2');
+  txt2.onmouseover = function() {
+     var x = document.getElementById("txt2").value;
+     alert ("Text box 2 has the value " + x); 
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+The decimal calculator was mostly done by Hope Scheffert
+The binary calculator was mostly done by Jacob Neyens
+However, we each did contribute to both calculators.
+
+***In the binary calculator, the operators that only need one operand, make sure to put the operator AFTER the operand***
