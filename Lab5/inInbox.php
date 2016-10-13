@@ -7,8 +7,7 @@
 
 <?php
 //$jsonData = file_get_contents("messages.txt");
-//example User:Alice; Receiver: BOB; Body: dshgkfjsghfjksghjkf
-
+//example:
 $jsonData = array('User'=> "Alice", 'Reciever'=> "Bob", 'Body'=> "some text here");
 $jsonObj = json_encode($jsonData);
 $phpObject = json_decode($jsonObj);
@@ -18,9 +17,18 @@ $phpObject = json_decode($jsonObj);
 // print_r($phpObject);
 
 //loop through object
-//If the To part is related to the current username create html rows with after decrypting the body of the message
+//TODO If the To part is related to the current username create html rows with after decrypting the body of the message
 
+echo $phpObject{'Reciver'}
 
+for($i = 0; $i < count($phpObject); $i++)
+{
+    if(strcmp($phpObject{'Reciever'}, $username) == 0)
+    {
+        //TODO decrypt the body of the message
+        //TODO create html rows
+    }
+}
 
 
  ?>
