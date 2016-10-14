@@ -9,46 +9,44 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
-    <!-- is this a form or not? -->
-    <form action="checkLogin.php" enctype="multipart/form-data" method="GET">
-        Username<br><input type="text" id="username" name="usernameField" /><br>
-        Password<br><input type="password" id="password" name="passwordField" /><br>
+    <form id="myform">
+        Username<br><input type="text" id="username" name="username" /><br>
+        Password<br><input type="password" id="password" name="password" /><br>
         <input type="submit" id="login" value="Login"/>
-        <div id="myDiv"></div>
     </form>
 
-        <script>
-        var loginButton = $("#login");
+    <script>
+    $(document).ready(function()
+    {
+        var myform = $("#myform");
         var user = $("#username");
         var pass = $("#password");
         //AJAX CALL TO checkLogin.php TO CHECK USER/PASSWORD
-        loginButton.click(function()
+        myform.submit(function(e)
         {
+            e.preventDefault(); //use ajax instead
             $.get("checkLogin.php?username=" + user + "&password=" + pass,
-            function(data)
+            function(data, status)
             {
-                alert(data);
-                alert(JSON.parse(data)); //TODO why doesn't this work?
 
-                var result = JSON.parse(data);
-                alert(result);
-
-                if(result->"success" == false)  //TODO ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
+                if(!data.success)
                 {
-                    //failed
-                    window.location = "login.html";
+                    //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
                     alert("Error: Incorrect username and/or password");
+                    window.location = "login.html";
                 }
-                else {
-                    // ON SUCCESS GO TO VIEWPOSTS.php
+                else
+                {
+                    //ON SUCCESS GO TO VIEWPOSTS.php
                     window.location = "viewPosts.php";
                 }
 
-            });
+            }, "json")
         });
+    })
 
 
-        </script>
+    </script>
 
 
     </body>

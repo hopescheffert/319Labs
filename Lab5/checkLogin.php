@@ -1,11 +1,9 @@
-<!-- checkLogin.php
-- read the users.txt file and then check the user/password.
-- return a json object with the success/failure info
--->
-
 <?php
-//echo "hello in checkLogin";
-// var_dump($_REQUEST);
+// checkLogin.php
+// read the users.txt file and then check the user/password.
+// return a json object with the success/failure info
+
+
 
 // $userFile = fopen("users.txt", "r") or die("Unable to open users.txt");
 // //reads userx.txt to the end:
@@ -22,10 +20,9 @@
 //
 $result = new stdClass();
 $result->success = false;
-//array('result' => 0); //0 if failed or 1 if succeeded
 // //TODO check username/password?
-// //if(they are okay) $result = s
-// //else $result = 0
+// //if(they are okay) $result = true;
+// //else $result = false;
 
 $jsonResponse = json_encode($result); //json object to return with success/failure info
 
