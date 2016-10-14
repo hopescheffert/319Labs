@@ -7,3 +7,81 @@ smitra:testPassword:ddhfh9fi3f3i:94hredbb
 -->
 
 <!-- TODO json encode the user information for checkLogin purposes! -->
+
+
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <!-- <form action="checkLogin.php" enctype="multipart/form-data" method="GET"> -->
+        <h1>Sign Up</h1><br>
+        Username<br><input type="text" id="username" name="usernameField" /><br>
+        Password<br><input type="password" id="password" name="passwordField" /><br>
+        <input type="submit" id="signup" value="Sign Up"/>
+        <div id="myDiv"></div>
+    <!-- </form> -->
+
+
+
+    <script>
+    //TODO generate a public/private key in a text file users.txt
+    var username = $("#username");
+    var password = $("#password");
+
+
+    <?php
+        $path = 'phpseclib';
+    	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+    	include_once('Crypt/RSA.php');
+
+        //Function for encrypting with RSA
+        function rsa_encrypt($string, $public_key)
+        {
+            //Create an instance of the RSA cypher and load the key into it
+            $cipher = new Crypt_RSA();
+            $cipher->loadKey($public_key);
+            //Set the encryption mode
+            $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
+            //Return the encrypted version
+            return $cipher->encrypt($string);
+        }
+        //Function for decrypting with RSA
+        function rsa_decrypt($string, $private_key)
+        {
+            //Create an instance of the RSA cypher and load the key into it
+            $cipher = new Crypt_RSA();
+            $cipher->loadKey($private_key);
+            //Set the encryption mode
+            $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
+            //Return the decrypted version
+            return $cipher->decrypt($string);
+        }
+        $rsa = new Crypt_RSA();
+    	$rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
+    	$rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
+    	extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
+    	echo $privatekey;
+    	echo $publickey;
+
+
+    ?>
+
+
+    $usersFile = fopen("users.txt" , "w");
+
+    //JSON.stringify()? to write as json encoded array
+    //fwrite();
+
+
+
+
+    </script>
+
+</body>
+
+
+</html>

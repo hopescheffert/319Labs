@@ -6,9 +6,9 @@
 
 
 <?php
-//$jsonData = file_get_contents("messages.txt");
+$jsonData = file_get_contents("messages.txt");
 //example:
-$jsonData = array('User'=> "Alice", 'Reciever'=> "Bob", 'Body'=> "some text here");
+//$jsonData = array('User'=> "Alice", 'Reciever'=> "Bob", 'Body'=> "some text here");
 $jsonObj = json_encode($jsonData);
 $phpObject = json_decode($jsonObj);
 

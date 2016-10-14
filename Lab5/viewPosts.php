@@ -9,3 +9,10 @@ rest of the page).
 -->
 
 <!-- TODO Every post is editable and updatable. -->
+
+
+<?php
+
+echo "hello in viewPosts page";
+
+ ?>

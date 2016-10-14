@@ -22,9 +22,9 @@ clicking the second button which will toggle the color of this text).
 <div id="myDiv"></div>
 
 
-<script> 
+<script>
 $(document).ready(function() {
-// the code is inside the ready function - 
+// the code is inside the ready function -
 // makes sure that DOM is loaded before using jQuery
 console.log("In ready");
 
@@ -54,12 +54,12 @@ function toggleColor() {
   }
 }
 
-// second way - attach ANONYMOUS handler 
+// second way - attach ANONYMOUS handler
 // (makes sense to not give names to one-time time use handlers)
 console.log("About to attach handler");
 btn1.click (function () {
   alert("Now going to make a GET ajax call - results will appear soon");
-  $.get("06_2_simplestAjax.php?name=simanta", 
+  $.get("06_2_simplestAjax.php?name=simanta",
         function(data,status) {
            $("#myDiv").html(data);
 
