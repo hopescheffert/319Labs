@@ -4,37 +4,48 @@
 // return a json object with the success/failure info
 session_start();
 
-
 $userFile = fopen("users.txt", "r") or die("Unable to open users.txt");
-//reads userx.txt to the end:
-fread($userFile, filesize("users.txt"));
 
-//get whole line from userFile
-//$user = fgets($userFile); //TODO THIS MUST BE JSON ENCODED ARRAY (in signup.html)
-$user = '{"username": "Hope", "password": "pass", "publickey": "some pub key", "privatekey": "some priv key"}';
-//decode the line from the users.txt file into an object so that we can get info
-$obj = json_decode($user);
-echo "obj is " . $obj;
-//get username and password ....do some check?
-$username = $obj->username;
-echo $username;
-$password = $obj->password;
-echo $password;
+$response = new stdClass();
+$response->success = false;
 
-$_SESSION["username"] = $username;
+//current username and password from login.html
+$curUser = $_REQUEST["username"];
+$curPass = $_REQUEST["password"];
+
+while(!feof($userFile))
+{
+    //get whole line from userFile
+    $user = fgets($userFile); //THIS MUST BE JSON ENCODED (in signup.html)
+
+    //decode the line from the users.txt file into an object so that we can get info
+    $obj = json_decode($user);
+    if($obj == null)
+    {
+        //reached end of file
+        echo json_encode($response);
+        break;
+    }
+    //get username and password ....do some check?
+    $username = $obj->username;
+    //echo "username is " . $username . "<br>";
+
+    $password = $obj->password;
+    //echo "password is ".$password. "<br>";
+
+
+    if((strcmp($username, $curUser) == 0)  && (strcmp($password, $curPass) == 0))
+    {
+        $response->success = true;
+        $_SESSION["username"] = $username;
+        echo json_encode($response);
+        break;
+    }
+
+}
+
 //close the file
 fclose($userFile);
 
-$result = new stdClass();
-$result->success = false;
-//TODO check username/password?
-if($username != null && $password != null)
-{
-    $result = true;
-}
-
-$jsonResponse = json_encode($result); //json object to return with success/failure info
-
-echo $jsonResponse;
 
 ?>

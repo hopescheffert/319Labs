@@ -1,1 +1,4 @@
-{username: "Hope", password: "password", publickey: "owiefjsldf", privatekey: "alsdkfjalsdj"}
+{"username": "Hope", "password": "pass", "publickey": "some pub key", "privatekey": "some priv key"}
+{"username": "Sally", "password": "qewr", "publickey": "some pub key", "privatekey": "some priv key"}
+{"username": "Rachel", "password": "sdfas", "publickey": "some pub key", "privatekey": "some priv key"}
+{"username": "Jacob", "password": "sddf", "publickey": "some pub key", "privatekey": "some priv key"}

@@ -28,7 +28,6 @@
             $.get("checkLogin.php?username=" + user + "&password=" + pass,
             function(data, status)
             {
-
                 if(!data.success)
                 {
                     //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
@@ -38,6 +37,7 @@
                 else
                 {
                     //ON SUCCESS GO TO VIEWPOSTS.php
+                    alert("logged in successfully");
                     window.location = "viewPosts.php";
                 }
 

@@ -37,14 +37,13 @@ After clicking sign up, redirects to login page
         var username = $("#user");
         var password = $("#pass");
         var signupbutton = $("#signup");
+        //TODO how to get public/private keys from signup.php?
         var publickey = "<?php require 'signup.php'; echo 'public key ' . $publickey; ?>";
-
 
         signupbutton.click(function()
         {
                 console.log("username " + username.val() + " password " + password.val() + " publickey " + publickey + " private key " + privatekey);
         });
-
 
         // usersFile = fopen("users.txt" , "w");
         // user = array('username'=> username, 'password' => password, 'publickey' => publickey, 'privatekey' => privatekey);
@@ -53,12 +52,6 @@ After clicking sign up, redirects to login page
         //JSON.stringify()? to write as json encoded array
         // fwrite(user);
     });
-
-    // signupbutton.click(function()
-    // {
-    //     console.log("username " + username + " password " + password); // + " public key " + $publickey + " private key " + $privatekey);
-    //     //window.location = "login.html";
-    // });
     </script>
 
 
