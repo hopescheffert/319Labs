@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // viewPosts.php
 // - use file_get_contents php function to get data from posts.txt; convert to php object
 // (using json_decode/json_encode php functions)
@@ -12,5 +12,22 @@
 // TODO Every post is editable and updatable.
 
 echo "hello in viewPosts page";
+$jsonData = file_get_contents("posts.txt");
+$jsonObj = json_encode($jsonData);
+$phpObject = json_decode($jsonObj);
+//ex. Title, description, time posted
+
+//loop through object and create html rows with a link to update post
+//---that will use javascript to bring up a prompt to get the message from the user
+//and then make an ajax call to updatePosts.php to do the update
+echo "<table id='myTable'>";
+for($i = 0; $i < count($phpObject); $i++)
+{
+    echo "<tr>";
+    echo "<td> <a href='localhost:8080/updatePosts.php'>Update Post</a> </td>";
+    echo "</tr>";
+}
+echo "</table>";
+
 
  ?>

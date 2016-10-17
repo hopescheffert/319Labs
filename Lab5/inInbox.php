@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // inInbox.php
 // - use file_get_contents to get json data from messages.txt.
@@ -21,14 +22,21 @@ $phpObject = json_decode($jsonObj);
 //loop through object
 //TODO If the To part is related to the current username create html rows with after decrypting the body of the message
 
-echo $phpObject{'Reciever'}
+echo $phpObject{'Reciever'};
+//TODO $privatekey = ???
+$username = $_SESSION["username"];
 
+echo "<table>";
 for($i = 0; $i < count($phpObject); $i++)
 {
     if(strcmp($phpObject{'Reciever'}, $username) == 0)
     {
         //TODO decrypt the body of the message
-        //TODO create html rows?
+        $decryptedmessage = rsa_decrypt($phpObject{'Body'}, $privatekey);
+        //create html rows
+        echo "<tr>";
+        echo "<td>" . $decryptedmessage . "</td>";
+        echo "</tr>";
     }
 }
 

@@ -16,74 +16,50 @@ After clicking sign up, redirects to login page
 </head>
 
 <body>
-    <!--TODO need another php file <?php include 'signup.php';?> -->
+    <form>
+        <h1>Sign Up</h1><br>
+        Username<br><input type="text" id="user" name="username" /><br>
+        Password<br><input type="password" id="pass" name="password" /><br>
+        <input type="submit" id="signup" value="Sign Up"/>
+    </form>
 
+    <?php require 'signup.php';
 
-    <!-- <form action="checkLogin.php" enctype="multipart/form-data" method="GET"> -->
-    <h1>Sign Up</h1><br>
-    Username<br><input type="text" id="username" name="usernameField" /><br>
-    Password<br><input type="password" id="password" name="passwordField" /><br>
-    <input type="submit" id="signup" value="Sign Up"/>
-    <div id="myDiv"></div>
-    <!-- </form> -->
+    echo "public key " . $publickey;
+    echo "private key ". $privatekey;
+
+    ?>
 
     <script>
-    //TODO generate a public/private key in a text file users.txt
-    var username = $("#username");
-    var password = $("#password");
-    var signupbutton = $("#signup");
-
-    signupbutton.click(function()
+    $(document).ready(function()
     {
-        window.location = "login.html";
+        //TODO generate a public/private key and put info in a text file users.txt
+        var username = $("#user");
+        var password = $("#pass");
+        var signupbutton = $("#signup");
+        var publickey = "<?php require 'signup.php'; echo 'public key ' . $publickey; ?>";
+
+
+        signupbutton.click(function()
+        {
+                console.log("username " + username.val() + " password " + password.val() + " publickey " + publickey + " private key " + privatekey);
+        });
+
+
+        // usersFile = fopen("users.txt" , "w");
+        // user = array('username'=> username, 'password' => password, 'publickey' => publickey, 'privatekey' => privatekey);
+        // console.log("username " + username +" public key " + publickey + " private key " + privatekey);
+        //TODO how to do this with php
+        //JSON.stringify()? to write as json encoded array
+        // fwrite(user);
     });
 
-
-    // <?php
-    // $path = 'phpseclib';
-    // set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-    // include_once('Crypt/RSA.php');
-    //
-    // //Function for encrypting with RSA
-    // function rsa_encrypt($string, $public_key)
+    // signupbutton.click(function()
     // {
-    //     //Create an instance of the RSA cypher and load the key into it
-    //     $cipher = new Crypt_RSA();
-    //     $cipher->loadKey($public_key);
-    //     //Set the encryption mode
-    //     $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
-    //     //Return the encrypted version
-    //     return $cipher->encrypt($string);
-    // }
-    // //Function for decrypting with RSA
-    // function rsa_decrypt($string, $private_key)
-    // {
-    //     //Create an instance of the RSA cypher and load the key into it
-    //     $cipher = new Crypt_RSA();
-    //     $cipher->loadKey($private_key);
-    //     //Set the encryption mode
-    //     $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
-    //     //Return the decrypted version
-    //     return $cipher->decrypt($string);
-    // }
-    // $rsa = new Crypt_RSA();
-    // $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
-    // $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
-    // extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
-    // echo $privatekey;
-    // echo $publickey;
-    //
-    //
-    // ?>
-
-    usersFile = fopen("users.txt" , "w");
-    user = array('username'=> username, 'password' => password, 'publickey' => publickey, 'privatekey' => privatekey);
-    //TODO how to do this with php
-    //JSON.stringify()? to write as json encoded array
-    fwrite(user);
+    //     console.log("username " + username + " password " + password); // + " public key " + $publickey + " private key " + $privatekey);
+    //     //window.location = "login.html";
+    // });
     </script>
-
-
 
 
 </body>
