@@ -7,8 +7,6 @@ smitra:testPassword:ddhfh9fi3f3i:94hredbb
 After clicking sign up, redirects to login page
 -->
 
-<!-- TODO json encode the user information for checkLogin purposes! -->
-
 <html>
 
 <head>
@@ -16,43 +14,12 @@ After clicking sign up, redirects to login page
 </head>
 
 <body>
-    <form>
+    <form method="POST" action="signup.php">
         <h1>Sign Up</h1><br>
         Username<br><input type="text" id="user" name="username" /><br>
         Password<br><input type="password" id="pass" name="password" /><br>
         <input type="submit" id="signup" value="Sign Up"/>
     </form>
-
-    <?php require 'signup.php';
-
-    echo "public key " . $publickey;
-    echo "private key ". $privatekey;
-
-    ?>
-
-    <script>
-    $(document).ready(function()
-    {
-        //TODO generate a public/private key and put info in a text file users.txt
-        var username = $("#user");
-        var password = $("#pass");
-        var signupbutton = $("#signup");
-        //TODO how to get public/private keys from signup.php?
-        var publickey = "<?php require 'signup.php'; echo 'public key ' . $publickey; ?>";
-
-        signupbutton.click(function()
-        {
-                console.log("username " + username.val() + " password " + password.val() + " publickey " + publickey + " private key " + privatekey);
-        });
-
-        // usersFile = fopen("users.txt" , "w");
-        // user = array('username'=> username, 'password' => password, 'publickey' => publickey, 'privatekey' => privatekey);
-        // console.log("username " + username +" public key " + publickey + " private key " + privatekey);
-        //TODO how to do this with php
-        //JSON.stringify()? to write as json encoded array
-        // fwrite(user);
-    });
-    </script>
 
 
 </body>

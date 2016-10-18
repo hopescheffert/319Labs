@@ -25,10 +25,9 @@
         myform.submit(function(e)
         {
             e.preventDefault(); //use ajax instead
-            $.get("checkLogin.php?username=" + user + "&password=" + pass,
+            $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val(),
             function(data)
             {
-                //TODO always returns false?
                 alert(data);
                 if(!data)
                 {
@@ -43,7 +42,7 @@
                     window.location = "viewPosts.php";
                 }
 
-            })//, "json")
+            })
         });
     })
 
