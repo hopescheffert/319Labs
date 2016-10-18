@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Location: login.html');
 // signup.php
 //does the encryption and decryption
 $path = 'phpseclib';
@@ -46,22 +47,14 @@ $_SESSION['password'] = $curPass;
 //Private key
 $private_key = $privatekey;
 $public_key = $publickey;
-echo "private " . $private_key . " ";
-echo "public " . $public_key;
-
-//$user = '{"username" : ' . $curUser . ', "password" :' . $curPass . ', "publickey" : ' . $public_key . ', "privatekey" : ' . $private_key . '}\n';
-$user = array('username' => $curUser, 'password' => $curPass, 'publickey' => $public_key, 'privatekey' => $private_key);
-$entry = json_encode($user) . "***";
-file_put_contents("users.txt", $entry, FILE_APPEND);
-
-
-//Test out the rsa encryption functions
-// $plaintext = "This is some plaintext to encrypt";
-// $ciphertext = rsa_encrypt($plaintext, $public_key);
-// $decipheredtext = rsa_decrypt($ciphertext, $private_key);
-
-//Echo out results
-// echo sprintf("<h4>Plaintext for RSA encryption:</h4><p>%s</p><h4>After encryption:</h4><p>%s</p><h4>After decryption:</h4><p>%s</p>", $plaintext, $ciphertext, $decipheredtext);
-
+// echo "private " . $private_key . " ";
+// echo "public " . $public_key;
+if($curUser != null)
+{
+	//$user = '{"username" : ' . $curUser . ', "password" :' . $curPass . ', "publickey" : ' . $public_key . ', "privatekey" : ' . $private_key . '}\n';
+	$user = array('username' => $curUser, 'password' => $curPass, 'publickey' => $public_key, 'privatekey' => $private_key);
+	$entry = json_encode($user) . "***\n";
+	file_put_contents("users.txt", $entry, FILE_APPEND);
+}
 
 ?>

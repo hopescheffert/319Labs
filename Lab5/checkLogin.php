@@ -25,23 +25,23 @@ while(!feof($userFile))
 {
     //get whole line from userFile
     //$user = fgets($userFile); //THIS MUST BE JSON ENCODED (in signup.html)
-    $user = stream_get_line($userFile, NULL, "***");
+    $user = stream_get_line($userFile, NULL, "***\n");
     //decode the line from the users.txt file into an object so that we can get info
-    echo $user . "<br>";
+    //echo $user . "<br>";
     $obj = json_decode($user);
     if($obj == null)
     {
         //reached end of file
         // $response->success = false;
-        echo "failed because object is null <br>" . json_encode($failed) ."<br>";
+        echo json_encode($failed);
         break;
     }
     //get username and password ....do some check?
     $username = $obj->username;
-    echo "username is " . $username . "<br>";
+    //echo "username is " . $username . "<br>";
 
     $password = $obj->password;
-    echo "password is ".$password. "<br>";
+    //echo "password is ".$password. "<br>";
 
 
     if((strcmp($username, $curUser) == 0)  && (strcmp($password, $curPass) == 0))
@@ -49,7 +49,7 @@ while(!feof($userFile))
         // $response->success = true;
         $_SESSION["username"] = $username;
         $_SESSION["password"] = $password;
-        echo "succeeded! " . json_encode($succeeded);
+        echo json_encode($succeeded);
         break;
     }
 }

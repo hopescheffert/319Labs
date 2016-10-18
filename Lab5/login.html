@@ -29,7 +29,8 @@
             function(data)
             {
                 alert(data);
-                if(!data)
+                var result = JSON.parse(data);
+                if(!result)
                 {
                     //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
                     alert("Error: Incorrect username and/or password");
