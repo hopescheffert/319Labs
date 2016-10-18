@@ -26,9 +26,11 @@
         {
             e.preventDefault(); //use ajax instead
             $.get("checkLogin.php?username=" + user + "&password=" + pass,
-            function(data, status)
+            function(data)
             {
-                if(!data.success)
+                //TODO always returns false?
+                alert(data);
+                if(!data)
                 {
                     //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
                     alert("Error: Incorrect username and/or password");
@@ -41,7 +43,7 @@
                     window.location = "viewPosts.php";
                 }
 
-            }, "json")
+            })//, "json")
         });
     })
 
