@@ -3,7 +3,7 @@ session_start();
 // sendmessage.php
 // - Create a simple UI with a text file for Receiver part, User(fill with current username) and
 // Body part, with submit button.
-// - When User clicks on submit, the message should be encrypted by Receiver PublicKey
+// -TODO  When User clicks on submit, the message should be encrypted by Receiver PublicKey
 // and store information (contain Sender username, Receiver and body of message) in
 // messages.txt file. Each item should contain the information as in this example
 //User:Alice; Receiver: BOB; Body: dshgkfjsghfjksghjkf
@@ -15,10 +15,10 @@ session_start();
 // Use only AJAX to get/create Message
 $curUser = $_SESSION['username'];
 
-echo "Reciever: <input type='text' id='reciever'</input> <br><br>";
-echo "User: <input type='text' id='user' value='".$curUser."' readonly</input> <br><br>";
+echo "Reciever: <br><input type='text' id='reciever'</input> <br>";
+echo "User: <br> <input type='text' id='user' value='".$curUser."' </input> <br>";
 echo "Body:<br> <textarea rows='4' cols='50'>Type your message here </textarea> <br>";
-echo "<input type='submit'</input>"
+echo "<input type='submit'</input>";
 //TODO $post = {"User": xxxx, "Reciever":xxxx , "Body": xxxxx};
 
 //script for submit button
