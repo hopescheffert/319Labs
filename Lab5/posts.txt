@@ -1,0 +1,2 @@
+{"User": "TEST", "Reciever":"TEST" , "Body": "Hello there"}
+{"User": "hope", "Reciever": "scheffert" , "Body": "Well hi"}

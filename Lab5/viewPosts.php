@@ -11,23 +11,37 @@ session_start();
 //
 // TODO Every post is editable and updatable.
 
-echo "hello in viewPosts page";
-$jsonData = file_get_contents("posts.txt");
-$jsonObj = json_encode($jsonData);
-$phpObject = json_decode($jsonObj);
+$data = file_get_contents("posts.txt");
+$jsonData = explode("\n", $data);
+for($i = 0; $i < count($jsonData); $i++)
+{
+    if(json_decode($jsonData[$i]) != null)
+    {
+        $phpObject[$i] = json_decode($jsonData[$i]);
+        // echo $phpObject[$i]->Body;
+    }
+    else break;
+
+}
+//$jsonData = '{"User": "TEST", "Reciever": "TEST", "Body": "Hello there"}';
+//$jsonObj = json_encode($jsonData);
+// $phpObject = json_decode($jsonData);
+// echo $phpObject->Body;
 //ex. Title, description, time posted
 
 //loop through object and create html rows with a link to update post
 //---that will use javascript to bring up a prompt to get the message from the user
 //and then make an ajax call to updatePosts.php to do the update
 echo "<table id='myTable'>";
-for($i = 0; $i < count($phpObject); $i++)
+for($j = 0; $j < count($phpObject); $j++)
 {
     echo "<tr>";
-    echo "<td> <a href='localhost:8080/updatePosts.php'>Update Post</a> </td>";
+    $button = "<button id='button' >Update Post</button>";//onclick='alert(\\Hello\\);'
+    echo "<td>". $phpObject[$j]->Body . " " . $button . ' </td>';
     echo "</tr>";
 }
 echo "</table>";
+
 
 
  ?>
