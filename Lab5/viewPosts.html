@@ -1,17 +1,55 @@
 <html>
-
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
 <body>
     <table id='myTable' border=2>
-    <th>User</th>
-    <th>Post Body</th>
-    <th>Time</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Time</th>
 
-    <tr>
-    <td>$phpObject[$j]->User </td>
-    <td>$phpObject[$j]->Body</td>
-    <td>$phpObject[$j]->Time</td>
-       
-
+    </table>
 </body>
 
 </html>
+
+<script>
+
+var table = document.getElementById("myTable");
+
+$(document).ready(function()
+{
+    $.get("viewPosts.php", function(data)
+    {
+        console.log(data);
+        var postObject = JSON.parse(data);
+        console.log(postObject);
+        for(var i = 0; i < postObject.length; i++)
+        {
+            row = table.insertRow(-1);
+            title = row.insertCell(0);
+            description = row.insertCell(1);
+            time = row.insertCell(2);
+            button = "<button id='button"+ i +"' onclick=\"updatePost()\">Update Post</button>";
+            postTitle = title.innerHTML = postObject[i].Title;
+            postDescription = description.innerHTML = postObject[i].Description + "<br>" + button;
+            postTime = time.innerHTML = postObject[i].Time;
+        }
+    })
+});
+
+
+function updatePost()
+{
+    var update = prompt("Update your post");
+    var newTime = new Date();
+    $.get("updatePosts.php?title=" + postTitle + "&description=" + update + "&time=" + newTime.toString(),
+    function(data)
+    {
+        alert("updating..");
+    });
+
+}
+
+
+</script>

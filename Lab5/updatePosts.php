@@ -10,41 +10,53 @@ session_start();
 // - also update the session object if needed
 
 $user = $_SESSION['username'];
+$title = $_REQUEST["title"];
+$description = $_REQUEST["description"];
+$time = $_REQUEST["time"];
+
 $isAdmin = false;
 if(strcmp($user, "admin") == 0)
 {
     $isAdmin = true;
 }
-
-$post = $_SESSION['post'];
+//TODO if admin they can delete
+$post = '{"Title" : '. $title . ', "Description" : ' . $description . ', "Time" : ' . $time . '}';
+//$post = $_SESSION['post'];
 $post = json_decode($post);
-$postsFile = fopen("posts.txt", "w+");
-
+echo $title ." " . $description . " " . $time . "<br>";
+$postsFile = fopen("posts.txt", "a+");
 while(!feof($postsFile))
 {
-    $p = fgets($postsFile);
+    $p = stream_get_line($postsFile, NULL, "***\n");
     $obj = json_decode($p);
     if($obj != null)
     {
-        $title = $obj->title;
-        $desc = $obj->description;
+        $updatedTitle = $obj->Title;
+        $updatedDesc = $obj->Description;
+        $updatedTime = $obj->Time;
+        echo $updatedTitle ." " . $updatedDesc . " " . $updatedTime;
 
-        if((strcmp($title, $post->title) == 0) && (strcmp($desc, $post->description) == 0))
+        if((strcmp($updatedTitle, $post->Title) == 0) && (strcmp($updatedDesc, $post->Description) == 0))
         {
             //TODO modify post
-            //TODO use file_put_contents() to store posts back into posts.txt
             //TODO do we just change that line?
-            file_put_contents("posts.txt", $post);
+            //$newPost = '{"Title" : '. $updatedTitle . ', "Description" : ' . $updatedDesc . ', "Time" : ' . $updatedTime . '}';
+            $entry = json_encode($post) . "***\n";
+            file_put_contents("posts.txt", $post, FILE_APPEND);
+            break;
         }
         else
         {
             //TODO create a new entry
-            $newPost;
-            //TODO use file_put_contents() to store posts back into posts.txt
-            file_put_contents("posts.txt", $newPost + "\n");
+            $newPost = '{"Title" : '. $updatedTitle. ', "Description" : ' . $updatedDesc . ', "Time" : ' . $updatedTime . '}';
+            $entry = json_encode($newPost) . "***\n";
+            file_put_contents("posts.txt", $newPost, FILE_APPEND);
 
+            break;
         }
-        //TODO update session object
+        echo "didnt find";
+        //update session object
+        $_SESSION["post"] = $newPost;
 
 
     }
