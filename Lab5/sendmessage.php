@@ -19,7 +19,7 @@ echo "Reciever: <br><input type='text' id='reciever'</input> <br>";
 echo "User: <br> <input type='text' id='user' value='".$curUser."' </input> <br>";
 echo "Body:<br> <textarea rows='4' cols='50'>Type your message here </textarea> <br>";
 echo "<input type='submit'</input>";
-//TODO $post = {"User": xxxx, "Reciever":xxxx , "Body": xxxxx};
+//TODO $post = {"User": xxxx, "Reciever":xxxx , "Body": xxxxx, "Time" : xxxxx};
 
 //script for submit button
 echo "<script>";

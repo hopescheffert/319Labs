@@ -1,2 +1,2 @@
-{"User": "TEST", "Reciever":"TEST" , "Body": "Hello there"}
-{"User": "hope", "Reciever": "scheffert" , "Body": "Well hi"}
+{"User": "TEST", "Reciever":"TEST" , "Body": "Hello there", "Time" : "10/21/16"}
+{"User": "hope", "Reciever": "scheffert" , "Body": "Well hi", "Time" : "10/20/16"}

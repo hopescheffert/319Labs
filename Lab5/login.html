@@ -28,7 +28,6 @@
             $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val(),
             function(data)
             {
-                alert(data);
                 var result = JSON.parse(data);
                 if(!result)
                 {

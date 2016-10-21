@@ -1,3 +1,19 @@
+<?php //session_start()?>
+
+<!-- <!DOCTYPE html>
+<hmtl>
+<body>
+<table id='myTable' border=2>
+    <th>User</th>
+    <th>Post Body</th>
+    <th>Time</th>
+    <!-- <tr><button id='button0' onclick='prompt("Update Your Post")'>Update Post</button></tr>
+
+</body>
+
+</html> -->
+
+
 <?php
 session_start();
 // viewPosts.php
@@ -18,26 +34,32 @@ for($i = 0; $i < count($jsonData); $i++)
     if(json_decode($jsonData[$i]) != null)
     {
         $phpObject[$i] = json_decode($jsonData[$i]);
-        // echo $phpObject[$i]->Body;
+        //echo $phpObject[$i]->Body . "    ";
     }
     else break;
 
 }
 //$jsonData = '{"User": "TEST", "Reciever": "TEST", "Body": "Hello there"}';
-//$jsonObj = json_encode($jsonData);
-// $phpObject = json_decode($jsonData);
-// echo $phpObject->Body;
 //ex. Title, description, time posted
 
 //loop through object and create html rows with a link to update post
 //---that will use javascript to bring up a prompt to get the message from the user
 //and then make an ajax call to updatePosts.php to do the update
-echo "<table id='myTable'>";
+echo "<table id='myTable' border=2>";
+echo "<th>User</th>";
+echo "<th>Post Body</th>";
+echo "<th>Time</th>";
+
+//TODO make update post button do ajax post call to updatePosts.php to do update
+//then only refreshes the table, not the entire page
 for($j = 0; $j < count($phpObject); $j++)
 {
     echo "<tr>";
-    $button = "<button id='button' >Update Post</button>";//onclick='alert(\\Hello\\);'
-    echo "<td>". $phpObject[$j]->Body . " " . $button . ' </td>';
+    $button = "<button id='button". $j."' onclick=\"prompt('Update Your Post');\">Update Post</button>";
+    //$button = addslashes($button);
+    echo "<td>". $phpObject[$j]->User . "</td>";
+    echo "<td>" . $phpObject[$j]->Body ."<br>". $button ."</td>";
+    echo "<td>" .$phpObject[$j]->Time. "</td>";
     echo "</tr>";
 }
 echo "</table>";
@@ -45,3 +67,8 @@ echo "</table>";
 
 
  ?>
+ <script>
+
+
+
+ </script>
