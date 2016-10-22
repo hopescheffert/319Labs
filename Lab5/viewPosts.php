@@ -19,7 +19,6 @@ for($i = 0; $i < count($jsonData); $i++)
     if(json_decode($jsonData[$i]) != null)
     {
         $postObject[$i] = json_decode($jsonData[$i]);
-        //$_SESSION["post"] = $postObject[$i];
     }
     else break;
 
@@ -28,10 +27,8 @@ for($i = 0; $i < count($jsonData); $i++)
 
 //ex. Title, description, time posted
 
-
 //TODO make update post button do ajax post call to updatePosts.php to do update
 //then only refreshes the table, not the entire page
-
 
 echo json_encode($postObject, true);
 

@@ -21,40 +21,37 @@ if(strcmp($user, "admin") == 0)
 }
 //TODO if admin they can delete
 $post = '{"Title" : '. $title . ', "Description" : ' . $description . ', "Time" : ' . $time . '}';
-//$post = $_SESSION['post'];
 $post = json_decode($post);
-echo $title ." " . $description . " " . $time . "<br>";
 $postsFile = fopen("posts.txt", "a+");
 while(!feof($postsFile))
 {
-    $p = stream_get_line($postsFile, NULL, "***\n");
+    $p = stream_get_line($postsFile, NULL, "\n");
     $obj = json_decode($p);
     if($obj != null)
     {
-        $updatedTitle = $obj->Title;
-        $updatedDesc = $obj->Description;
-        $updatedTime = $obj->Time;
-        echo $updatedTitle ." " . $updatedDesc . " " . $updatedTime;
+        $currentTitle = $obj->Title;
+        $currentDesc = $obj->Description;
+        $currentTime = $obj->Time;
 
-        if((strcmp($updatedTitle, $post->Title) == 0) && (strcmp($updatedDesc, $post->Description) == 0))
+        if((strcmp($currentTitle, $title) == 0))
         {
-            //TODO modify post
-            //TODO do we just change that line?
-            //$newPost = '{"Title" : '. $updatedTitle . ', "Description" : ' . $updatedDesc . ', "Time" : ' . $updatedTime . '}';
-            $entry = json_encode($post) . "***\n";
-            file_put_contents("posts.txt", $post, FILE_APPEND);
+            echo "modify";
+            //$modification = '{"Title" : '. $currentTitle. ', "Description" : ' . $currentDesc . ', "Time" : ' . $currentTime . '}';
+            $modification = array('Title' => $currentTitle, 'Description' => $description, 'Time' => $time);
+            $entry = json_encode($modification); //. "\n";
+            file_put_contents("posts.txt", $entry, FILE_APPEND);
             break;
         }
         else
         {
-            //TODO create a new entry
-            $newPost = '{"Title" : '. $updatedTitle. ', "Description" : ' . $updatedDesc . ', "Time" : ' . $updatedTime . '}';
-            $entry = json_encode($newPost) . "***\n";
-            file_put_contents("posts.txt", $newPost, FILE_APPEND);
-
+            echo "new";
+            $newPost = array('Title' => $title, 'Description' => $description, 'Time' => $time);
+            //$newPost = '{"Title" : '. $title . ', "Description" : ' . $description . ', "Time" : ' . $time . '}';
+            $entry = json_encode($newPost);// . "\n";
+            file_put_contents("posts.txt", $entry, FILE_APPEND);
             break;
+
         }
-        echo "didnt find";
         //update session object
         $_SESSION["post"] = $newPost;
 
