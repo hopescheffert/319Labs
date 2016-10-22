@@ -21,32 +21,35 @@ $(document).ready(function()
 {
     $.get("viewPosts.php", function(data)
     {
-        console.log(data);
         var postObject = JSON.parse(data);
-        console.log(postObject);
         for(var i = 0; i < postObject.length; i++)
         {
             row = table.insertRow(-1);
             title = row.insertCell(0);
             description = row.insertCell(1);
+            description.id = postObject[i].ID;
+            postID = postObject[i].ID;
             time = row.insertCell(2);
-            button = "<button id='button"+ i +"' onclick=\"updatePost()\">Update Post</button>";
+            button = "<button id='button"+ i +"' onclick=\"updatePost(this)\">Update Post</button>";
             postTitle = title.innerHTML = postObject[i].Title;
             postDescription = description.innerHTML = postObject[i].Description + "<br>" + button;
             postTime = time.innerHTML = postObject[i].Time;
         }
     })
+
+
 });
 
-
-function updatePost()
+function updatePost(that)
 {
     var update = prompt("Update your post");
     var newTime = new Date();
-    $.get("updatePosts.php?title=" + postTitle + "&description=" + update + "&time=" + newTime.toString(),
+    var id = Math.floor((Math.random() * 200) + 1);
+    $.get("updatePosts.php?title=" + postTitle + "&description=" + update + "&time=" + newTime.toString() + "&id=" + id,
     function(data)
     {
-        alert("updating..");
+        var obj = JSON.parse(data);
+        document.getElementById(that.parentElement.id).innerHTML = update + "<BR>" + button;
     });
 
 }
