@@ -22,7 +22,8 @@ var table = document.getElementById("myTable");
 
 $(document).ready(function()
 {
-    $.get("viewPosts.php", function(data)
+    $.get("viewPosts.php",
+    function(data)
     {
         var postObject = JSON.parse(data);
         for(var i = 0; i < postObject.length; i++)

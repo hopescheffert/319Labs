@@ -10,6 +10,5 @@ session_destroy();
 
 header('Location: login.html');
 
-//echo "<h1> session has been destroyed</h1><br>";
 
 ?>

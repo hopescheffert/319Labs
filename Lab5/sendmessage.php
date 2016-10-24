@@ -34,16 +34,18 @@ $body = $_REQUEST['body'];
         var reciever = $("#reciever");
         var body = $("#body");
 
-        myform.submit = function(e)
+        myform.submit(function(e)
         {
+            console.log("hello");
             e.preventDefault(); //use ajax instead
+            console.log(user.val());
             $.get("sendmessage.php?user=" + user.val() + "&body=" + body.val() + "&reciever=" + reciever.val(),
             function(data)
             {
                 alert("Message sent");
             })
-        }
-    });
+        });
+    })
     </script>
 
 
@@ -64,7 +66,7 @@ function rsa_encrypt($string, $public_key)
     //Set the encryption mode
     $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
     //Return the encrypted version
-    return $cipher->encrypt($string);
+    return base64_encode($cipher->encrypt($string));
 }
 
 //Function for decrypting with RSA
@@ -76,21 +78,23 @@ function rsa_decrypt($string, $private_key)
     //Set the encryption mode
     $cipher->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
     //Return the decrypted version
-    return $cipher->decrypt($string);
+    return $cipher->decrypt(base64_decode($string));
+    //return base64_decode($cipher->encrypt($string));
+
 }
 
 
-$rsa = new Crypt_RSA();
-$rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
-$rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
-extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
+// $rsa = new Crypt_RSA();
+// $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
+// $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
+// extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
 
 
 $userFile = fopen("users.txt", "r") or die("Unable to open users.txt");
 $foundpublickey = 0;
 $foundprivatekey = 0;
 
-while(!feof($userFile) && ($foundpublickey == 0 && $foundprivatekey == 0))
+while(!feof($userFile) && ($foundpublickey == 0 || $foundprivatekey == 0))
 {
     //get whole line from userFile
     $userline = stream_get_line($userFile, NULL, "***\n");
@@ -99,32 +103,21 @@ while(!feof($userFile) && ($foundpublickey == 0 && $foundprivatekey == 0))
     if($obj != null)
     {
         $username = $obj->username;
-        //if((strcmp($username, $user) == 0) || (strcmp($username, $reciever) == 0))
+
+        if((strcmp($username, $reciever) == 0))
         {
-            echo "does it match: username " . $username . " reciever " . $reciever . " user " . $user . "<BR>";
-            //if((strcmp($username, $reciever) == 0))
-            if((strcmp($username, $reciever) == 0))
-            {
-                echo "in reciever <BR>";
-                $private_key = $obj->privatekey;
-                echo "****private key: " . $private_key . "<BR>";
-                $foundprivatekey = 1;
-            }
-            else if((strcmp($username, $user) == 0))
-            {
-                echo "in user<BR>";
-                echo "***public key: " . $obj->publickey. "<BR>";
-                $public_key = $obj->publickey;
-                $foundpublickey = 1;
-            }
-
+            $private_key = $obj->privatekey;
+            $foundprivatekey = 1;
         }
-    }
-    echo "found private " . $foundprivatekey . " found public " . $foundpublickey ." <BR>";
+        else if((strcmp($username, $user) == 0))
+        {
+            $public_key = $obj->publickey;
+            $foundpublickey = 1;
+        }
 
+    }
 }
 
-echo "<BR> done looking";
 // echo " private key is " . $private_key ." <BR>";
 // echo " public key is " . $public_key ." <BR>";
 
@@ -134,7 +127,6 @@ $decipheredtext = rsa_decrypt($ciphertext, $private_key);
 // echo "<br> encrypted text " . $ciphertext;
 // echo "<br> decrypted text " . $decipheredtext;
 
-//$messagesFile = fopen("messages.txt", "r") or die("Unable to open messagesFile.txt");
 $message = array('user' => $curUser, 'reciever' => $reciever, 'body' => $ciphertext);
 $entry = json_encode($message) . "\n";
 file_put_contents("messages.txt", $entry, FILE_APPEND);

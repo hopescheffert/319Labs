@@ -4,7 +4,9 @@
 – on failure – ask the user to correct the username and password
 -->
 <html>
-
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
 <body>
     <form id="myform">
         Username<br><input type="text" id="username" name="username" /><br>
@@ -35,8 +37,8 @@
                 else
                 {
                     //ON SUCCESS GO TO VIEWPOSTS.php
+                    window.location = "viewPosts.html";
                     alert("logged in successfully");
-                    window.location = "viewPosts.php";
                 }
 
             })

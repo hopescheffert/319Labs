@@ -26,7 +26,6 @@ $public_key = $publickey;
 // echo "public " . $public_key;
 if($curUser != null)
 {
-	//$user = '{"username" : ' . $curUser . ', "password" :' . $curPass . ', "publickey" : ' . $public_key . ', "privatekey" : ' . $private_key . '}\n';
 	$user = array('username' => $curUser, 'password' => $curPass, 'publickey' => $public_key, 'privatekey' => $private_key);
 	$entry = json_encode($user) . "***\n";
 	file_put_contents("users.txt", $entry, FILE_APPEND);
