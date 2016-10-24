@@ -37,11 +37,10 @@ $body = $_REQUEST['body'];
         myform.submit = function(e)
         {
             e.preventDefault(); //use ajax instead
-            $.get("sendmessagestuff.php?user=" + user.val() + "&body=" + body.val() + "&reciever=" + reciever.val(),
+            $.get("sendmessage.php?user=" + user.val() + "&body=" + body.val() + "&reciever=" + reciever.val(),
             function(data)
             {
                 alert("Message sent");
-                //var result = JSON.parse(data);
             })
         }
     });
@@ -85,45 +84,55 @@ $rsa = new Crypt_RSA();
 $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
 $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
 extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
-//$private_key = $privatekey;
-//$public_key = $publickey;
+
 
 $userFile = fopen("users.txt", "r") or die("Unable to open users.txt");
+$foundpublickey = 0;
+$foundprivatekey = 0;
 
-while(!feof($userFile))
+while(!feof($userFile) && ($foundpublickey == 0 && $foundprivatekey == 0))
 {
     //get whole line from userFile
-    //$user = fgets($userFile); //THIS MUST BE JSON ENCODED (in signup.html)
     $userline = stream_get_line($userFile, NULL, "***\n");
     //decode the line from the users.txt file into an object so that we can get info
-    //echo $user . "<br>";
     $obj = json_decode($userline);
     if($obj != null)
     {
-
-        //get username and password
         $username = $obj->username;
+        //if((strcmp($username, $user) == 0) || (strcmp($username, $reciever) == 0))
+        {
+            echo "does it match: username " . $username . " reciever " . $reciever . " user " . $user . "<BR>";
+            //if((strcmp($username, $reciever) == 0))
+            if((strcmp($username, $reciever) == 0))
+            {
+                echo "in reciever <BR>";
+                $private_key = $obj->privatekey;
+                echo "****private key: " . $private_key . "<BR>";
+                $foundprivatekey = 1;
+            }
+            else if((strcmp($username, $user) == 0))
+            {
+                echo "in user<BR>";
+                echo "***public key: " . $obj->publickey. "<BR>";
+                $public_key = $obj->publickey;
+                $foundpublickey = 1;
+            }
 
-        if((strcmp($username, $user) == 0))
-        {
-            $public_key = $obj->publickey;
-            break;
-        }
-        else if((strcmp($username, $reciever) == 0))
-        {
-            $private_key = $obj->privatekey;
-            break;
         }
     }
+    echo "found private " . $foundprivatekey . " found public " . $foundpublickey ." <BR>";
+
 }
-echo " private key is " . $private_key ." <BR>";
-echo " public key is " . $public_key ." <BR>";
+
+echo "<BR> done looking";
+// echo " private key is " . $private_key ." <BR>";
+// echo " public key is " . $public_key ." <BR>";
 
 $ciphertext = rsa_encrypt($body, $public_key);
 $decipheredtext = rsa_decrypt($ciphertext, $private_key);
 
-echo "<br> encrypted text " . $ciphertext;
-echo "<br> decrypted text " . $decipheredtext;
+// echo "<br> encrypted text " . $ciphertext;
+// echo "<br> decrypted text " . $decipheredtext;
 
 //$messagesFile = fopen("messages.txt", "r") or die("Unable to open messagesFile.txt");
 $message = array('user' => $curUser, 'reciever' => $reciever, 'body' => $ciphertext);

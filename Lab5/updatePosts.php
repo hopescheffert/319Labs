@@ -65,6 +65,7 @@ while(!feof($postsFile))
     }
 
 }
+header('Location: http://localhost:8080/Lab7/viewPosts.php');
 
 
 ?>
