@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Response from server:</h1>
+        <div id="response"></div>
+ <script>
+/**
+ * AJAX short-polling
+ *
+ * 1. sends a request to the server (without a timestamp parameter)
+ * 2. immediately gets response from server (the way the server is
+ * written
+ * 3. if server.php responds (whenever), put data_from_file into #response
+ * 4. and call the function again
+ *
+ * @param timestamp
+ */
+function getContent(timestamp)
+{
+    var queryString = {'timestamp' : timestamp};
+
+    $.ajax(
+        {
+            type: 'GET',
+            url: '03_display1.php',
+            data: queryString,
+            success: function(data){
+                // put result data into "obj"
+                var obj = jQuery.parseJSON(data);
+                // put the data_from_file into #response
+                if (obj.data_from_file == "Nothing!") return;
+                $('#response').html(obj.data_from_file);
+                // call the function again, this time with the timestamp we just got from server.php
+                setInterval( function() {
+                    getContent(obj.timestamp);
+                  },
+                  2000);
+            }
+        }
+    );
+}
+
+// initialize jQuery
+$(document).ready(function() {
+    getContent();
+});
+
+</script>
+</body>
+</html>

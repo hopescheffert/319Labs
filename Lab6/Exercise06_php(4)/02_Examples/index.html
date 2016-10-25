@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+<style>
+body {
+        counter-reset: h2counter;
+    }
+    h1 {
+        counter-reset: h2counter;
+    }
+    h2:before {
+        counter-increment: h2counter;
+        content: counter(h2counter) ".\0000a0\0000a0";
+        counter-reset: h3counter;
+    }
+    h3:before {
+        counter-increment: h3counter;
+        content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+    }
+</style>
+</HEAD>
+<BODY>
+<h1>Example Codes</h1>
+Run on firefox/google etc..
+
+<!-- 1. SHOW USE OF IIFEs                         -->
+<h2>show use of IIFEs</h2>
+<br>
+Play with the example by clicking on the link
+<ul>
+<li> <a href="01_iife.html">using plain javascript</a>
+</ul>
+<br>
+There is one file (click to view the file): 
+<ul>
+<li> <a href="showFile.php?name=01_iife.html">html with js file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+
+<!-- 1. WAITING FOR SERVER TO SEND DATA OVER TIME -->
+<h2>Waiting using js and jquery for server to send data</h2>
+We want to see if connection can be kept open and to see intermediate
+responses.  This example demonstrates a client's request taking a long time by the server to complete.
+<br>
+Play with the example by clicking on the link
+<br>
+<ul>
+<li> <a href="02_1comet.html">using plain javascript</a>
+<li> <a href="02_2comet.html">using jquery</a>
+</ul>
+<br>
+There are three files (click to view the files): 
+<ul>
+<li> <a href="showFile.php?name=02_1comet.html">html with js file</a>
+<li> <a href="showFile.php?name=02_2comet.html">html with jquery file</a>
+<li> <a href="showFile.php?name=02_comet.php">php file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+<!-- 2. sending multi-part request (i.e. multiple files) -->
+<h2>Sending multi-part request FROM client to server</h2>
+This example demonstrates how to send multiple files FROM client
+<br>
+Play with the example by clicking on the link
+<br>
+<ul>
+<li> <a href="03_multiPartRequest.html">select two files</a>
+</ul>
+<br>
+There are two files (click to view the files): 
+<ul>
+<li> <a href="showFile.php?name=03_multiPartRequest.html">html file</a>
+<li> <a href="showFile.php?name=03_display.php">php file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+
+<!-- 3. getting multi-part request (i.e. multiple files) -->
+<h2>Getting multi-part responses FROM server by client</h2>
+This example demonstrates how to send across multiple files to client.
+<br>
+Play with the example by clicking on the link
+<br>
+<ul>
+<li> <a href="04_multiPartResponse.html">get multi-part data</a>
+</ul>
+<br>
+There are two files (click to view the files): 
+<ul>
+<li> <a href="showFile.php?name=04_multiPartResponse.html">html file</a>
+<li> <a href="showFile.php?name=04_multiPartResponse.php">php file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+<!--  . POLLING     -->
+<h2>Polling</h2>
+Polling is a way to get events from server to client.
+In short polling, the client keeps polling the server to see if it 
+has any data.
+In long polling, the server keeps the request open until it can be
+satisfied. The client on getting info immediately makes another request
+which is in turn kept open until it can be satisfied and so on.
+
+<br>
+Play with the example by clicking on the link
+<br>
+<ul>
+<li> <a href="02_APolling.html">Short polling</a>
+<li> <a href="02_BLongPolling.html">Long polling</a>
+</ul>
+<br>
+There are three files (click to view the files): 
+<ul>
+<li> <a href="showFile.php?name=02_APolling.html">shory polling html file</a>
+<li> <a href="showFile.php?name=03_display1.php">short polling php file</a>
+<li> <a href="showFile.php?name=02_BLongPolling.html">long polling html file</a>
+<li> <a href="showFile.php?name=03_display2.php">long polling php file</a>
+</ul>
+<br>
+
+<!--------------------------------->
+
+
+<!-- 4. PHP Objects -->
+<h2>PhP Objects</h2>
+This example demonstrates some simple PHP object operations and
+declarations.
+<br>
+Play with the example by clicking on the link
+<br>
+<ul>
+<li> <a href="05_Objects.php">Objects</a>
+</ul>
+<br>
+There is one file (click to view the file): 
+<ul>
+<li> <a href="showFile.php?name=05_Objects.php">php file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+<!-- 5. Connecting to Database -->
+<h2>Connecting to Database</h2>
+This example demonstrates how to do some simple db operations
+<br>
+Play with the example by clicking on the link.
+This code uses my local database. You will need to connect to your own
+database... and do your own operations
+<br>
+<ul>
+<li> <a href="06_connectingtodatabase.php">database</a>
+</ul>
+<br>
+There is one file (click to view the file): 
+<ul>
+<li> <a href="showFile.php?name=06_connectingtodatabase.php">php file</a>
+</ul>
+<br>
+<!--------------------------------->
+
+
+</BODY>
+</HTML>

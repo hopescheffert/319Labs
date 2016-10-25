@@ -1,0 +1,266 @@
+<html>
+<head>
+	<!-- This is the websocket SERVER -->
+	<meta charset="UTF-8">
+	<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body id="body">
+
+
+
+<div id="login">
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#myPage">Solarbox</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="about.html">ABOUT</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-12">
+								<a class="active" id="login-form-link">Login</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+
+								<form id="login-form" method="post" style="display: block;">
+									<div class="form-group">
+										<input type="text" name="email" id="username" tabindex="1" class="form-control" placeholder="Name" value="">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input onclick="login()" tabindex="4" class="form-control btn btn-login" value="Sign In">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="content" style="display: none">
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#myPage">Solarbox</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a onclick="logout()" href="#">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div id="contentPane">
+		<div id="leftPane" class="col-md-6">
+			<h1 style="text-align: center;">Active Users</h1>
+			<div id="users" style="margin-bottom: 0px;">
+			</div>
+			<br>
+            <h1 style="text-align: center; margin-top: 0px;">Solarbox Terminal</h1>
+            <p style="text-align: center; font-size: 85%">Input Format:<br>
+                addPlanet + " " + Color + " " + Size + " " + Distance From Sun + " " + Speed + " " + Name of Planet + RETURN<br>
+                removePlanet + Name of Planet + RETURN</p>
+            <p style="text-align: center; font-size: 85%">Input Examples: <br>
+                addPlanet green 1 12 2 Jupiter <br>
+                addPlanet red 2 7 3 Saturn <br>
+                removePlanet Saturn</p>
+            <div id="window">
+                <div id="toolbar">
+                    <div class="top">
+                        <div id="lights">
+                            <div class="light red">
+                                <div class="glyph">×</div>
+                                <div class="shine"></div>
+                                <div class="glow"></div>
+                            </div>
+                            <div class="light yellow">
+                                <div class="glyph">-</div>
+                                <div class="shine"></div>
+                                <div class="glow"></div>
+                            </div>
+                            <div class="light green">
+                                <div class="glyph">+</div>
+                                <div class="shine"></div>
+                                <div class="glow"></div>
+                            </div>
+                        </div>
+                        <div id="title">
+                            <div class="folder">
+                                <div class="tab"></div>
+                                <div class="body"></div>
+                            </div>
+                            Solarbox
+                        </div>
+                        <div id="bubble">
+                            <div class="shine"></div>
+                            <div class="glow"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="terminalBody">
+                    <p> Solarbox: Version 1.0 on ttys006 <br />
+                        Doms-MacBook-Pro:flight dom$  </p>
+                    <div id="commands">
+
+                    </div>
+                    <span id="terminalTab">Solarbox><input class="form-control" id="newCommand" type="text" autofocus="autofocus"></span>
+
+                </div>
+            </div>
+        </div>
+		</div>
+		<div id="rightPane" class="col-md-6">
+            <h1 style="text-align: center">Solarbox</h1>
+            <canvas id="theCanvas" width="600" height="400">
+				Please use a browser that supports "canvas"
+			</canvas>
+
+
+			<p>
+				Camera controls:
+			<ul style="list-style:none; font-size: 85%;">
+				<li>w, a, s, d - move forward, left, back, right
+				<li>r, f - move up, down
+				<li>i, j, k, l - look up, left, down, right
+				<li>I, J, K, L - orbit down, right, up, left
+				<li>O - face origin
+				<li>p - Pause
+				<li>W - decrease fov
+				<li>S - increase fov
+			</ul>
+
+			<script src="http://threejs.org/build/three.min.js"></script>
+			<script src="three.js"></script>
+			<script src="three.min.js"></script>
+			<script src="OBJLoader.js"></script>
+
+			<script src="Space.js"></script>
+			<script src="OBJLoader.js"></script>
+			<script>window.onload = start</script>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<script>
+  var userName;
+
+  function login(){
+	userName = document.getElementById("username").value;
+	socket.emit('login', document.getElementById("username").value);
+	document.getElementById("login").style.display = "none";
+	document.getElementById("content").style.display = "inline";
+  	document.getElementById("body").style.paddingTop = "60px";
+  	document.getElementById("username").setAttribute("placeholder", "Name");
+  }
+  
+  function logout(){
+	socket.emit('logout', userName);
+	document.getElementById("login").style.display = "inline";
+	document.getElementById("content").style.display = "none";
+  	document.getElementById("body").style.paddingTop = "190px";
+  }
+  
+  // connect to WEBSOCKET server
+  var socket = io.connect('http://localhost:5000');
+
+  socket.emit('test', 'this is a test');
+  
+  socket.on('updateUsers', function(users){
+	  var elem = document.getElementById('users');
+	  elem.innerHTML="";
+	  elem.innerHTML += users[users.length-1];
+	  for(var i = users.length-2; i >= 0; i--){
+		elem.innerHTML += "<br>" + users[i];
+	 }
+  });
+  
+  socket.on('updatePosts', function(posts){
+     var elem = document.getElementById('commands');
+	 elem.innerHTML="";
+	 for(var i = 0; i <= posts.length-1; i++){
+		var newPost = document.createElement("p");
+		newPost.setAttribute("id", i);
+		newPost.setAttribute("class", "post");
+		newPost.setAttribute("title", posts[i].username);
+		newPost.innerHTML = posts[i].username + "> " + posts[i].post;
+		elem.appendChild(newPost);
+	 }
+  });
+
+  function sendCommand(){
+      socket.emit('command', document.getElementById('newCommand').value);
+  }
+
+  socket.on('updatePlanets', function(planets){
+      for(var i = planets.length-1; i >= 0; i--){
+          addPlanet(planets[i].size, planets[i].distance, planets[i].color, planets[i].speed, planets[i].name);
+          console.log(planets[i].distance);
+      }
+  });
+
+  socket.on('addPlanet', function(desc){
+      addPlanet(desc.size, desc.distance, desc.color, desc.speed, desc.name);
+  });
+
+  socket.on('removePlanet', function(name){
+      removePlanet(name);
+  });
+
+  socket.on('InvalidCommand', function(){
+       alert("Sorry you have entered an invalid command. Please try again.")
+  });
+
+  $('input').keydown(function(e) {
+      if (e.keyCode == 13) {
+          socket.emit('submitPost', {post: document.getElementById("newCommand").value, username: userName});
+          socket.emit('command', document.getElementById("newCommand").value);
+          document.getElementById("newCommand").value = "";
+          var myDiv = $("#commands");
+          myDiv.animate({ scrollTop: $("#commands").prop("scrollHeight") }, 75);
+      }
+  });
+
+</script>
+</body>
+</html>

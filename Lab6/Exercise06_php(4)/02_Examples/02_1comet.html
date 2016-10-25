@@ -1,0 +1,78 @@
+
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+<div id="colorThis">
+The below section will be populated by data from a separate request to
+the server when we click the button. The server takes a while to respond
+and so for a while nothing will happen but you can do other things (like
+clicking the second button which will toggle the color of this text).
+<br>
+<h2>
+works as expected on Chrome and Firefox. Not on Safari </h2>
+only some browsers allow you to see partial results.
+</div>
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+var btn1 = document.getElementById("button1");
+var btn2 = document.getElementById("button2");
+
+btn1.onclick =  sendARequest;
+btn2.onclick =  toggleColor;
+
+
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  if (toggleColor.status) {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "blue";
+    toggleColor.status = false;
+  }
+  else {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "red";
+    toggleColor.status = true;
+  }
+}
+
+// XHR READY STATES
+// 0: request not initialized 
+// 1: server connection established
+// 2: request received 
+// 3: processing request 
+// 4: request finished and response is ready
+
+function sendARequest() {
+  // 1. CREATE XHR object
+  var xhr = new XMLHttpRequest();
+
+  // 2. SET UP CALLBACKS
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 3) { // processing request
+      document.getElementById("myDiv").innerHTML =  xhr.responseText;
+    }
+    else if (xhr.readyState == 4) { // request processed completely
+      document.getElementById("myDiv").innerHTML =  xhr.responseText;
+    }
+  };
+
+  // 3. SET UP REQUEST
+  xhr.open("get","02_comet.php",true); 
+
+  // 4. SEND REQUEST
+  xhr.send(null);
+}
+
+</script>
+
+</BODY>
+</HTML>

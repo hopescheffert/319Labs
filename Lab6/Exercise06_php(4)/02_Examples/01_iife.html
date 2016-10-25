@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</HEAD>
+<BODY>
+<button onclick="attachHandlers1()">ATTACH HANDLERS 1</button> <br><br>
+<button onclick="attachHandlers2()">ATTACH HANDLERS 2</button>
+<hr>
+<button id="button1">First</button> <br>
+<button id="button2">Second</button> <br>
+<button id="button3">Third</button>
+
+<script>
+//
+// IIFE  Immediately Invoked Function Expression
+// THE PURPOSE OF THIS EXAMPLE IS TO MOTIVATE USE OF IIFE's
+// a) TO ALLOW VALUES TO PERSIST WHEN NEEDED
+// b) TO PREVENT POLLUTING GLOBAL MEMORY SPACE
+//
+
+
+// Example-1 (Avoid!)
+// function to associate index i to buttons
+// This function does not seem to achieve its objective. Why?
+
+function attachHandlers1() {
+  for (var i = 1; i <= 3; i++) {
+    $("#button" + i).click(function() {console.log(i);});
+  }
+} // end of attachHandlers1
+
+
+// Example-2 (Use)
+// function to associate index i to buttons
+// This function achieves its objective. Why?
+
+function attachHandlers2() {
+  for (var i = 1; i <= 3; i++) {
+    $("#button" + i).click(
+       (function() {
+          var j = i;
+          return function() { console.log(j) }
+        })());
+  }
+} // end of attachHandlers2
+
+
+</script>
+
+
+</BODY>
+</HTML>

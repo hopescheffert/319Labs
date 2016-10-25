@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<script src="/js/jquery-1.4.4.min.js" ></script>
+</HEAD>
+<BODY>
+<button id="btn1">Click</Button>
+<div id="test">
+</div>
+<script type="appresources/string" id="example">
+title
+#
+<pre>
+here is
+a mind blowing idea
+</pre>
+#
+2
+#
+one two three
+#
+hello
+#
+bye
+#
+huh
+@
+title
+#
+<pre>
+here is
+a mind blowing idea
+</pre>
+#
+2
+#
+one two three
+#
+hello
+#
+bye
+#
+The last one
+</script>
+<script>
+  $(document).ready(function (){
+    $('#btn1').click(showStuff);
+  });
+  function showStuff() {
+    text = $("#example").html();
+    pool = text.split('@');
+      l = [];
+    function splitQ(element, index, array) {
+    }
+    pool.forEach (function (element, index, array) {
+      a = element.split("#");
+      o = {}
+      o['title'] = a[0];
+      o['Q'] = a[1];
+      o['correct'] = a[2]-1;
+      o['choices'] = a.slice(3,a.length);
+      o['msg'] = "Try Again!"
+      l.push(o);
+    } );
+
+    l.forEach(function(e,i,a) {
+      console.log(e);
+    });
+  }
+</script>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+
+<HTML>
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<HEAD>
+</HEAD>
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+<div id="colorThis">
+The below section will be populated by data from a separate request to
+the server when we click the button. The server takes a while to respond
+and so for a while nothing will happen but you can do other things (like
+clicking the second button which will toggle the color of this text).
+<h2>
+works as expected on Chrome and Firefox. Not on Safari </h2>
+only some browsers allow you to see partial results.
+</div>
+</div>
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+var btn1 = $("#button1");
+var btn2 = $("#button2");
+
+btn2.click(toggleColor);
+
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  var colorDiv = $("#colorThis");
+  if (toggleColor.status) {
+    colorDiv.css("color","blue");
+    toggleColor.status = false;
+  }
+  else {
+    colorDiv.css("color","red");
+    toggleColor.status = true;
+  }
+}
+
+btn1.click( function() {
+  // 1. CREATE XHR object
+  $.ajax( {
+    url: "02_comet.php",
+    success: function(data) {
+      $("#myDiv").html(data);
+    }
+  });
+});
+
+</script>
+
+
+</BODY>
+</HTML>
