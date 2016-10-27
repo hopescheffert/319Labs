@@ -20,10 +20,10 @@ $conn = new mysqli($dbServer, $username, $password, $dbName);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-  echo "Connected successfully<br>";
+  //echo "Connected successfully<br>";
 }
 
-echo $mysqli->host_info . "<br>";
+//echo $conn->host_info . "<br>";
 
 
 // --------------------------------------
