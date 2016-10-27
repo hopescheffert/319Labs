@@ -1,0 +1,40 @@
+<html>
+<head>
+<style>
+.error {color: #FF0000;}
+</style>
+</head>
+<body>
+    <p><span class="error">* required field.</span></p>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+        Username: <input type="text" name="username" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        Password: <input type="password" name="password" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        Confirm Password: <input type="password" name="confirm" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        Email: <input type="email" name="email" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        Phone: <input type="text" name="phone">
+        <br><br>
+        Are you a librarian? <span class="error">* <?php echo $err;?></span> <br>
+        <input type="radio" name="userType" value="true" checked required> Yes <br>
+        <input type="radio" name="userType" value="false"> No
+        <br><br>
+        First Name: <input type="text" name="firstName" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        Last Name: <input type="text" name="lastName" required>
+        <span class="error">* <?php echo $err;?></span>
+        <br><br>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+
+
+</body>
+
+</html>

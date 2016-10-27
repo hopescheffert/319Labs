@@ -28,6 +28,7 @@ class Book
 
     function deleteBook($bookID) //librarian only
     {
+        //TODO check
         $sql = "DELETE FROM books WHERE bookID=" . $bookID;
         if ($conn->query($sql) === FALSE)
         {
@@ -39,7 +40,7 @@ class Book
 
     function borrowBook($bookID) //student only
     {
-        //TODO
+        //TODO check
         $sql = "UPDATE books SET availability = '0' WHERE bookID=" . $bookID;
         if ($conn->query($sql) === FALSE)
         {
@@ -51,7 +52,7 @@ class Book
 
     function returnBook($bookID) //student only
     {
-        //TODO
+        //TODO check
         $sql = "UPDATE books SET availability = '1' WHERE bookID=" . $bookID;
         if ($conn->query($sql) === FALSE)
         {
