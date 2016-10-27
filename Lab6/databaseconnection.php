@@ -7,6 +7,7 @@ $username = "dbu319t12";
 $password = "Za+ute6A";
 $dbServer = "mysql.cs.iastate.edu";
 $dbName   = "db319t12";
+$port = 3306;
 
 // --------------------------------------
 // --- PART-1 --- CONNECT TO DATABASE ---
@@ -14,7 +15,7 @@ $dbName   = "db319t12";
 // USE OO MYSQL IMPROVED
 
 // Create connection
-$conn = new mysqli($dbServer, $username, $password, $dbName);
+$conn = new mysqli($dbServer, $username, $password, $dbName, $port);
 
 // Check connection
 if ($conn->connect_error) {
@@ -59,6 +60,6 @@ if ($conn->connect_error) {
 // --------------------------------------
 // --- PART-4 --- CLOSE -----------------
 // --------------------------------------
-$conn->close();
+//$conn->close();
 
 ?>

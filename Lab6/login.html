@@ -1,0 +1,66 @@
+<!-- login.html
+- use ajax call to /checkLogin.php file to check user/password in database
+– on success go to Library.php
+– on failure – ask the user to correct the username and password
+-->
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+    <form id="myform">
+        Username<br><input type="text" id="username" name="username" /><br>
+        Password<br><input type="password" id="password" name="password" /><br>
+        Are you a librarian?
+        <input type="radio" id="userType" name="userType" value="true" checked required> Yes</input>
+        <input type="radio" id="userType" name="userType" value="false"> No</input>
+        <br><br>
+        <input type="submit" id="login" value="Login"/>
+    </form>
+
+    <script>
+    $(document).ready(function()
+    {
+        var myform = $("#myform");
+        var user = $("#username");
+        var pass = $("#password");
+        var isLibrarian = $("#userType");
+        //boolean to TINYINT check
+        // x = 0;
+        // if(isLibrarian.val())
+        // {
+        //     x = 1;
+        // }
+        //AJAX CALL TO checkLogin.php TO CHECK USER/PASSWORD
+        myform.submit(function(e)
+        {
+            e.preventDefault(); //use ajax instead
+            $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val() + "&librarian=" + isLibrarian.val(),
+            function(data)
+            {
+                var result = JSON.parse(data);
+                if(!result)
+                {
+                    //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
+                    alert("Error: Incorrect username and/or password");
+                    window.location = "login.html";
+                }
+                else
+                {
+                    //ON SUCCESS GO TO VIEWPOSTS.php
+                    window.location = "Library.php";
+                    alert("logged in successfully");
+                }
+
+            })
+        });
+    })
+
+
+    </script>
+
+
+</body>
+
+
+</html>
