@@ -17,9 +17,9 @@ class Book
         //assume availability is 1 (present)
         $sql = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES (" .
         $bookID . ", " . $bookTitle . ", " . $author . ", 1)";
-        if ($conn->query($sql) === FALSE)
+        if(mysqli_query($conn, $sql) === FALSE)
         {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
         }
         //adds to a shelf in the library that is not full
         //Assume shelves have capacity of 20 books and that there are 4 shelves
@@ -29,10 +29,10 @@ class Book
     function deleteBook($bookID) //librarian only
     {
         //TODO check
-        $sql = "DELETE FROM books WHERE bookID=" . $bookID;
-        if ($conn->query($sql) === FALSE)
+        $sql = "DELETE FROM books WHERE bookID='" . $bookID . "'";
+        if(mysqli_query($conn, $sql) === FALSE)
         {
-            echo "Error deleting record: " . $conn->error;
+            echo "Error deleting record: " . mysqli_error($conn);
         }
         //removes the book from the library
         //Hint : sql delete from book table in DATABASE.
@@ -41,10 +41,10 @@ class Book
     function borrowBook($bookID) //student only
     {
         //TODO check
-        $sql = "UPDATE books SET availability = '0' WHERE bookID=" . $bookID;
-        if ($conn->query($sql) === FALSE)
+        $sql = "UPDATE books SET availability = '0' WHERE bookID='" . $bookID . "'";
+        if(mysqli_query($conn, $sql) === FALSE)
         {
-            echo "Error updating record: " . $conn->error;
+            echo "Error updating record: " . mysqli_error($conn);
         }
         //should be able to take a book on loan if it is available.
         //Hint : Use sql update _books table.
@@ -53,18 +53,14 @@ class Book
     function returnBook($bookID) //student only
     {
         //TODO check
-        $sql = "UPDATE books SET availability = '1' WHERE bookID=" . $bookID;
-        if ($conn->query($sql) === FALSE)
+        $sql = "UPDATE books SET availability = '1' WHERE bookID='" . $bookID . "'";
+        if(mysqli_query($conn, $sql) === FALSE)
         {
-            echo "Error updating record: " . $conn->error;
+            echo "Error updating record: " . mysqli_error($conn);
         }
         //return the book and make the book available.
         //Hint : Use sql update_books table.
     }
-
-
-
-
 
 
 }

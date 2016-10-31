@@ -3,7 +3,8 @@ session_start();
 include("databaseconnection.php");
 if(isset($_SESSION["username"]))
 {
-    echo "<div style='float:right' >Welcome, " . $_SESSION["username"]. "</div><br>";
+    $curUser = $_SESSION["username"];
+    echo "<div style='float:right' >Welcome, " . $curUser. "</div><br>";
     echo "<div style='float:right'> <a href='logout.php'>Logout</a>". "</div><br>";
 }
 ?>
@@ -13,17 +14,21 @@ if(isset($_SESSION["username"]))
 </head>
 <body>
 
+    <input type="button" value="View Borrow History" onclick="<?php viewBorrowHistory($curUser); ?>" </input>
+
     <?php
     //Library.php
-
     function viewBorrowHistory($username) //librarian only
     {
         //TODO
-        $sql = "SELECT bookID, dueDate, returnedDate FROM loanHistory WHERE usernName=" . $username;
-        if ($result->num_rows > 0)
+        $sql = "SELECT bookID, dueDate, returnedDate FROM loanHistory WHERE userName='" . $username ."'";
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) > 0)
         {
             // output data of each row
-            while($row = $result->fetch_assoc())
+            echo "Borrow History: \n";
+            while($row = mysqli_fetch_assoc($result))
             {
                 echo "bookID: " . $row["bookID"]. " - Due Date: " . $row["dueDate"]. " - Returned Date: " . $row["returnedDate"]. "<br>";
             }

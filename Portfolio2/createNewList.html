@@ -1,0 +1,84 @@
+<script>
+// function createNewList()
+// {
+//     var name = prompt("Enter name of new List");
+//     var newDiv = document.createElement("div");
+//     newDiv.setAttribute("id", name);
+//     newDiv.setAttribute("ng-app", name);
+//     newDiv.setAttribute("ng-controller", name+"controller");
+//     newDiv.innerHTML = "<header class='w3-container w3-light-grey w3-padding-16'>" +
+//     "<h3>" + name + "</h3>" +
+//     "</header>" +
+//     "<ul class='w3-ul'>" +
+//     "<li ng-repeat='x in list' class='w3-padding-16'>{{x}}<span ng-click='removeTask($index)' style='cursor:pointer;' class='w3-right w3-margin-right'>&times;</span></li>" +
+//     "</ul>" +
+//     "<div class='w3-container w3-light-grey w3-padding-16'>" +
+//     "<div class='w3-row w3-margin-top'>" +
+//     "<div class='w3-col s10'>" +
+//     "<input placeholder='Add task' ng-model='addThis' class='w3-input w3-border w3-padding'>" +
+//     "</div>" +
+//     "<div class='w3-col s2'> " +
+//     "<button ng-click='addTask()' class='w3-btn w3-padding w3-blue'>Add</button> " +
+//     "</div> " +
+//     "</div> " +
+//     "<p class='w3-padding-left w3-text-red'>{{error}}</p> " +
+//     "</div>";
+//     console.log(newDiv);
+//     console.log(name);
+//     var appname = angular.module(name, []);
+//     var script = document.createElement("script");
+//     script.innerHTML = "angular.module('" + name +"', []).controller('" + name +"controller'), function($scope) {\n" +
+//     "$scope.list = [];\n" +
+//     "$scope.addTask = function()\n" +
+//     "{\n" +
+//     "$scope.error = ''\n;" +
+//     "if(!$scope.addThis)\n" +
+//     "{\nreturn;\n}" +
+//     "if($scope.list.indexOf($scope.addThis) == -1)\n" +
+//     "{\n$scope.list.push($scope.addThis);\n}\n" +
+//     "else\n{\n$scope.error = 'You have already added this task';\n}\n" +
+//     "}\n" +
+//     "//removes the task at the specified index x\n" +
+//     "\n$scope.removeTask = function(x)\n{\n" +
+//     "$scope.error = '';\n" +
+//     "$scope.list.splice(x, 1);\n}\n " +
+//     "}";
+//     newDiv.appendChild(script);
+//     document.body.appendChild(newDiv);
+//     // appname.controller(name + "controller", function($scope)
+//     // {
+//     //     $scope.list = [];
+//     //     $scope.addTask = function()
+//     //     {
+//     //         $scope.error = "";
+//     //         if(!$scope.addThis)
+//     //         {
+//     //             return;
+//     //         }
+//     //         if($scope.list.indexOf($scope.addThis) == -1)
+//     //         {
+//     //             $scope.list.push($scope.addThis);
+//     //
+//     //         }
+//     //         else
+//     //         {
+//     //             $scope.error = "You have already added this task";
+//     //         }
+//     //     }
+//     //     //removes the task at the specified index x
+//     //     $scope.removeTask = function(x)
+//     //     {
+//     //         $scope.error = "";
+//     //         $scope.list.splice(x, 1);
+//     //     }
+//     //
+//     // })
+//
+//
+//
+// }
+// angular.element(document).ready(function()
+// {
+//     angular.bootstrap(document.getElementById(name), [name]);
+// })
+</script>

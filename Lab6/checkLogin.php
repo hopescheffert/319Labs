@@ -21,26 +21,28 @@ else
     $isLibrarian = 0;
 }
 
-$sql = "SELECT password, librarian FROM users WHERE userName=" . $username;
+$sql = "SELECT password, librarian FROM users WHERE userName='" .$username . "'";
 $result = mysqli_query($conn, $sql);
 
-if (mysqli_num_rows($result) > 0)
+if(mysqli_num_rows($result) > 0)
 {
     // output data of each row
     while($row = mysqli_fetch_assoc($result))
     {
         //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
-        if(strcmp($password, $row["password"]) == 0 && $isLibrarian == $row["librarian"])
+        $encrypted = MD5($password);
+        if((strcmp($encrypted, $row["password"]) == 0) && ($isLibrarian == $row["librarian"]))
         {
             //found the user
+            $_SESSION["username"] = $username;
             echo json_encode($succeeded);
+            exit;
         }
     }
+
 }
-else
-{
-    echo json_encode($failed);
-}
+echo json_encode($failed);
+
 
 
 

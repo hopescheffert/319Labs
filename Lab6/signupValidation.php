@@ -184,7 +184,6 @@ if(isset($_SESSION["username"]))
             header("Location: login.html");
         }
 
-        mysqli_close($conn);
     }
 
     ?>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<body>
+
+    <script>
+
+
+    //TODO create new list and display on screen like others
+    //https://docs.angularjs.org/guide/directive
+
+    var app = angular.module("myList", []);
+    app.controller("myListCtrl", function($scope) {
+        $scope.stuff = ["Register for classes", "Call for dentist appointment", "Get milk from the store"];
+        //adds the task to the to do list at the end
+        $scope.addTask = function()
+        {
+            $scope.error = "";
+            if(!$scope.addThis)
+            {
+                return;
+            }
+            if($scope.stuff.indexOf($scope.addThis) == -1)
+            {
+                $scope.stuff.push($scope.addThis);
+
+            }
+            else
+            {
+                $scope.error = "You have already added this task";
+            }
+        }
+        //removes the task at the specified index x
+        $scope.removeTask = function(x)
+        {
+            $scope.error = "";
+            $scope.stuff.splice(x, 1);
+        }
+    })
+
+    //TODO directive for each list
+    app.directive('my-list', function()
+    {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},
+            templateUrl: 'my-list.html'
+        };
+    });
+
+
+
+
+    // var homeworkApp = angular.module("myHomework", []);
+    //
+    // homeworkApp.controller("myHomeworkCtrl", function($scope) {
+    //     $scope.assignments = ["319 Due Monday", "308 Due Wednesday", "329 Due Thursday"];
+    //     //adds the task to the to do list at the end
+    //     $scope.addAssignment = function()
+    //     {
+    //         $scope.error = "";
+    //         if(!$scope.addThis)
+    //         {
+    //             return;
+    //         }
+    //         if($scope.assignments.indexOf($scope.addThis) == -1)
+    //         {
+    //             $scope.assignments.push($scope.addThis);
+    //
+    //         }
+    //         else
+    //         {
+    //             $scope.error = "You have already added this assignment";
+    //         }
+    //     }
+    //     //removes the task at the specified index x
+    //     $scope.removeAssignment = function(x)
+    //     {
+    //         $scope.error = "";
+    //         $scope.assignments.splice(x, 1);
+    //     }
+    // });
+    //
+    // //display app for all lists
+    // angular.element(document).ready(function()
+    // {
+    //     angular.bootstrap(document.getElementById("homeworkToDo"), ['myHomework']);
+    //
+    // })
+
+
+
+
+
+    </script>
+
+
+
+    <div ng-controller="myListCtrl">
+        <my-list>
+            <div id="toDo" ng-app="myList" ng-cloak ng-controller="myListCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
+                <header class="w3-container w3-light-grey w3-padding-16">
+                    <h3>To Do</h3>
+                </header>
+                <ul class="w3-ul">
+                    <li ng-repeat="x in stuff" class="w3-padding-16">{{x}}<span ng-click="removeTask($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
+                </ul>
+                <div class="w3-container w3-light-grey w3-padding-16">
+                    <div class="w3-row w3-margin-top">
+                        <div class="w3-col s10">
+                            <input placeholder="Add task" ng-model="addThis" class="w3-input w3-border w3-padding">
+                        </div>
+                        <div class="w3-col s2">
+                            <button ng-click="addTask()" class="w3-btn w3-padding w3-blue">Add</button>
+                        </div>
+                    </div>
+                    <p class="w3-padding-left w3-text-red">{{error}}</p>
+
+                </div>
+            </div>
+
+        </my-list>
+    </div>
+
+    <!-- <div id="homeworkToDo" ng-app="myHomework" ng-cloak ng-controller="myHomeworkCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
+    <header class="w3-container w3-light-grey w3-padding-16">
+    <h3>Homework</h3>
+</header>
+<ul class="w3-ul">
+<li ng-repeat="x in assignments" class="w3-padding-16">{{x}}<span ng-click="removeAssignment($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
+</ul>
+<div class="w3-container w3-light-grey w3-padding-16">
+<div class="w3-row w3-margin-top">
+<div class="w3-col s10">
+<input placeholder="Add assignment" ng-model="addThis" class="w3-input w3-border w3-padding">
+</div>
+<div class="w3-col s2">
+<button ng-click="addAssignment()" class="w3-btn w3-padding w3-blue">Add</button>
+</div>
+</div>
+<p class="w3-padding-left w3-text-red">{{error}}</p>
+</div>
+</div> -->
+
+<!-- <button id="createList" onclick="createNewList()" class="w3-btn w3-padding w3-blue">Create New List</button> -->
+
+
+
+
+
+
+
+</body>
+</html>

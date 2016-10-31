@@ -38,6 +38,7 @@
             $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val() + "&librarian=" + isLibrarian.val(),
             function(data)
             {
+                //alert("data: " + data);
                 var result = JSON.parse(data);
                 if(!result)
                 {
@@ -48,6 +49,7 @@
                 else
                 {
                     //ON SUCCESS GO TO VIEWPOSTS.php
+
                     window.location = "Library.php";
                     alert("logged in successfully");
                 }
