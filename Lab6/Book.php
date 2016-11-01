@@ -13,13 +13,16 @@ class Book
 
     function addBook($bookID, $bookTitle, $author) //librarian only
     {
-        //TODO adds only to shelf that is not full
         //assume availability is 1 (present)
         $sql = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES (" .
         $bookID . ", " . $bookTitle . ", " . $author . ", 1)";
         if(mysqli_query($conn, $sql) === FALSE)
         {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
+        else
+        {
+            //TODO adds only to shelf that is not full
         }
         //adds to a shelf in the library that is not full
         //Assume shelves have capacity of 20 books and that there are 4 shelves

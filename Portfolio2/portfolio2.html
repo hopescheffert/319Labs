@@ -53,42 +53,42 @@
 
 
 
-    // var homeworkApp = angular.module("myHomework", []);
-    //
-    // homeworkApp.controller("myHomeworkCtrl", function($scope) {
-    //     $scope.assignments = ["319 Due Monday", "308 Due Wednesday", "329 Due Thursday"];
-    //     //adds the task to the to do list at the end
-    //     $scope.addAssignment = function()
-    //     {
-    //         $scope.error = "";
-    //         if(!$scope.addThis)
-    //         {
-    //             return;
-    //         }
-    //         if($scope.assignments.indexOf($scope.addThis) == -1)
-    //         {
-    //             $scope.assignments.push($scope.addThis);
-    //
-    //         }
-    //         else
-    //         {
-    //             $scope.error = "You have already added this assignment";
-    //         }
-    //     }
-    //     //removes the task at the specified index x
-    //     $scope.removeAssignment = function(x)
-    //     {
-    //         $scope.error = "";
-    //         $scope.assignments.splice(x, 1);
-    //     }
-    // });
-    //
-    // //display app for all lists
-    // angular.element(document).ready(function()
-    // {
-    //     angular.bootstrap(document.getElementById("homeworkToDo"), ['myHomework']);
-    //
-    // })
+    var homeworkApp = angular.module("myHomework", []);
+    
+    homeworkApp.controller("myHomeworkCtrl", function($scope) {
+        $scope.assignments = ["319 Due Monday", "308 Due Wednesday", "329 Due Thursday"];
+        //adds the task to the to do list at the end
+        $scope.addAssignment = function()
+        {
+            $scope.error = "";
+            if(!$scope.addThis)
+            {
+                return;
+            }
+            if($scope.assignments.indexOf($scope.addThis) == -1)
+            {
+                $scope.assignments.push($scope.addThis);
+
+            }
+            else
+            {
+                $scope.error = "You have already added this assignment";
+            }
+        }
+        //removes the task at the specified index x
+        $scope.removeAssignment = function(x)
+        {
+            $scope.error = "";
+            $scope.assignments.splice(x, 1);
+        }
+    });
+
+    //display app for all lists
+    angular.element(document).ready(function()
+    {
+        angular.bootstrap(document.getElementById("homeworkToDo"), ['myHomework']);
+
+    })
 
 
 
@@ -124,27 +124,27 @@
         </my-list>
     </div>
 
-    <!-- <div id="homeworkToDo" ng-app="myHomework" ng-cloak ng-controller="myHomeworkCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
-    <header class="w3-container w3-light-grey w3-padding-16">
-    <h3>Homework</h3>
-</header>
-<ul class="w3-ul">
-<li ng-repeat="x in assignments" class="w3-padding-16">{{x}}<span ng-click="removeAssignment($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
-</ul>
-<div class="w3-container w3-light-grey w3-padding-16">
-<div class="w3-row w3-margin-top">
-<div class="w3-col s10">
-<input placeholder="Add assignment" ng-model="addThis" class="w3-input w3-border w3-padding">
-</div>
-<div class="w3-col s2">
-<button ng-click="addAssignment()" class="w3-btn w3-padding w3-blue">Add</button>
-</div>
-</div>
-<p class="w3-padding-left w3-text-red">{{error}}</p>
-</div>
-</div> -->
+    <div id="homeworkToDo" ng-app="myHomework" ng-cloak ng-controller="myHomeworkCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
+        <header class="w3-container w3-light-grey w3-padding-16">
+            <h3>Homework</h3>
+        </header>
+        <ul class="w3-ul">
+            <li ng-repeat="x in assignments" class="w3-padding-16">{{x}}<span ng-click="removeAssignment($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
+        </ul>
+        <div class="w3-container w3-light-grey w3-padding-16">
+            <div class="w3-row w3-margin-top">
+                <div class="w3-col s10">
+                    <input placeholder="Add assignment" ng-model="addThis" class="w3-input w3-border w3-padding">
+                </div>
+                <div class="w3-col s2">
+                    <button ng-click="addAssignment()" class="w3-btn w3-padding w3-blue">Add</button>
+                </div>
+            </div>
+            <p class="w3-padding-left w3-text-red">{{error}}</p>
+        </div>
+    </div>
 
-<!-- <button id="createList" onclick="createNewList()" class="w3-btn w3-padding w3-blue">Create New List</button> -->
+    <!-- <button id="createList" onclick="createNewList()" class="w3-btn w3-padding w3-blue">Create New List</button> -->
 
 
 
