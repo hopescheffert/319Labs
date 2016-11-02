@@ -2,31 +2,71 @@
 //Book.php
 session_start();
 include("databaseconnection.php");
+global $conn;
+
+$bookID = $_GET["bookID"];
+$bookTitle = $_GET["bookTitle"];
+$bookAuthor = $_GET["bookAuthor"];
+$bookShelf = $_GET["bookShelf"];
+
+//TODO cannot call addBook() ?
+
+
+
 
 
 class Book
 {
-    function __construct($bookID, $bookTitle, $author, $availability)
+    public function __construct($bookID, $bookTitle, $bookAuthor, $bookShelf)
     {
-        //TODO?
+        $this->$bookID = $bookID;
+        $this->$bookTitle = $bookTitle;
+        $this->$bookAuthor = $bookAuthor;
+        $this->$bookShelf = $bookShelf;
     }
 
-    function addBook($bookID, $bookTitle, $author) //librarian only
+    public function addBook($bookID, $bookTitle, $bookAuthor, $bookShelf) //librarian only
     {
-        //assume availability is 1 (present)
-        $sql = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES (" .
-        $bookID . ", " . $bookTitle . ", " . $author . ", 1)";
-        if(mysqli_query($conn, $sql) === FALSE)
+        //adds to a shelf in the library that is not full
+        //Assume shelves have capacity of 20 books and that there are 4 shelves
+        //which names by “Art”, “Science”, “Sport” and “Literature”
+
+        if(strcmp($bookShelf, "literature"))
         {
-            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            $shelfID = 0;
+        }
+        else if(strcmp($bookShelf, "science"))
+        {
+            $shelfID = 1;
+        }
+        else if(strcmp($bookShelf, "sports"))
+        {
+            $shelfID = 2;
+        }
+        else if(strcmp($bookShelf, "art"))
+        {
+            $shelfID = 3;
         }
         else
         {
-            //TODO adds only to shelf that is not full
+            echo "Invalid shelf";
+            return;
         }
-        //adds to a shelf in the library that is not full
-        //Assume shelves have capacity of 20 books and that there are 4 shelves
-        //which names by “Art”, “Science”, “Sport” and “Literature”.
+
+        //assume availability is 1 (present)
+        //add book to books table
+        $sql1 = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES (" . $bookID . ", " . $bookTitle . ", " . $author . ", 1)";
+        //also add to shelves table
+        $sql2 = "INSERT INTO shelves (shelfID, shelfName, bookID) VALUES (" .$shelfID . ", " . $bookShelf . ", " . $bookID . ", 1)";
+        if(mysqli_query($conn, $sql1) === FALSE)
+        {
+            echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
+        }
+        else if(mysqli_query($conn, $sql2) === FALSE)
+        {
+            echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+        }
+
     }
 
     function deleteBook($bookID) //librarian only
@@ -67,6 +107,12 @@ class Book
 
 
 }
+$bookObj = new Book;
+$bookObj->addBook($bookID, $bookTitle, $bookAuthor, $bookShelf);
+
+
+
+
 
 
 ?>
