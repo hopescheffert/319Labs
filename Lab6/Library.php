@@ -26,15 +26,19 @@ if(isset($_SESSION["username"]))
 
     <input type="button" id="viewHistory" value="View Borrow History"</input>
     <input type="button" id="addbook" value="Add Book"</input>
+    <input type="button" id="deletebook" value="Delete Book"</input>
+
 
 
     <script>
+    //TODO need the library to save books in the shelves
     $(document).ready(function()
     {
 
         //ajax request to display borrowed history
         var historyButton = $("#viewHistory");
         var addBookButton = $("#addbook");
+        var deleteBookButton = $("#deletebook");
         var table = document.getElementById("lib");
 
 
@@ -59,88 +63,136 @@ if(isset($_SESSION["username"]))
             bookTitle = prompt("Enter the book Title");
             bookAuthor = prompt("Enter the book's author");
             bookShelf = prompt("Enter the book shelf");
+            console.log(bookShelf);
+            if(bookShelf == "literature" || bookShelf == "science" || bookShelf == "sports" || bookShelf == "art")
+            {
+                $.get("Book.php?function=add&bookID=" + bookID + "&bookTitle=" + bookTitle + "&bookAuthor=" + bookAuthor + "&bookShelf=" + bookShelf,
+                function(data)
+                {
+                    //document.write(data);
+                    //alert(data);
+                    if(bookShelf == "literature")
+                    {
+                        var found = false;
+                        for(var i = 1; i < 21; i++)
+                        {
+                            if(found) break;
+                            {
+                                var cells = table.rows[i].cells;
+                                if(cells[0].innerHTML == "")
+                                {
+                                    cells[0].innerHTML = "ID: " + bookID;
+                                    cells[0].id = bookID;
+                                    cells[0].onclick = function()
+                                    {
+                                        alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
+                                    }
+                                    found = true;
+                                    break;
+                                }
 
-            $.get("Book.php?bookID=" + bookID + "&bookTitle=" + bookTitle + "&bookAuthor=" + bookAuthor + "&bookShelf=" + bookShelf,
+                            }
+
+                        }
+
+                    }
+                    else if(bookShelf == "science")
+                    {
+                        var found = false;
+                        for(var i = 1; i < 21; i++)
+                        {
+                            if(found) break;
+                            {
+                                var cells = table.rows[i].cells;
+                                if(cells[1].innerHTML == "")
+                                {
+                                    cells[1].innerHTML = "ID: " + bookID;
+                                    cells[1].id = bookID;
+                                    cells[1].onclick = function()
+                                    {
+                                        alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
+                                    }
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                    else if(bookShelf == "sports")
+                    {
+
+                        var found = false;
+                        for(var i = 1; i < 21; i++)
+                        {
+                            if(found) break;
+                            {
+                                var cells = table.rows[i].cells;
+                                if(cells[2].innerHTML == "")
+                                {
+                                    cells[2].innerHTML = "ID: " + bookID;
+                                    cells[2].id = bookID;
+                                    cells[2].onclick = function()
+                                    {
+                                        alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
+                                    }
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                    else if(bookShelf == "art")
+                    {
+                        var found = false;
+                        for(var i = 1; i < 21; i++)
+                        {
+                            if(found) break;
+                            {
+                                var cells = table.rows[i].cells;
+                                if(cells[3].innerHTML == "")
+                                {
+                                    cells[3].innerHTML = "ID: " + bookID;
+                                    cells[3].id = bookID;
+                                    cells[3].onclick = function()
+                                    {
+                                        alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
+                                    }
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                })
+            }
+            else
+            {
+                alert("invalid shelf");
+
+            }
+
+
+        })
+
+
+
+
+        //ajax request for delete book button onclick
+        deleteBookButton.on("click", function()
+        {
+            bookID = prompt("Enter the book ID");
+            bookShelf = prompt("Enter the book shelf");
+
+            $.get("Book.php?function=delete&bookID=" + bookID,
             function(data)
             {
-                document.write(data);
-                if(bookShelf == "literature")
-                {
-                    var found = false;
-                    for(var i = 1; i < 21; i++)
-                    {
-                        if(found) break;
-                        {
-                            var cells = table.rows[i].cells;
-                            if(cells[0].innerHTML == "")
-                            {
-                                cells[0].innerHTML = "ID: " + bookID;
-                                found = true;
-                                break;
-                            }
-
-
-                        }
-
-                    }
-
-                }
-                else if(bookShelf == "science")
-                {
-                    var found = false;
-                    for(var i = 1; i < 21; i++)
-                    {
-                        if(found) break;
-                        {
-                            var cells = table.rows[i].cells;
-                            if(cells[1].innerHTML == "")
-                            {
-                                cells[1].innerHTML = "ID: " + bookID;
-                                found = true;
-                                break;
-                            }
-                        }
-
-                    }
-                }
-                else if(bookShelf == "sports")
-                {
-
-                    var found = false;
-                    for(var i = 1; i < 21; i++)
-                    {
-                        if(found) break;
-                        {
-                            var cells = table.rows[i].cells;
-                            if(cells[2].innerHTML == "")
-                            {
-                                cells[2].innerHTML = "ID: " + bookID;
-                                found = true;
-                                break;
-                            }
-                        }
-
-                    }
-                }
-                else if(bookShelf == "art")
-                {
-                    var found = false;
-                    for(var i = 1; i < 21; i++)
-                    {
-                        if(found) break;
-                        {
-                            var cells = table.rows[i].cells;
-                            if(cells[3].innerHTML == "")
-                            {
-                                cells[3].innerHTML = "ID: " + bookID;
-                                found = true;
-                                break;
-                            }
-                        }
-
-                    }
-                }
-                else alert("Invalid shelf");
+                //document.write(data);
+                //alert(data);
+                deleteThis = $("#"+ bookID);
+                deleteThis.innerHTML = "";
             })
         })
 
@@ -151,7 +203,7 @@ if(isset($_SESSION["username"]))
             name = prompt("Enter username to view their history");
             $.get("Library.php?history=true&username=" + name, function(data)
             {
-                document.write(data);
+                alert(data);
             })
         })
 
@@ -186,7 +238,6 @@ if(isset($_SESSION["username"]))
         {
             echo "I'm sorry, we couldn't find any history";
         }
-        //Hint: sql select from loanhistory table in DATABASE.
     }
 
 
