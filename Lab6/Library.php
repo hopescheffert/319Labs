@@ -41,7 +41,6 @@ if(isset($_SESSION["username"]))
         var deleteBookButton = $("#deletebook");
         var table = document.getElementById("lib");
 
-
         //init table - 20 emtpy rows
         for(var i = 0; i < 20; i++)
         {
@@ -51,6 +50,11 @@ if(isset($_SESSION["username"]))
             {
                 var cell = row.insertCell(-1);
                 cell.id = "row" + i + "col" + j;
+                $.get("Library.php?getBook", function()
+                {
+                    //TODO get it from the database
+                    cell.innerHTML = data;
+                })
             }
 
         }
@@ -85,7 +89,13 @@ if(isset($_SESSION["username"]))
                                     cells[0].id = bookID;
                                     cells[0].onclick = function()
                                     {
-                                        alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
+                                        $.get("Book.php?function=viewShelves&bookID=" + bookID, function()
+                                        {
+                                            document.write(data);
+                                            //TODO : Use sql join between shelves and books and show information.
+
+                                        })
+                                        //alert("ID: " + bookID + "\nTitle: " + bookTitle + "\nAuthor: " + bookAuthor);
                                     }
                                     found = true;
                                     break;
@@ -191,7 +201,9 @@ if(isset($_SESSION["username"]))
             {
                 //document.write(data);
                 //alert(data);
-                deleteThis = $("#"+ bookID);
+                //deleteThis = $("#"+ bookID);
+                deleteThis = document.getElementById(bookID);
+                console.log(deleteThis);
                 deleteThis.innerHTML = "";
             })
         })
@@ -218,6 +230,10 @@ if(isset($_SESSION["username"]))
         $name = $_GET["username"];
         viewBorrowHistory($name);
     }
+    else if(isset($_GET["getBook"]))
+    {
+
+    }
 
     function viewBorrowHistory($username) //librarian only
     {
@@ -238,6 +254,13 @@ if(isset($_SESSION["username"]))
         {
             echo "I'm sorry, we couldn't find any history";
         }
+    }
+
+    function getBook()
+    {
+        global $conn;
+
+
     }
 
 
