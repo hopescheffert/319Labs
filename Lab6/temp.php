@@ -62,58 +62,37 @@ if(isset($_SESSION["username"]))
             //TODO get it from the database
             //data is a json_array of bookID's
             result = JSON.parse(data);
-            //for(var i = 0; i < 20; i++) //for each row
-            console.log("hello");
-            i = 0;
-            while(i < 20)
+            //console.log("result array is " + result[0].bid);
+            for(var i = 0; i < 20; i++) //for each row
             {
-                //console.log(result[i]);
-                //for(var j = 0; j < 4; j++) //for each column
+                console.log(result[i]);
+                for(var j = 0; j < 4; j++) //for each column
                 {
-
                     if(result[i] == undefined)
                     {
                         return;
                     }
                     else if(result[i].sid == undefined)
                     {
-                        console.log("result is undefined");
+                        console.log("result is undefiend");
                         cell.innerHTML = "";
                     }
                     if(result[i].sid == 0)
                     {
+                        console.log("literature");
                         //literature column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 0);//$("#row" + i + "col" + j);
+                        var row = $("#row" + i);
+                        var cell = $("#row" + i + "col" + j);
                         cell.innerHTML = result[i].bid;
-                        continue;
                     }
                     else if(result[i].sid == 1)
                     {
+                        console.log("science");
                         //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 1);//$("#row" + i + "col" + j);
+                        var row = $("#row" + i);
+                        var cell = $("#row" + i + "col" + j);
                         cell.innerHTML = result[i].bid;
-                        continue;
                     }
-                    else if(result[i].sid == 2)
-                    {
-                        //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 2);//$("#row" + i + "col" + j);
-                        cell.innerHTML = result[i].bid;
-                        continue;
-                    }
-                    else //if(result[i].sid == 3)
-                    {
-                        //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 3);//$("#row" + i + "col" + j);
-                        cell.innerHTML = result[i].bid;
-                        continue;
-                    }
-                    i++;
-
                 }
             }
 
@@ -240,11 +219,14 @@ if(isset($_SESSION["username"]))
             else
             {
                 alert("invalid shelf");
-                return;
+
             }
 
 
         })
+
+
+
 
         //ajax request for delete book button onclick
         deleteBookButton.on("click", function()

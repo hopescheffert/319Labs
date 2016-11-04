@@ -31,6 +31,7 @@ else if(($_GET['function']) == 'viewShelves')
     $bookObj->viewShelves($bookID);
 }
 
+
 // $bookObj = new Book($bookID)//, $bookTitle, $bookAuthor, $bookShelf);
 // $bookObj->addBook($bookID, $bookTitle, $bookAuthor, $bookShelf);
 // $bookObj->deleteBook($bookID);
@@ -81,7 +82,8 @@ class Book
         //add book to books table
         $sql1 = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES ('" . $bookID . "', '" . $bookTitle . "', '" . $bookAuthor . "', '1');";
         //also add to shelves table
-        $sql1 .= "INSERT INTO shelves (shelfID, shelfName, bookID) VALUES ('" .$shelfID . "', '" . $bookShelf . "', '" . $bookID . "')";
+        $sql1 .= "INSERT INTO shelfBooks (shelfID, bookID) VALUES ('" .$shelfID . "', '" . $bookID . "');";
+        $sql1 .= "INSERT INTO shelves (shelfID, shelfName) VALUES ('" .$shelfID . "', '" . $bookShelf . "')";
         if(mysqli_multi_query($conn, $sql1) === FALSE)
         {
             echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
@@ -129,13 +131,13 @@ class Book
         }
         else
         {
-            echo "<BR>ERROR";
+            echo "<BR>ERROR in viewShelves<BR>";
         }
     }
 
     function borrowBook($bookID) //student only
     {
-        //TODO check
+        //TODO check that it works
         $sql = "UPDATE books SET availability = '0' WHERE bookID='" . $bookID . "'";
         if(mysqli_query($conn, $sql) === FALSE)
         {
@@ -147,7 +149,7 @@ class Book
 
     function returnBook($bookID) //student only
     {
-        //TODO check
+        //TODO check that it works
         $sql = "UPDATE books SET availability = '1' WHERE bookID='" . $bookID . "'";
         if(mysqli_query($conn, $sql) === FALSE)
         {
@@ -156,6 +158,7 @@ class Book
         //return the book and make the book available.
         //Hint : Use sql update_books table.
     }
+
 
 
 }
