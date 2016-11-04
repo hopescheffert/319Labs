@@ -24,11 +24,13 @@ $private_key = $privatekey;
 $public_key = $publickey;
 // echo "private " . $private_key . " ";
 // echo "public " . $public_key;
+$userFile = fopen("users.txt", "a+") or die("Unable to open users.txt");
+
 if($curUser != null)
 {
 	$user = array('username' => $curUser, 'password' => $curPass, 'publickey' => $public_key, 'privatekey' => $private_key);
 	$entry = json_encode($user) . "***\n";
-	file_put_contents("users.txt", $entry, FILE_APPEND);
+	file_put_contents($userFile, $entry, FILE_APPEND);
 }
 
 ?>

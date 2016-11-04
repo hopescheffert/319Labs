@@ -55,33 +55,28 @@ class Book
         //adds to a shelf in the library that is not full
         //Assume shelves have capacity of 20 books and that there are 4 shelves
         //which names by “Art”, “Science”, “Sport” and “Literature”
-
-        if(strcmp($bookShelf, "literature"))
+        if(strcmp($bookShelf, "literature") == 0)
         {
             $shelfID = 0;
         }
-        else if(strcmp($bookShelf, "science"))
+        else if(strcmp($bookShelf, "science") == 0)
         {
             $shelfID = 1;
         }
-        else if(strcmp($bookShelf, "sports"))
+        else if(strcmp($bookShelf, "sports") == 0)
         {
             $shelfID = 2;
         }
-        else if(strcmp($bookShelf, "art"))
+        else if(strcmp($bookShelf, "art") == 0)
         {
             $shelfID = 3;
-        }
-        else
-        {
-            echo "Invalid shelf";
-            return;
         }
 
         //assume availability is 1 (present)
         //add book to books table
         $sql1 = "INSERT INTO books (bookID, bookTitle, author, availability) VALUES ('" . $bookID . "', '" . $bookTitle . "', '" . $bookAuthor . "', '1');";
         //also add to shelves table
+
         $sql1 .= "INSERT INTO shelfBooks (shelfID, bookID) VALUES ('" .$shelfID . "', '" . $bookID . "');";
         $sql1 .= "INSERT INTO shelves (shelfID, shelfName) VALUES ('" .$shelfID . "', '" . $bookShelf . "')";
         if(mysqli_multi_query($conn, $sql1) === FALSE)

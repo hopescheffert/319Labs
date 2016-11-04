@@ -19,8 +19,6 @@ if((isset($_GET['getBooks'])))
             $books['sid'] = $row['shelfID'];
 
             array_push($ret, $books);
-            // array_push($return, $books);
-            //echo "ID: " . $row["bookID"];
         }
         echo json_encode($ret);
     }

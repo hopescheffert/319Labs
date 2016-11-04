@@ -62,60 +62,140 @@ if(isset($_SESSION["username"]))
             //TODO get it from the database
             //data is a json_array of bookID's
             result = JSON.parse(data);
-            //for(var i = 0; i < 20; i++) //for each row
-            console.log("hello");
-            i = 0;
-            while(i < 20)
+            console.log(result);
+            console.log(result.length);
+            for(var i = 0; i < result.length; i++)
             {
-                //console.log(result[i]);
-                //for(var j = 0; j < 4; j++) //for each column
+                if(result[i].sid == 0)
                 {
+                    for(var j = 0; j < 20; j++)
+                    {
+                        r = document.getElementById("row"+j);
+                        c = document.getElementById("row"+j+"col"+0);
+                        if(c.innerHTML == "")
+                        {
+                            break;
+                        }
+                    }
+                    var row = document.getElementById("row" + j);
+                    var cell = document.getElementById("row" + j + "col" + 0);
+                    if(cell.innerHTML == "")
+                    {
+                        cell.innerHTML = result[i].bid;
+                    }
 
-                    if(result[i] == undefined)
+                }
+                else if(result[i].sid == 1)
+                {
+                    for(var j = 0; j < 20; j++)
                     {
-                        return;
+                        r = document.getElementById("row"+j);
+                        c = document.getElementById("row"+j+"col"+1);
+                        if(c.innerHTML == "")
+                        {
+                            break;
+                        }
                     }
-                    else if(result[i].sid == undefined)
+                    var row = document.getElementById("row" + j);
+                    var cell = document.getElementById("row" + j + "col" + 1);
+                    if(cell.innerHTML == "")
                     {
-                        console.log("result is undefined");
-                        cell.innerHTML = "";
-                    }
-                    if(result[i].sid == 0)
-                    {
-                        //literature column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 0);//$("#row" + i + "col" + j);
                         cell.innerHTML = result[i].bid;
-                        continue;
                     }
-                    else if(result[i].sid == 1)
+
+                }
+                else if(result[i].sid == 2)
+                {
+                    for(var j = 0; j < 20; j++)
                     {
-                        //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 1);//$("#row" + i + "col" + j);
-                        cell.innerHTML = result[i].bid;
-                        continue;
+                        r = document.getElementById("row"+j);
+                        c = document.getElementById("row"+j+"col"+2);
+                        if(c.innerHTML == "")
+                        {
+                            break;
+                        }
                     }
-                    else if(result[i].sid == 2)
+                    var row = document.getElementById("row" + j);
+                    var cell = document.getElementById("row" + j + "col" + 2);
+                    if(cell.innerHTML == "")
                     {
-                        //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 2);//$("#row" + i + "col" + j);
                         cell.innerHTML = result[i].bid;
-                        continue;
                     }
-                    else //if(result[i].sid == 3)
+
+                }
+                else if(result[i].sid == 3)
+                {
+                    for(var j = 0; j < 20; j++)
                     {
-                        //science column
-                        var row = document.getElementById("row" + i);//$("#row" + i);
-                        var cell = document.getElementById("row" + i + "col" + 3);//$("#row" + i + "col" + j);
-                        cell.innerHTML = result[i].bid;
-                        continue;
+                        r = document.getElementById("row"+j);
+                        c = document.getElementById("row"+j+"col"+3);
+                        if(c.innerHTML == "")
+                        {
+                            break;
+                        }
                     }
-                    i++;
+                    var row = document.getElementById("row" + j);
+                    var cell = document.getElementById("row" + j + "col" + 3);
+                    if(cell.innerHTML == "")
+                    {
+                        cell.innerHTML = result[i].bid;
+                    }
 
                 }
             }
+
+
+
+
+
+
+            // for(var i = 0; i < 20; i++) //for each row
+            // {
+            //     //for(var j = 0; j < 4; j++) //for each column
+            //     {
+            //
+            //         if(result[i] == undefined)
+            //         {
+            //             return;
+            //         }
+            //         else if(result[i].sid == undefined)
+            //         {
+            //             console.log("result is undefined");
+            //             cell.innerHTML = "";
+            //         }
+            //         if(result[i].sid == 0)
+            //         {
+            //             //literature column
+            //             var row = document.getElementById("row" + i);
+            //             var cell = document.getElementById("row" + i + "col" + 0);
+            //             cell.innerHTML = result[i].bid;
+            //         }
+            //         if(result[i].sid == 1)
+            //         {
+            //             //science column
+            //             var row = document.getElementById("row" + i);
+            //             var cell = document.getElementById("row" + i + "col" + 1);
+            //             cell.innerHTML = result[i].bid;
+            //         }
+            //         if(result[i].sid == 2)
+            //         {
+            //             //science column
+            //             var row = document.getElementById("row" + i);
+            //             var cell = document.getElementById("row" + i + "col" + 2);
+            //             cell.innerHTML = result[i].bid;
+            //         }
+            //         if(result[i].sid == 3)
+            //         {
+            //             //science column
+            //             var row = document.getElementById("row" + i);
+            //             var cell = document.getElementById("row" + i + "col" + 3);
+            //             cell.innerHTML = result[i].bid;
+            //
+            //         }
+            //
+            //     }
+            //
+            // }
 
         })
 
@@ -129,6 +209,7 @@ if(isset($_SESSION["username"]))
             console.log(bookShelf);
             if(bookShelf == "literature" || bookShelf == "science" || bookShelf == "sports" || bookShelf == "art")
             {
+                console.log(bookShelf);
                 $.get("Book.php?function=add&bookID=" + bookID + "&bookTitle=" + bookTitle + "&bookAuthor=" + bookAuthor + "&bookShelf=" + bookShelf,
                 function(data)
                 {
@@ -144,7 +225,7 @@ if(isset($_SESSION["username"]))
                                 var cells = table.rows[i].cells;
                                 if(cells[0].innerHTML == "")
                                 {
-                                    cells[0].innerHTML = "ID: " + bookID;
+                                    cells[0].innerHTML = bookID;
                                     cells[0].id = bookID;
                                     cells[0].onclick = function()
                                     {
@@ -175,7 +256,7 @@ if(isset($_SESSION["username"]))
                                 var cells = table.rows[i].cells;
                                 if(cells[1].innerHTML == "")
                                 {
-                                    cells[1].innerHTML = "ID: " + bookID;
+                                    cells[1].innerHTML = bookID;
                                     cells[1].id = bookID;
                                     cells[1].onclick = function()
                                     {
@@ -199,7 +280,7 @@ if(isset($_SESSION["username"]))
                                 var cells = table.rows[i].cells;
                                 if(cells[2].innerHTML == "")
                                 {
-                                    cells[2].innerHTML = "ID: " + bookID;
+                                    cells[2].innerHTML = bookID;
                                     cells[2].id = bookID;
                                     cells[2].onclick = function()
                                     {
@@ -222,7 +303,7 @@ if(isset($_SESSION["username"]))
                                 var cells = table.rows[i].cells;
                                 if(cells[3].innerHTML == "")
                                 {
-                                    cells[3].innerHTML = "ID: " + bookID;
+                                    cells[3].innerHTML = bookID;
                                     cells[3].id = bookID;
                                     cells[3].onclick = function()
                                     {
@@ -271,7 +352,7 @@ if(isset($_SESSION["username"]))
             name = prompt("Enter username to view their history");
             $.get("Library.php?history=true&username=" + name, function(data)
             {
-                alert(data);
+                document.body.append(data);
             })
         })
 
@@ -287,7 +368,7 @@ if(isset($_SESSION["username"]))
         viewBorrowHistory($name);
     }
 
-
+    //TODO outputting entire page in html not just borrow history
     function viewBorrowHistory($username) //librarian only
     {
         global $conn; //*NEEDS TO BE global
