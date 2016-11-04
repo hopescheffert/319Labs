@@ -20,7 +20,7 @@ if(isset($_SESSION["username"]))
     //initailize strings
     $username = $password = $confirmPassword = $email = $phone = $firstName = $lastName = $err ="";
     $usernameE = $passwordE = $confirmPE = $emailE = $phoneE = $userTypeE = $firstE = $lastE = "";
-    $userType = false;
+    $userType = false; //student
     $valid = false;
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
@@ -117,6 +117,14 @@ if(isset($_SESSION["username"]))
         else
         {
             $userType = test_input($_POST["userType"]);
+            if(strcmp($userType, "L") == 0)
+            {
+                $userType = true;
+            }
+            else
+            {
+                $userType = false;
+            }
             $_SESSION["userType"] = $userType;
             $valid = true;
         }
@@ -170,6 +178,7 @@ if(isset($_SESSION["username"]))
         $isLibrarian = 0;
         if($userType)
         {
+            echo "*****librarian";
             $isLibrarian = 1;
         }
         //insert information to users table
@@ -207,9 +216,9 @@ if(isset($_SESSION["username"]))
 
         Are you a librarian? <span class="error">* <?php echo $userTypeE;?></span> <br>
         <input type="radio" name="userType"
-        <?php if (isset($userType) && $userType==true) echo "checked";?> value="true" checked required> Yes <br>
+        <?php if (isset($userType) && $userType==true) echo "checked";?> value="L" required> Yes <br>
         <input type="radio" name="userType"
-        <?php if (isset($userType) && $userType==false) echo "checked";?>value="false"> No
+        <?php if (isset($userType) && $userType==false) echo "checked";?> value="S"> No
         <br><br>
 
 

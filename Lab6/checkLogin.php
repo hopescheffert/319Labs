@@ -12,7 +12,10 @@ $failed = false;
 //current username and password from login.html
 $username = $_REQUEST["username"];
 $password= $_REQUEST["password"];
-if($_REQUEST["librarian"] == true)
+
+//TODO doesn't check librarain attribute correctly
+// echo "*****is librarian is" . $_REQUEST["librarian"] . "<BR>";
+if($_REQUEST["librarian"] == "true")
 {
     $isLibrarian = 1;
 }

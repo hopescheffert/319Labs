@@ -7,5 +7,5 @@ session_destroy();
 
 
 
-header("Location: Library.php");
+header("Location: login.html");
 ?>

@@ -25,7 +25,6 @@ else if(($_GET['function']) == 'delete')
 }
 else if(($_GET['function']) == 'viewShelves')
 {
-    echo "viewing shelves<BR>";
     $bookID = $_GET["bookID"];
     $bookObj = new Book($bookID);//, $bookTitle, $bookAuthor, $bookShelf);
     $bookObj->viewShelves($bookID);
@@ -114,19 +113,19 @@ class Book
     {
         //TODO Use sql join between shelves and books and show information.
         global $conn;
-        $sql = "SELECT books.bookID, books.bookTitle, books.author, books.availability, shelves.shelfID, shelves.shelfName FROM books INNER JOIN shelves ON books.bookID=shelves.bookID";
+        $sql = "SELECT books.bookID, books.bookTitle, books.author, books.availability, shelfBooks.shelfID FROM books INNER JOIN shelfBooks ON books.bookID=shelfBooks.bookID";
         $result = mysqli_query($conn, $sql);
         if(mysqli_num_rows($result) > 0)
         {
             // output data of each row
             while($row = mysqli_fetch_assoc($result))
             {
-                echo "Book ID: " . $row["bookID"]. " - Title: " . $row["bookTitle"]. " - Author: " . $row["author"]. " - Availability: " . $row["availability"]. " - Shelf ID: " . $row["shelfID"] . " - Shelf Name: ". $row["shelfName"] . "<br>";
+                echo "Book ID: " . $row["bookID"]. " - Title: " . $row["bookTitle"]. " - Author: " . $row["author"]. " - Availability: " . $row["availability"]. " - Shelf ID: " . $row["shelfID"] . "\n";
             }
         }
         else
         {
-            echo "<BR>ERROR in viewShelves<BR>";
+            echo "ERROR in viewShelves\n";
         }
     }
 

@@ -11,9 +11,11 @@
     <form id="myform">
         Username<br><input type="text" id="username" name="username" /><br>
         Password<br><input type="password" id="password" name="password" /><br>
+
         Are you a librarian?
-        <input type="radio" id="userType" name="userType" value="true" checked required> Yes</input>
-        <input type="radio" id="userType" name="userType" value="false"> No</input>
+        <input type="radio" id="userTypeLibrarian" name="userType" value="librarian" required> Yes
+        <input type="radio" id="userTypeStudent" name="userType" value="student"> No
+
         <br><br>
         <input type="submit" id="login" value="Login"/>
     </form>
@@ -21,21 +23,29 @@
     <script>
     $(document).ready(function()
     {
+        //var isLibrarian = false;
         var myform = $("#myform");
         var user = $("#username");
         var pass = $("#password");
-        var isLibrarian = $("#userType");
-        //boolean to TINYINT check
-        // x = 0;
-        // if(isLibrarian.val())
-        // {
-        //     x = 1;
-        // }
+        var x = $("#userTypeLibrarian");
+        if(x.checked)
+        {
+            console.log("here");
+            isLibrarian = true;
+        }
+        else
+        {
+            isLibrarian = false;
+        }
+
+
+        // console.log("is librarian " + isLibrarian);
+
         //AJAX CALL TO checkLogin.php TO CHECK USER/PASSWORD
         myform.submit(function(e)
         {
             e.preventDefault(); //use ajax instead
-            $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val() + "&librarian=" + isLibrarian.val(),
+            $.get("checkLogin.php?username=" + user.val() + "&password=" + pass.val() + "&librarian=" + isLibrarian,
             function(data)
             {
                 //alert("data: " + data);
