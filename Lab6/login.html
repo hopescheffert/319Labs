@@ -12,9 +12,11 @@
         Username<br><input type="text" id="username" name="username" /><br>
         Password<br><input type="password" id="password" name="password" /><br>
 
-        Are you a librarian?
-        <input type="radio" id="userTypeLibrarian" name="userType" value="librarian" required> Yes
-        <input type="radio" id="userTypeStudent" name="userType" value="student"> No
+        <!-- Are you a librarian? -->
+        <input type="button" id="lbutton" value="I am a Librarian"</input>
+        <input type="button" id="sbutton" value="I am a Student"</input>
+        <!-- <input type="radio" id="userTypeLibrarian" name="userType" value="librarian" required> Yes
+        <input type="radio" id="userTypeStudent" name="userType" value="student"> No -->
 
         <br><br>
         <input type="submit" id="login" value="Login"/>
@@ -23,21 +25,18 @@
     <script>
     $(document).ready(function()
     {
-        //var isLibrarian = false;
         var myform = $("#myform");
         var user = $("#username");
         var pass = $("#password");
-        var x = $("#userTypeLibrarian");
-        if(x.checked)
+
+        document.getElementById('lbutton').onclick = function()
         {
-            console.log("here");
             isLibrarian = true;
         }
-        else
+        document.getElementById('sbutton').onclick = function()
         {
             isLibrarian = false;
         }
-
 
         // console.log("is librarian " + isLibrarian);
 
@@ -54,14 +53,21 @@
                 {
                     //ON FAILURE: ASK THE USER TO CORRECT THE USERNAME AND PASSWORD
                     alert("Error: Incorrect username and/or password");
-                    window.location = "login.html";
+                    //window.location = "login.html";
                 }
                 else
                 {
                     //ON SUCCESS GO TO VIEWPOSTS.php
-
-                    window.location = "Library.php";
-                    alert("logged in successfully");
+                    if(isLibrarian)
+                    {
+                        alert("logged in as librarian");
+                        window.location = "Library.php";
+                    }
+                    else
+                    {
+                        alert("logged in as student");
+                        window.location = "Student.php";
+                    }
                 }
 
             })

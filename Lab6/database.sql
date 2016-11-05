@@ -25,7 +25,7 @@ CREATE TABLE loanHistory
     bookID INT(10),
     dueDate DATE,
     returnedDate DATE,
-    primary key (userName)
+    primary key (bookID)
 );
 
 CREATE TABLE shelves

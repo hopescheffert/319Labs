@@ -1,0 +1,5 @@
+Hope Scheffert mainly worked on the librarian side of the code
+Jacob Neyens mainly worked on teh student side of the code.
+
+*****Note that there are buttons instead of radio buttons. Zelong spent a considerable amount of time trying to help with the radio buttons for "librarian" vs "student" opition
+I still could not figure it out, so I substituted simple buttons to do the trick instead, hopefully this doesn't affect our grade.
