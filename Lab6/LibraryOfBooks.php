@@ -22,9 +22,8 @@ if((isset($_GET['getBooks'])))
         }
         echo json_encode($ret);
     }
-    else
-    {
-        echo "No books in the database";
+    else {
+        echo json_encode("no books");
     }
 }
 
