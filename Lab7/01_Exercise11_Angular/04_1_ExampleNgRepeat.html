@@ -1,0 +1,58 @@
+<html>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<body>
+<script>
+//  This example shows use of the ng-repeat directive to repeat html
+//  elements automatically (reducing clutter/code/html) over 
+//  model ARRAY variables.
+//  Also, shows how model element need not be tied to any input element
+</script>
+
+<div ng-app="myApp" ng-controller="myController">
+
+<h1>1. Table of Student Names - the boring way </h1>
+<table> 
+<th> <h2>First Name</h2></th> <th> <h2>Last Name</h2></th>
+<tr> <td>{{students[0][0]}}</td> <td>{{students[0][1]}}</td> </tr> 
+<tr> <td>{{students[1][0]}}</td> <td>{{students[1][1]}}</td> </tr> 
+<tr> <td>{{students[2][0]}}</td> <td>{{students[2][1]}}</td> </tr> 
+</table>
+<hr>
+
+
+<h1>2. Table of Student Names (by looping over an array) </h1>
+<table> 
+<th> <h2>First Name</h2></th> <th> <h2>Last Name</h2></th>
+<tr ng-repeat="student in students"> <!-- repeats an HTML element -->
+  <td>{{student[0]}}</td> <td>{{student[1]}}</td> 
+</tr> 
+</table>
+<hr>
+
+
+<h1>3. Table of Student Names (simplest!) </h1>
+<table> 
+<th> <h2>First Name</h2></th> <th> <h2>Last Name</h2></th>
+<tr ng-repeat="student in students"> <!-- repeats an HTML element -->
+  <td ng-repeat="val in student"> {{val}}</td> 
+</tr> 
+</table>
+<hr>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myController', function($scope) {
+  $scope.students = [["John", "Bravo"],
+                     ["Adam", "West"],
+                     ["Mike", "Wazowski"]];
+  // do note that array could have been obtained from a server
+
+});
+</script>
+</body>
+</html>

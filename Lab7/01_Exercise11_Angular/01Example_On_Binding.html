@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+<body>
+
+<script>
+// In this example, there are three main things to note:
+// 1. How we include angular.min.js at the top.
+// 2. There are many angular directives. Here are three:
+//    ng-app  directive indicates the name of our angular application.
+//    ng-model TIES html input elements to MODEL variables.
+//    ng-bind TIES html display to MODEL variables.
+// 3. Angular expressions are indicated by {{ }} and are used to
+//    do simple calculations or just to display model variables.
+</script>
+
+<h1>The first example! Type anything in the input textbox.</h1>
+
+<div ng-app="">
+ 	<p>Name: <input type="text" ng-model="name"></p>
+
+  <!--  using ng-bind {{}}-->
+ 	<p ng-bind="name"></p>
+
+  <!--  using ng-expressions {{}}-->
+ 	<span> Name : {{name}} </span>
+</div> <!-- This is END of ng-app div -->
+
+</body>
+</html>

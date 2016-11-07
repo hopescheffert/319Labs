@@ -1,0 +1,68 @@
+<html>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="app.js"></script>
+<body>
+
+<script>
+// The purpose of this example is to show how to create
+// CUSTOM directives. Unlike ng-app, ng-bind etc which are provided to
+// us, here we create and use our own custom directives helloWorld
+// and byeWorld.
+//
+// Note that the angular code will use helloWorld, but in html we 
+// will use hello-world. This is a convention that angular follows.
+//
+// We can basically create our own html elements or add our own
+// attributes to existing html elements and control these elements
+// or attributes using angular code.
+//
+// make sure to read the associated app.js code
+//
+// This also shows how directives can get the html from TEMPLATES
+// see the code for byeWorld directive in app.js
+</script>
+
+<h1> Example of Custom Directives </h1>
+<div ng-app="myApp" ng-controller="myController">
+
+
+<!-- we created a html tag called bye-world using directive -->
+<!-- TODO try to mouseover and mouseout on the Helloworld text and see what happens-->
+
+<h2> FIRST TRY helloWorld Directive -- replace Element </h2>
+<h2> move mouse on Hello World and see what happens</h2>
+<hello-world> This whole element is REPLACED </hello-world>
+<hr>
+
+<h2> SECOND TRY -- replace Attribute</h2>
+<h2> move mouse on Hello World and see what happens</h2>
+<div hello-world=""> This whole element is REPLACED </div>
+<hr>
+
+<h2> THIRD TRY -- replace Attribute </h2>
+<h2> move mouse on Hello World and see what happens</h2>
+<div>
+Not to be replaced text
+<span hello-world=""> This whole element is REPLACED </span>
+</div>
+<hr>
+<hr>
+
+<h2> FIRST TRY byeWorld directive -- replace Element </h2>
+<bye-world> This whole element is REPLACED </bye-world>
+<hr>
+
+<h2> SECOND TRY -- replace Attribute</h2>
+<div bye-world=""> This whole element is REPLACED </div>
+<hr>
+
+<h2> THIRD TRY -- replace Attribute </h2>
+<div>
+Not to be replaced text
+<span bye-world=""> This whole element is REPLACED </span>
+</div>
+<hr>
+
+</div>
+</body>
+</html>

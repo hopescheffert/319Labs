@@ -1,0 +1,39 @@
+<html>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<body>
+<script>
+//
+//  This example shows use of the ng-repeat directive to repeat html
+//  elements automatically by looping over OBJECT properties
+//  ng-repeat="(key, value) in student"
+//
+</script>
+
+<div ng-app="myApp" ng-controller="myController">
+
+<h1>Table of Student Names (by looping over an object) </h1>
+<table> 
+<th> <h2>First Name</h2></th> <th> <h2>Last Name</h2></th>
+<tr ng-repeat="student in studentsObj"> 
+  <td ng-repeat="(key, value) in student"> {{value}} </td>
+</tr> 
+</table>
+
+
+<script>
+
+var app = angular.module('myApp', []);
+app.controller('myController', function($scope) {
+  $scope.studentsObj = 
+     [ {first: "John", last: "Bravo"},
+       {first: "Adam", last: "West"},
+       {first: "Mike", last: "Wazowski"}];
+});
+</script>
+</body>
+</html>
