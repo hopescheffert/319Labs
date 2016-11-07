@@ -5,9 +5,10 @@
 <body ng-app="myApp">
 
     <p><a href="#/">Main</a></p>
-    <a href="#first">COMS 319</a>
-    <a href="#second">COMS 309</a>
-    <a href="#third">CPRE 310</a>
+    <a href="#first">Class 1</a>
+    <a href="#second">Class 2</a>
+    <a href="#third">Class 3</a>
+
 
     <div ng-view></div>
 
@@ -67,7 +68,14 @@
 
     app.controller("myListCtrl1", function($scope)//, listService)
     {
-        $scope.stuff = [];//listService;
+        if(localStorage.getItem("stuff1") == null)
+        {
+            $scope.stuff = [];
+        }
+        else
+        {
+            $scope.stuff = JSON.parse(localStorage.getItem("stuff1"));//listService;
+        }
         //adds the task to the to do list at the end
         $scope.addTask = function()
         {
@@ -79,7 +87,7 @@
             if($scope.stuff.indexOf($scope.addThis) == -1)
             {
                 $scope.stuff.push($scope.addThis);
-                localStorage.setItem("stuff", $scope.stuff);
+                localStorage.setItem("stuff1", JSON.stringify($scope.stuff));
             }
             else
             {
@@ -91,11 +99,19 @@
         {
             $scope.error = "";
             $scope.stuff.splice(x, 1);
+            localStorage.setItem("stuff1", JSON.stringify($scope.stuff));
         }
     })
     app.controller("myListCtrl2", function($scope)
     {
-        $scope.stuff = [];
+        if(localStorage.getItem("stuff2") == null)
+        {
+            $scope.stuff = [];
+        }
+        else
+        {
+            $scope.stuff = JSON.parse(localStorage.getItem("stuff2"));//listService;
+        }
         //adds the task to the to do list at the end
         $scope.addTask = function()
         {
@@ -107,6 +123,7 @@
             if($scope.stuff.indexOf($scope.addThis) == -1)
             {
                 $scope.stuff.push($scope.addThis);
+                localStorage.setItem("stuff2", JSON.stringify($scope.stuff));
             }
             else
             {
@@ -118,12 +135,20 @@
         {
             $scope.error = "";
             $scope.stuff.splice(x, 1);
+            localStorage.setItem("stuff2", JSON.stringify($scope.stuff));
         }
     })
 
     app.controller("myListCtrl3", function($scope)
     {
-        $scope.stuff = [];
+        if(localStorage.getItem("stuff3") == null)
+        {
+            $scope.stuff = [];
+        }
+        else
+        {
+            $scope.stuff = JSON.parse(localStorage.getItem("stuff3"));//listService;
+        }
         //adds the task to the to do list at the end
         $scope.addTask = function()
         {
@@ -135,6 +160,8 @@
             if($scope.stuff.indexOf($scope.addThis) == -1)
             {
                 $scope.stuff.push($scope.addThis);
+                localStorage.setItem("stuff3", JSON.stringify($scope.stuff));
+
             }
             else
             {
@@ -146,6 +173,7 @@
         {
             $scope.error = "";
             $scope.stuff.splice(x, 1);
+            localStorage.setItem("stuff3", JSON.stringify($scope.stuff));
         }
     })
 
