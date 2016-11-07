@@ -62,7 +62,7 @@
 
                 <button ng-click="reset()">RESET</button>
                 <button ng-disabled="myForm.fname.$dirty && myForm.fname.$invalid || myForm.lname.$dirty && myForm.lname.$invalid ||
-                        myForm.email.$dirty && myForm.email.$invalid || myForm.ssn.$dirty && myForm.ssn.$invalid || myForm.candidate.$dirty && myForm.candidate.$invalid" ng-click="vote()">VOTE</button>
+                        myForm.email.$dirty && myForm.email.$invalid || myForm.ssn.$dirty && myForm.ssn.$invalid || myForm.candidate.$invalid" ng-click="vote()">VOTE</button>
                 <!-- <input type="submit" onsubmit="vote()"
                 ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid"> -->
             </form>
@@ -82,7 +82,7 @@
             {
                 $scope.user = angular.copy($scope.master);
             };
-            $scope.options = [{"id": 0, "name": "Hillary Clinton"}, {"id": 1, "name": "Donald Trump"}];
+            $scope.options = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"}];
             $scope.checkselection = function ()
             {
                 if ($scope.mySelect != "" && $scope.mySelect != undefined)
