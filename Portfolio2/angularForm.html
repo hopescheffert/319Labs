@@ -1,0 +1,139 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+    <div ng-app="myApp" ng-controller="formCtrl">
+
+
+        <form name="myForm" novalidate>
+            First Name:<br>
+            <input type="text" name="fname" ng-model="user.firstName" required><br>
+            <span style="color:red" ng-show="myForm.fname.$dirty && myForm.fname.$invalid">
+                <span ng-show="myForm.fname.$error.required">First name is required.</span>
+            </span><br>
+            Last Name:<br>
+            <input type="text" name="lname" ng-model="user.lastName" required><br>
+            <span style="color:red" ng-show="myForm.lname.$dirty && myForm.lname.$invalid">
+                <span ng-show="myForm.lname.$error.required">Last name is required.</span>
+            </span><br>
+            Social Security Number:<br>
+            <input type="text" name="ssn" ng-model="user.ssn" required><br>
+            <span style="color:red" ng-show="myForm.ssn.$dirty && myForm.ssn.$invalid">
+                <span ng-show="myForm.ssn.$error.required">Social Security number is required.</span>
+            </span><br>
+            Phone Number:<br>
+            <input type="tel" name="phone" ng-model="user.phone"><br>
+            Email:<br>
+            <input type="email" name="email" ng-model="user.email" required><br>
+            <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+                <span ng-show="myForm.email.$error.required">Email is required.</span>
+                <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+            </span><br>
+            DOB:<br>
+            <input type="date" name="DOB" ng-model="user.DOB" required><br>
+            <span style="color:red" ng-show="myForm.DOB.$dirty && myForm.DOB.$invalid">
+                <span ng-show="myForm.DOB.$error.required">Date of birth is required.</span>
+            </span><br>
+
+
+            Choose a candidate<br>
+            <select name="candidate" ng-model="mySelect" required>
+                <option value="">--Select--
+                    <!-- <option value="clinton">Hillary Clinton
+                    <option value="trump">Donald Trump -->
+                    <option ng-repeat="o in options" value="{{o.id}}">{{o.name}}</option>
+                </select>
+                <span style="color:red" ng-show="myForm.candidate.$dirty && myForm.candidate.$invalid">
+                    <span ng-show="myForm.candidate.$error.required">{{msg}}You must select a candidate</span>
+                </span>
+                <div ng-switch="mySelect">
+                    <div ng-switch-when="clinton">
+                        <h1>Hillary Clinton </h1>
+                        <p> Democrat </p>
+                        <img src="clinton.jpg" height="200px" width="200px">
+                    </div>
+                    <div ng-switch-when="trump">
+                        <h1>Donald Trump </h1>
+                        <p> Republican </p>
+                        <img src="trump.jpg" height="200px" width="200px">
+                    </div>
+                </div>
+
+
+                <button ng-click="reset()">RESET</button>
+                <button ng-disabled="myForm.fname.$dirty && myForm.fname.$invalid || myForm.lname.$dirty && myForm.lname.$invalid ||
+                        myForm.email.$dirty && myForm.email.$invalid || myForm.ssn.$dirty && myForm.ssn.$invalid || myForm.candidate.$dirty && myForm.candidate.$invalid" ng-click="vote()">VOTE</button>
+                <!-- <input type="submit" onsubmit="vote()"
+                ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid"> -->
+            </form>
+            <!-- <p>form = {{user}}</p>
+            <p>master = {{master}}</p> -->
+
+        </div>
+
+        <script>
+        var countforTrump = 0;
+        var countforClinton = 0;
+
+        var app = angular.module('myApp', []);
+        app.controller('formCtrl', function($scope) {
+            $scope.master = {firstName:"John", lastName:"Doe"};
+            $scope.reset = function()
+            {
+                $scope.user = angular.copy($scope.master);
+            };
+            $scope.options = [{"id": 0, "name": "Hillary Clinton"}, {"id": 1, "name": "Donald Trump"}];
+            $scope.checkselection = function ()
+            {
+                if ($scope.mySelect != "" && $scope.mySelect != undefined)
+                {
+                    $scope.msg = 'Selected Value: '+ $scope.mySelect;
+                }
+                else
+                {
+                    $scope.msg = 'Please Select Dropdown Value';
+                }
+            }
+            $scope.reset();
+            $scope.vote = function()
+            {
+                $scope.checkselection();
+                // if(myForm.candidate == "clinton")
+                // {
+                //     console.log('voted for clinton');
+                //     countforClinton += 1;
+                //
+                // }
+                // if(myForm.candidate == "trump")
+                // {
+                //     console.log('voted for trump');
+                //     countforTrump += 1;
+                // }
+                console.log("thank you for voting");
+                console.log("clinton: " + countforClinton);
+                console.log("trump: " + countforTrump);
+            }
+            //$scope.vote();
+        });
+        // app.directive('myDirective', function()
+        // {
+        //     return {
+        //         require: 'ngModel',
+        //         link: function(scope, element, attr, mCtrl)
+        //         {
+        //             function myValidation(value) {
+        //                 if (value.indexOf("e") > -1) {
+        //                     mCtrl.$setValidity('charE', true);
+        //                 } else {
+        //                     mCtrl.$setValidity('charE', false);
+        //                 }
+        //                 return value;
+        //             }
+        //             mCtrl.$parsers.push(myValidation);
+        //         }
+        //     };
+        // });
+        </script>
+
+    </body>
+    </html>

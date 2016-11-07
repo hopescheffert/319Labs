@@ -1,0 +1,145 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+
+<body ng-app="myApp">
+
+    <p><a href="#/">Main</a></p>
+    <a href="#first">Class 1</a>
+    <a href="#second">Class 2</a>
+    <a href="#third">Class 3</a>
+
+    <div ng-view></div>
+
+    <script>
+    var app = angular.module("myApp", ["ngRoute"]);
+    app.config(function($routeProvider) {
+        $routeProvider
+        .when("/", {
+            templateUrl : "main.html"
+        })
+        .when("/first", {
+            templateUrl : "first.html"
+        })
+        .when("/second", {
+            templateUrl : "second.html"
+        })
+        .when("/third", {
+            templateUrl : "third.html"
+        });
+    });
+
+    app.controller("myListCtrl1", function($scope)//, listService)
+    {
+        if(localStorage.getItem("tasks1") == null)
+        {
+            $scope.tasks = [];
+        }
+        else
+        {
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks1"));//listService;
+        }
+        //adds the task to the to do list at the end
+        $scope.addTask = function()
+        {
+            $scope.error = "";
+            if(!$scope.addThis)
+            {
+                return;
+            }
+            if($scope.tasks.indexOf($scope.addThis) == -1)
+            {
+                $scope.tasks.push($scope.addThis);
+                localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
+            }
+            else
+            {
+                $scope.error = "You have already added this task";
+            }
+        }
+        //removes the task at the specified index x
+        $scope.removeTask = function(x)
+        {
+            $scope.error = "";
+            $scope.tasks.splice(x, 1);
+            localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
+        }
+    })
+    app.controller("myListCtrl2", function($scope)
+    {
+        if(localStorage.getItem("tasks2") == null)
+        {
+            $scope.tasks = [];
+        }
+        else
+        {
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks2"));//listService;
+        }
+        //adds the task to the to do list at the end
+        $scope.addTask = function()
+        {
+            $scope.error = "";
+            if(!$scope.addThis)
+            {
+                return;
+            }
+            if($scope.tasks.indexOf($scope.addThis) == -1)
+            {
+                $scope.tasks.push($scope.addThis);
+                localStorage.setItem("tasks2", JSON.stringify($scope.tasks));
+            }
+            else
+            {
+                $scope.error = "You have already added this task";
+            }
+        }
+        //removes the task at the specified index x
+        $scope.removeTask = function(x)
+        {
+            $scope.error = "";
+            $scope.tasks.splice(x, 1);
+            localStorage.setItem("tasks2", JSON.stringify($scope.tasks));
+        }
+    })
+
+    app.controller("myListCtrl3", function($scope)
+    {
+        if(localStorage.getItem("tasks3") == null)
+        {
+            $scope.tasks = [];
+        }
+        else
+        {
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks3"));//listService;
+        }
+        //adds the task to the to do list at the end
+        $scope.addTask = function()
+        {
+            $scope.error = "";
+            if(!$scope.addThis)
+            {
+                return;
+            }
+            if($scope.tasks.indexOf($scope.addThis) == -1)
+            {
+                $scope.tasks.push($scope.addThis);
+                localStorage.setItem("tasks3", JSON.stringify($scope.tasks));
+            }
+            else
+            {
+                $scope.error = "You have already added this task";
+            }
+        }
+        //removes the task at the specified index x
+        $scope.removeTask = function(x)
+        {
+            $scope.error = "";
+            $scope.tasks.splice(x, 1);
+            localStorage.setItem("tasks3", JSON.stringify($scope.tasks));
+        }
+    })
+
+    </script>
+
+</body>
+</html>
