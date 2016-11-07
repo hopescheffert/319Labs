@@ -24,28 +24,29 @@ var app = angular.module("myApp", ["ng-fusioncharts"])
 app.controller('MyController', function ($scope) {
   $scope.myDataSource = {
     chart: {
-      caption: "Harry's SuperMart",
-      subCaption: "Top 5 stores in last month by revenue",
+      caption: "2016 Presidential Election",
+      subCaption: "Number of votes for this year's Presidential Candidates",
     },
     data:[{
-      label: "Bakersfield Central",
-      value: "880000"
+      label: "Hillary Clinton (Democrat)",
+      value: "36",
+      color: "#9b59b6"
     },
     {
-      label: "Garden Groove Harbour",
-      value: "730000"
+      label: "Donald Trump (Republican)",
+      value: "48"
     },
     {
-      label: "Los Angeles Topanga",
-      value: "800000"
+      label: "Gary Johnson (Libertarian)",
+      value: "14"
     },
     {
-      label: "Compton-Rancho Dom",
-      value: "520000"
+      label: "Jill Stein (Green)",
+      value: "6"
     },
     {
-      label: "Daly City Serramonte",
-      value: "330000"
+      label: "Other",
+      value: "2"
     }]
   };
 });
