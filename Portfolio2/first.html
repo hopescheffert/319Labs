@@ -1,0 +1,36 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<body>
+    <h1>Class 1</h1>
+
+<div ng-app="myList" ng-controller="myListCtrl1">
+    <div id="toDo" ng-app="myList" ng-cloak ng-controller="myListCtrl1" class="w3-card-2 w3-margin" style="max-width:400px;">
+        <header class="w3-container w3-light-grey w3-padding-16">
+            <h3>To Do</h3>
+        </header>
+        <ul class="w3-ul">
+            <li ng-repeat="x in stuff" class="w3-padding-16">{{x}}<span ng-click="removeTask($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
+        </ul>
+        <div class="w3-container w3-light-grey w3-padding-16">
+            <div class="w3-row w3-margin-top">
+                <div class="w3-col s10">
+                    <input placeholder="Add task" ng-model="addThis" class="w3-input w3-border w3-padding">
+                </div>
+                <div class="w3-col s2">
+                    <button ng-click="addTask()" class="w3-btn w3-padding w3-blue">Add</button>
+                </div>
+            </div>
+            <p class="w3-padding-left w3-text-red">{{error}}</p>
+        </div>
+    </div>
+</div>
+<script>
+
+
+</script>
+
+
+
+</body>
+</html>
