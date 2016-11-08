@@ -1,63 +1,103 @@
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <style type="text/css">
+    .container {
+        text-align: left;
+        width: 600px;
+        clear: both;
+    }
+    .container input {
+        text-align: left;
+        width: 95%;
+        clear: both;
+    }
+
+}
+</style>
+</head>
+
 <body>
 
-    <div ng-app="myValidationApp" ng-controller="formCtrl">
-        <h1>Cast your vote</h1>
-
-        <p>*First and last name must be alphabetical</p>
-        <p>*Social security number must be 9 digits long, no dashes necessary</p>
-        <p>*Phone number must be 10 digits long, no dashes necessary</p>
-        <p>*In order to vote, you must be at least 18 years of age</p>
-
+    <div ng-app="myValidationApp" class="container" ng-controller="formCtrl">
+        <h1>Cast Your Vote</h1>
+        <hr>
+        <p>First and last name must be alphabetical</p>
+        <p>Social security number must be 9 digits long, no dashes necessary</p>
+        <p>If given, phone number must be 10 digits long, no dashes necessary</p>
+        <p><b>In order to vote, you must be at least 18 years of age</b></p>
+        <hr>
+        <p><span style="color:red">* indicates a required field</span></p>
         <form name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
-            First Name:<br>
-            <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required><br>
+            First Name
+            <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required>
+            <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.fname.$invalid">
-                <span ng-show="myForm.fname.$error.required">First name is required.</span>
+                <span ng-show="myForm.fname.$error.required">First name is required.<br></span>
             </span>
             <span style="color:red" ng-show="myForm.fname.$invalid">
-                <span ng-show="myForm.fname.$error.pattern">Only alphabetical characters allowed</span>
+                <span ng-show="myForm.fname.$error.pattern">Only alphabetical characters allowed<br></span>
             </span>
 
-            <br>Last Name:<br>
-            <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required><br>
+            <br><br>Last Name
+            <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required>
+            <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.lname.$invalid">
-                <span ng-show="myForm.lname.$error.required">Last name is required.</span>
+                <span ng-show="myForm.lname.$error.required">Last name is required.<br></span>
             </span>
-            <span style="color:red" ng-show="myForm.fname.$invalid">
-                <span ng-show="myForm.lname.$error.pattern">Only alphabetical characters allowed</span>
+            <span style="color:red" ng-show="myForm.lname.$invalid">
+                <span ng-show="myForm.lname.$error.pattern">Only alphabetical characters allowed<br></span>
             </span>
-            <br>Social Security Number:<br>
-            <input type="text" name="ssn" ng-model="user.ssn" ng-minlength="9" ng-maxlength="9" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required><br>
+
+
+            <br><br>Social Security Number
+            <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d)+$/" ng-minlength="9" ng-maxlength="9" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
+            <span style="color:red"> *</span>
+
             <span style="color:grey" ng-show="myForm.ssn.$error.minlength || myForm.ssn.$error.maxlength">Social Security number must be 9 digits long</span>
             <span style="color:red" ng-show="submitted && myForm.ssn.$invalid">
-                <span ng-show="myForm.ssn.$error.required">Social Security number is required.</span>
-            </span><br>
+                <span ng-show="myForm.ssn.$error.required">Social Security number is required.<br></span>
+            </span>
+            <span style="color:red" ng-show="myForm.ssn.$invalid">
+                <span ng-show="myForm.ssn.$error.pattern">Digits only<br></span>
+            </span>
 
-            Phone Number:<br>
-            <input type="tel" name="phone" ng-model="user.phone"><br>
+            <br><br>Phone Number
+            <input type="tel" name="phone" ng-model="user.phone" ng-pattern="/^(\d)+$/" ng-minlength="10" ng-maxlength="10">
+            <span style="color:grey" ng-show="myForm.phone.$error.minlength || myForm.phone.$error.maxlength">Phone number must be 10 digits long</span>
+            <span style="color:red" ng-show="myForm.phone.$invalid">
+                <span ng-show="myForm.phone.$error.pattern">Digits only<br></span>
+            </span>
 
-            Email:<br>
-            <input type="email" name="email" ng-model="user.email" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required><br>
+            <br><br>Email
+            <input type="email" name="email" ng-model="user.email" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
+            <span style="color:red"> *</span>
+
             <span style="color:red" ng-show="submitted && myForm.email.$invalid">
-                <span ng-show="myForm.email.$error.required">Email is required.</span>
-                <span ng-show="myForm.email.$error.email">Invalid email address.</span>
-            </span><br>
-            DOB:<br>
-            <input type="date" name="DOB" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required><br>
+                <span ng-show="myForm.email.$error.required">Email is required.<br></span>
+                <span ng-show="myForm.email.$error.email">Invalid email address.<br></span>
+            </span>
+
+            <br><br>DOB
+            <input type="date" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
+            <span style="color:red"> *</span>
+
             <span style="color:red" ng-show="submitted && myForm.DOB.$invalid">
-                <span ng-show="myForm.DOB.$error.required">Date of birth is required.</span>
-            </span><br>
+                <span ng-show="myForm.DOB.$error.required">Date of birth is required.<br></span>
+            </span>
+            <span style="color:red" ng-show="submitted && myForm.DOB.$error.max">Must be at least 18 years of age<br></span>
 
-
-            Choose a candidate<br>
+            <br><br>Choose a candidate<br>
             <select name="candidate" ng-model="mySelect" ng-class="{ 'has-error' : myForm.candidate.$invalid && !myForm.candidate.$pristine && submitted}" required>
+
                 <option value="">--Select--
                     <option ng-repeat="o in options" value="{{o.id}}">{{o.name}}</option>
                 </select>
+                <span style="color:red"> *</span>
+
                 <span style="color:red" ng-show="submitted && myForm.candidate.$invalid">
-                    <span ng-show="myForm.candidate.$error.required">{{msg}}You must select a candidate</span>
+                    <span ng-show="myForm.candidate.$error.required"><br>{{msg}}You must select a candidate<br></span>
                 </span>
                 <div ng-switch="mySelect">
                     <div ng-switch-when="clinton">
@@ -84,12 +124,7 @@
             </div>
 
 
-            <!-- <button ng-click="reset()">RESET</button> -->
             <button type="submit">VOTE</button>
-            <!-- <button ng-disabled="myForm.fname.$dirty && myForm.fname.$invalid || myForm.lname.$dirty && myForm.lname.$invalid ||
-            myForm.email.$dirty && myForm.email.$invalid || myForm.ssn.$dirty && myForm.ssn.$invalid || myForm.candidate.$invalid" ng-click="vote()">VOTE</button> -->
-            <!-- <input type="submit" onsubmit="vote()"
-            ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid"> -->
         </form>
         <!-- <p>form = {{user}}</p>
         <p>master = {{master}}</p> -->
@@ -101,31 +136,31 @@
     var clintonCount = 0;
     var johnsonCount = 0;
     var steinCount = 0;
+    var votes = 0;
+    console.log("number of total votes: " + votes);
 
     var app = angular.module('myValidationApp', []);
     app.controller('formCtrl', function($scope) {
-        $scope.master = {firstName:"John", lastName:"Doe"};
-        // $scope.reset = function()
-        // {
-        //     $scope.user = angular.copy($scope.master);
-        // };
-        // $scope.reset();
+        //check age
+        var today = new Date();
+        var minAge = 18;
+        $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+        // $scope.master = {firstName:"John", lastName:"Doe"};
         $scope.options = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
-        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
+                        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
         $scope.submitForm = function(isValid)
         {
             $scope.submitted = true;
             if(isValid)
             {
                 alert("form is valid");
+                $scope.vote();
             }
             else
             {
                 alert("form not valid");
             }
         }
-
-
         $scope.checkselection = function ()
         {
             if ($scope.mySelect != "" && $scope.mySelect != undefined)
@@ -140,41 +175,37 @@
         $scope.vote = function()
         {
             $scope.checkselection();
-            // if(myForm.candidate == "clinton")
-            // {
-            //     console.log('voted for clinton');
-            //     clintonCount += 1;
-            //
-            // }
-            // if(myForm.candidate == "trump")
-            // {
-            //     console.log('voted for trump');
-            //     trumpCount += 1;
-            // }
+            votes++;
+            if($scope.mySelect == "clinton")
+            {
+                console.log('voted for clinton');
+                clintonCount += 1;
+            }
+            else if($scope.mySelect == "trump")
+            {
+                console.log('voted for trump');
+                trumpCount += 1;
+            }
+            else if($scope.mySelect == "johnson")
+            {
+                console.log('voted for johnson');
+                johnsonCount += 1;
+            }
+            else if($scope.mySelect == "stein")
+            {
+                console.log('voted for stein');
+                steinCount += 1;
+            }
+
             console.log("thank you for voting");
             console.log("clinton: " + clintonCount);
             console.log("trump: " + trumpCount);
+            console.log("johsnon: " + johnsonCount);
+            console.log("stein: " + steinCount);
+
         }
         //$scope.vote();
     });
-    // app.directive('myDirective', function()
-    // {
-    //     return {
-    //         require: 'ngModel',
-    //         link: function(scope, element, attr, mCtrl)
-    //         {
-    //             function myValidation(value) {
-    //                 if (value.indexOf("e") > -1) {
-    //                     mCtrl.$setValidity('charE', true);
-    //                 } else {
-    //                     mCtrl.$setValidity('charE', false);
-    //                 }
-    //                 return value;
-    //             }
-    //             mCtrl.$parsers.push(myValidation);
-    //         }
-    //     };
-    // });
     </script>
 
 </body>
