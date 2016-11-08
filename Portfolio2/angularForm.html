@@ -5,7 +5,8 @@
     <style type="text/css">
     .container {
         text-align: left;
-        width: 600px;
+        height: auto;
+        width: 700px;
         clear: both;
     }
     .container input {
@@ -13,6 +14,31 @@
         width: 95%;
         clear: both;
     }
+    /*.button {
+        display: inline-block;
+        padding: 10px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: red;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+    }
+    .button:hover
+    {
+        background-color: #3e8e41
+    }
+
+    .button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }*/
+
 
 }
 </style>
@@ -50,11 +76,9 @@
                 <span ng-show="myForm.lname.$error.pattern">Only alphabetical characters allowed<br></span>
             </span>
 
-
             <br><br>Social Security Number
             <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d)+$/" ng-minlength="9" ng-maxlength="9" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
             <span style="color:red"> *</span>
-
             <span style="color:grey" ng-show="myForm.ssn.$error.minlength || myForm.ssn.$error.maxlength">Social Security number must be 9 digits long</span>
             <span style="color:red" ng-show="submitted && myForm.ssn.$invalid">
                 <span ng-show="myForm.ssn.$error.required">Social Security number is required.<br></span>
@@ -73,7 +97,6 @@
             <br><br>Email
             <input type="email" name="email" ng-model="user.email" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
             <span style="color:red"> *</span>
-
             <span style="color:red" ng-show="submitted && myForm.email.$invalid">
                 <span ng-show="myForm.email.$error.required">Email is required.<br></span>
                 <span ng-show="myForm.email.$error.email">Invalid email address.<br></span>
@@ -82,7 +105,6 @@
             <br><br>DOB
             <input type="date" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
             <span style="color:red"> *</span>
-
             <span style="color:red" ng-show="submitted && myForm.DOB.$invalid">
                 <span ng-show="myForm.DOB.$error.required">Date of birth is required.<br></span>
             </span>
@@ -90,7 +112,6 @@
 
             <br><br>Choose a candidate<br>
             <select name="candidate" ng-model="mySelect" ng-class="{ 'has-error' : myForm.candidate.$invalid && !myForm.candidate.$pristine && submitted}" required>
-
                 <option value="">--Select--
                     <option ng-repeat="o in options" value="{{o.id}}">{{o.name}}</option>
                 </select>
@@ -124,7 +145,8 @@
             </div>
 
 
-            <button type="submit">VOTE</button>
+            <button class="button" type="submit" ng-disable="hasUserVoted(user.ssn)">VOTE</button>
+            <br>
         </form>
         <!-- <p>form = {{user}}</p>
         <p>master = {{master}}</p> -->
@@ -139,6 +161,9 @@
     var votes = 0;
     console.log("number of total votes: " + votes);
 
+    //TODO must make sure that each user can only have one vote!
+
+
     var app = angular.module('myValidationApp', []);
     app.controller('formCtrl', function($scope) {
         //check age
@@ -147,7 +172,16 @@
         $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
         // $scope.master = {firstName:"John", lastName:"Doe"};
         $scope.options = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
-                        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
+        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
+        $scope.hasUserVoted = function(userSSN)
+        {
+            if(user.ssn.hasVoted)
+            {
+                return false;
+            }
+            else return true; //can vote
+        }
+
         $scope.submitForm = function(isValid)
         {
             $scope.submitted = true;
@@ -174,7 +208,7 @@
         }
         $scope.vote = function()
         {
-            $scope.checkselection();
+            // $scope.checkselection();
             votes++;
             if($scope.mySelect == "clinton")
             {
@@ -197,14 +231,13 @@
                 steinCount += 1;
             }
 
-            console.log("thank you for voting");
+            console.log("thank you for voting, now total votes is: " + votes);
             console.log("clinton: " + clintonCount);
             console.log("trump: " + trumpCount);
             console.log("johsnon: " + johnsonCount);
             console.log("stein: " + steinCount);
 
         }
-        //$scope.vote();
     });
     </script>
 
