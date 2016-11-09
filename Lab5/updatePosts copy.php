@@ -65,7 +65,7 @@ while(!feof($postsFile))
     }
 
 }
-header('Location: http://localhost:8080/viewPosts.php');
+header('Location: viewPosts.php');
 
 
 ?>

@@ -126,9 +126,9 @@ $decipheredtext = rsa_decrypt($ciphertext, $private_key);
 
 // echo "<br> encrypted text " . $ciphertext;
 // echo "<br> decrypted text " . $decipheredtext;
-
+$messageFile = "/Applications/XAMPP/xamppfiles/htdocs/lab5/posts.txt";
 $message = array('user' => $curUser, 'reciever' => $reciever, 'body' => $ciphertext);
 $entry = json_encode($message) . "\n";
-file_put_contents("messages.txt", $entry, FILE_APPEND);
+file_put_contents("$messageFile, $entry, FILE_APPEND);
 
 ?>
