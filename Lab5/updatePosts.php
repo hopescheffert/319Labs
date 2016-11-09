@@ -25,7 +25,7 @@ if(strcmp($user, "admin") == 0)
 //TODO if admin they can delete
 $post = '{"Title" : '. $title . ', "Description" : ' . $description . ', "Time" : ' . $time . ', "ID" : '. $id . '}';
 $post = json_decode($post);
-$postsFile = fopen("posts.txt", "a+");
+$postsFile = fopen("/Applications/XAMPP/xamppfiles/htdocs/lab5/posts.txt", "a+");
 while(!feof($postsFile))
 {
     $p = stream_get_line($postsFile, NULL, "\n");
@@ -46,7 +46,7 @@ while(!feof($postsFile))
             //$p = str_replace($p, '', $p);
             //file_put_contents("posts.txt", $p);
             //file_put_contents("posts.txt", str_replace($p . "\r\n", "", file_get_contents("posts.txt")));
-            file_put_contents("posts.txt", $entry, FILE_APPEND);
+            file_put_contents("/Applications/XAMPP/xamppfiles/htdocs/lab5/posts.txt", $entry, FILE_APPEND);
             echo json_encode($modification);
             break;
         }
@@ -54,7 +54,7 @@ while(!feof($postsFile))
         {
             $newPost = array('Title' => $title, 'Description' => $description, 'Time' => $time, 'ID' => $id);
             $entry = json_encode($newPost) . "\n";
-            file_put_contents("posts.txt", $entry, FILE_APPEND);
+            file_put_contents("/Applications/XAMPP/xamppfiles/htdocs/lab5/posts.txt", $entry, FILE_APPEND);
             echo json_encode($newPost);
             break;
 
@@ -65,7 +65,7 @@ while(!feof($postsFile))
     }
 
 }
-header('Location: http://localhost:8080/viewPosts.php');
+header('Location: viewPosts.php');
 
 
 ?>
