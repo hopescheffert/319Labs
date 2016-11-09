@@ -15,29 +15,29 @@
         clear: both;
     }
     /*.button {
-        display: inline-block;
-        padding: 10px 15px;
-        font-size: 15px;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        outline: none;
-        color: #fff;
-        background-color: red;
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 9px #999;
-    }
-    .button:hover
-    {
-        background-color: #3e8e41
-    }
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: red;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+.button:hover
+{
+background-color: #3e8e41
+}
 
-    .button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }*/
+.button:active {
+background-color: #3e8e41;
+box-shadow: 0 5px #666;
+transform: translateY(4px);
+}*/
 
 
 }
@@ -113,7 +113,7 @@
             <br><br>Choose a candidate<br>
             <select name="candidate" ng-model="mySelect" ng-class="{ 'has-error' : myForm.candidate.$invalid && !myForm.candidate.$pristine && submitted}" required>
                 <option value="">--Select--
-                    <option ng-repeat="o in options" value="{{o.id}}">{{o.name}}</option>
+                    <option ng-repeat="c in candidates" value="{{c.id}}">{{c.name}}</option>
                 </select>
                 <span style="color:red"> *</span>
 
@@ -154,25 +154,24 @@
     </div>
 
     <script>
-    var trumpCount = 0;
-    var clintonCount = 0;
-    var johnsonCount = 0;
-    var steinCount = 0;
-    var votes = 0;
-    console.log("number of total votes: " + votes);
+
+    // console.log("number of total votes: " + votes);
 
     //TODO must make sure that each user can only have one vote!
 
 
     var app = angular.module('myValidationApp', []);
-    app.controller('formCtrl', function($scope) {
+    app.controller('formCtrl', function($scope, votes) {
         //check age
         var today = new Date();
         var minAge = 18;
         $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
         // $scope.master = {firstName:"John", lastName:"Doe"};
-        $scope.options = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
-        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
+        $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton", "votes": 0}, {"id": "trump", "name": "Donald Trump", "votes": 0},
+        {"id": "johnson", "name": "Gary Johnson", "votes": 0}, {"id": "stein", "name": "Jill Stein", "votes": 0}];
+        var votesService = votes;
+        //$scope.votes = 0;
+
         $scope.hasUserVoted = function(userSSN)
         {
             if(user.ssn.hasVoted)
@@ -188,56 +187,91 @@
             if(isValid)
             {
                 alert("form is valid");
-                $scope.vote();
+                //$scope.vote();
+                votesService.vote($scope.mySelect);
             }
             else
             {
                 alert("form not valid");
             }
         }
-        $scope.checkselection = function ()
+        votesService.vote = function(candidate)
         {
-            if ($scope.mySelect != "" && $scope.mySelect != undefined)
-            {
-                $scope.msg = 'Selected Value: '+ $scope.mySelect;
-            }
-            else
-            {
-                $scope.msg = 'Please Select Dropdown Value';
-            }
+            votes.add(candidate);
         }
-        $scope.vote = function()
+        // $scope.vote = function()
+        // {
+        //     $scope.watch('votes', function()
+        //     {
+        //         $scope.votes = $scope.votes++;
+        //
+        //     }, true);
+        //
+        //     if($scope.mySelect == "clinton")
+        //     {
+        //         clintonCount += 1;
+        //     }
+        //     else if($scope.mySelect == "trump")
+        //     {
+        //         trumpCount += 1;
+        //     }
+        //     else if($scope.mySelect == "johnson")
+        //     {
+        //         johnsonCount += 1;
+        //     }
+        //     else if($scope.mySelect == "stein")
+        //     {
+        //         steinCount += 1;
+        //     }
+        //
+        //     console.log("thank you for voting, now total votes is: " + votes);
+        //     console.log("clinton: " + clintonCount);
+        //     console.log("trump: " + trumpCount);
+        //     console.log("johsnon: " + johnsonCount);
+        //     console.log("stein: " + steinCount);
+        //
+        // }
+    });
+
+    app.factory('votes', function()
+    {
+        var trumpCount = 0;
+        var clintonCount = 0;
+        var johnsonCount = 0;
+        var steinCount = 0;
+        var votes = {"clinton": clintonCount, "trump": trumpCount, "johnson" : johnsonCount, "stein": steinCount};
+        console.log("AT FIRST");
+        console.log(votes);
+
+        votes.add = function(candidate)
         {
-            // $scope.checkselection();
-            votes++;
-            if($scope.mySelect == "clinton")
+            if(candidate == "clinton")
             {
-                console.log('voted for clinton');
-                clintonCount += 1;
+                votes.clinton++;
+                console.log("votes for clinton " + clintonCount);
             }
-            else if($scope.mySelect == "trump")
+            else if(candidate == "trump")
             {
-                console.log('voted for trump');
-                trumpCount += 1;
+                votes.trump++;
+                console.log("votes for trump " + trumpCount);
+
             }
-            else if($scope.mySelect == "johnson")
+            else if(candidate == "johnson")
             {
-                console.log('voted for johnson');
-                johnsonCount += 1;
+                votes.johnson++;
+                console.log("votes for johnson " + johnsonCount);
             }
-            else if($scope.mySelect == "stein")
+            else if(candidate == "stein")
             {
-                console.log('voted for stein');
-                steinCount += 1;
+                votes.stein++;
+                console.log("votes for stein " + steinCount);
             }
 
-            console.log("thank you for voting, now total votes is: " + votes);
-            console.log("clinton: " + clintonCount);
-            console.log("trump: " + trumpCount);
-            console.log("johsnon: " + johnsonCount);
-            console.log("stein: " + steinCount);
+            console.log("NOW");
+            console.log(votes);
 
         }
+        return votes;
     });
     </script>
 
