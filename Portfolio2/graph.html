@@ -17,8 +17,18 @@
   </div>
 </div>
 
+<div ng-controller="MyController2">
+  <div fusioncharts
+    width="450"
+    height="300"
+    type="doughnut3d"
+    dataSource="{{myDataSource}}" >
+  </div>
+</div>
+
 
 <script>
+
 var app = angular.module("myApp", ["ng-fusioncharts"])
 
 app.controller('MyController', function ($scope) {
@@ -26,27 +36,76 @@ app.controller('MyController', function ($scope) {
     chart: {
       caption: "2016 Presidential Election",
       subCaption: "Number of votes for this year's Presidential Candidates",
+      yaxisname: "Number of Votes",
+      useroundedges: "1"
+
     },
     data:[{
       label: "Hillary Clinton (Democrat)",
       value: "36",
-      color: "#9b59b6"
+      color: "#0000ff"
     },
     {
       label: "Donald Trump (Republican)",
-      value: "48"
+      value: "48",
+      color: "#cc0000"
     },
     {
       label: "Gary Johnson (Libertarian)",
-      value: "14"
+      value: "14",
+      color: "#ffcc00"
     },
     {
       label: "Jill Stein (Green)",
-      value: "6"
+      value: "6",
+      color: "#29a329"
     },
     {
       label: "Other",
-      value: "2"
+      value: "2",
+      color: "#9b59b6"
+    }]
+  };
+});
+
+app.controller('MyController2', function ($scope) {
+  $scope.myDataSource = {
+    chart: {
+      caption: "2016 Presidential Election",
+      subCaption: "Number of votes for this year's Presidential Candidates",
+      yaxisname: "Number of Votes",
+      useroundedges: "0",
+      showlegend: "1",
+      showpercentagevalues: "1",
+      enablesmartlabels: "0",
+      startingangle: "310"
+
+
+    },
+    data:[{
+      label: "Hillary Clinton (Democrat)",
+      value: "36",
+      color: "#0000ff"
+    },
+    {
+      label: "Donald Trump (Republican)",
+      value: "48",
+      color: "#cc0000"
+    },
+    {
+      label: "Gary Johnson (Libertarian)",
+      value: "14",
+      color: "#ffcc00"
+    },
+    {
+      label: "Jill Stein (Green)",
+      value: "6",
+      color: "#29a329"
+    },
+    {
+      label: "Other",
+      value: "2",
+      color: "#9b59b6"
     }]
   };
 });
