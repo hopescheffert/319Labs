@@ -158,6 +158,7 @@ transform: translateY(4px);
     // console.log("number of total votes: " + votes);
 
     //TODO must make sure that each user can only have one vote!
+    //TODO make/store user objects with variable hasVoted
 
 
     var app = angular.module('myValidationApp', []);
@@ -233,43 +234,60 @@ transform: translateY(4px);
         // }
     });
 
-    app.factory('votes', function()
+    app.factory('votes', function($http)
     {
         var trumpCount = 0;
         var clintonCount = 0;
         var johnsonCount = 0;
         var steinCount = 0;
-        var votes = {"clinton": clintonCount, "trump": trumpCount, "johnson" : johnsonCount, "stein": steinCount};
-        console.log("AT FIRST");
-        console.log(votes);
+        //get current votes from server
+
+
+        var votes = {'clinton': 7, 'trump': 8, 'johnson': 3, 'stein': 0};
+        $http.get("getVotes.php").success(function(data)
+        {
+            console.log("from get Votes:");
+            console.log(data);
+            votes = data;
+        })
+
+        //console.log("AT FIRST");
+        //console.log(votes);
 
         votes.add = function(candidate)
         {
-            if(candidate == "clinton")
+            $http.post("sendVotes.php", {'candidate': candidate, 'votes': votes}).success(function(data)
             {
-                votes.clinton++;
-                console.log("votes for clinton " + clintonCount);
-            }
-            else if(candidate == "trump")
-            {
-                votes.trump++;
-                console.log("votes for trump " + trumpCount);
+                console.log(data);
+            })
 
-            }
-            else if(candidate == "johnson")
-            {
-                votes.johnson++;
-                console.log("votes for johnson " + johnsonCount);
-            }
-            else if(candidate == "stein")
-            {
-                votes.stein++;
-                console.log("votes for stein " + steinCount);
-            }
+            // if(candidate == "clinton")
+            // {
+            //     votes.clinton++;
+            //     console.log("votes for clinton " + clintonCount);
+            // }
+            // else if(candidate == "trump")
+            // {
+            //     votes.trump++;
+            //     console.log("votes for trump " + trumpCount);
+            //
+            // }
+            // else if(candidate == "johnson")
+            // {
+            //     votes.johnson++;
+            //     console.log("votes for johnson " + johnsonCount);
+            // }
+            // else if(candidate == "stein")
+            // {
+            //     votes.stein++;
+            //     console.log("votes for stein " + steinCount);
+            // }
 
-            console.log("NOW");
-            console.log(votes);
+            //console.log("NOW");
+            //console.log(votes);
 
+            //TODO write/send votes object to votes.json using $http.post?
+            //http://stackoverflow.com/questions/27074471/sending-form-data-to-server-in-angularjs
         }
         return votes;
     });
