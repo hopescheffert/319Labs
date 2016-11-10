@@ -1,8 +1,7 @@
 <?php
 //addVoters.php
-
+//NOTE the file path may change
 $currentvoter = json_decode(file_get_contents("php://input"));
-// $currentvoter = json_encode($currentvoter);
 $path = "/Applications/XAMPP/xamppfiles/htdocs/portfolio2/voters.json";
 $votersFile = fopen($path, "r") or die("Unable to open voters.json");
 

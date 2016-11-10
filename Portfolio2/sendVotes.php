@@ -1,7 +1,8 @@
 <?php
 //sendVotes.php
-// $v = "{'clinton': " . $clintonCount . ", 'trump': " . $trumpCount. ", 'johnson': " . $johnsonCount . ", 'stein': " . $steinCount . "}";
-// $votes = json_encode($v);
+
+//NOTE the file path may change
+
 $params = json_decode(file_get_contents("php://input"));
 $votes = $params->votes;
 // $candidate = file_get_contents("php://input");
