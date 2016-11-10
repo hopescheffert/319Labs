@@ -14,32 +14,6 @@
         width: 95%;
         clear: both;
     }
-    /*.button {
-    display: inline-block;
-    padding: 10px 15px;
-    font-size: 15px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: #fff;
-    background-color: red;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-.button:hover
-{
-background-color: #3e8e41
-}
-
-.button:active {
-background-color: #3e8e41;
-box-shadow: 0 5px #666;
-transform: translateY(4px);
-}*/
-
-
 }
 </style>
 </head>
@@ -95,11 +69,11 @@ transform: translateY(4px);
             </span>
 
             <br><br>Email
-            <input type="email" name="email" ng-model="user.email" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
+            <input type="email" name="email" ng-model="user.email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
             <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.email.$invalid">
                 <span ng-show="myForm.email.$error.required">Email is required.<br></span>
-                <span ng-show="myForm.email.$error.email">Invalid email address.<br></span>
+                <span ng-show="myForm.email.$error.pattern">Invalid email address.<br></span>
             </span>
 
             <br><br>DOB
@@ -144,95 +118,108 @@ transform: translateY(4px);
                 </div>
             </div>
 
-
-            <button class="button" type="submit" ng-disable="hasUserVoted(user.ssn)">VOTE</button>
+            <button class="button" type="submit" ng-model="user.hasVoted">VOTE</button>
             <br>
         </form>
-        <!-- <p>form = {{user}}</p>
-        <p>master = {{master}}</p> -->
 
     </div>
 
     <script>
     var app = angular.module('myValidationApp', []);
 
-    app.controller('formCtrl', function($scope, votes) {
+    app.controller('formCtrl', function($scope, votes, voters) {
 
         var votesService = votes;
+        var votersService = voters;
 
         //check minimum age for DOB in form
         var today = new Date();
         var minAge = 18;
         $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
         //object representing candidates
-        $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton", "votes": 0}, {"id": "trump", "name": "Donald Trump", "votes": 0},
-        {"id": "johnson", "name": "Gary Johnson", "votes": 0}, {"id": "stein", "name": "Jill Stein", "votes": 0}];
+        $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
+        {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
         //TODO implement a user object and check for ability to vote
-
-        $scope.hasUserVoted = function(userSSN)
-        {
-            if(user.ssn.hasVoted)
-            {
-                return false; //already voted
-            }
-            else return true; //can vote
-        }
 
         $scope.submitForm = function(isValid)
         {
             $scope.submitted = true;
             if(isValid)
             {
-                votesService.vote($scope.mySelect);
+                votesService.add($scope.mySelect);
+                // console.log("going to call voters service get");
+                // votersService.get($scope.user);
+                console.log("going to call votersservice add:");
+                votersService.add($scope.user);
+
             }
             else
             {
                 alert("Form not valid. Please fix the required fields");
             }
         }
-        votesService.vote = function(candidate)
-        {
-            votes.add(candidate);
-
-            $scope.getData = function(){
-                votesService.add(candidate).then(function(data){
-                    $scope.getData = data;
-                    console.log("in controller dta is ");
-                    console.log(data);
-                });
-            };
-        }
     });
     //custom service to handle voting - retrieving from and sending to the server
     app.factory('votes', function($http)
     {
         var votesObj = {};
+
         //get current votes from server
+            $http.get("getVotes.php").success(function(data)
+            {
+                votesObj = data;
+            })
 
-        $http.get("getVotes.php").success(function(data)
-        {
-            console.log("From getVotes.php:");
-            votesObj = data;
-            console.log(votesObj);
-
-        })
         votesObj.add = function(candidate)
         {
-
             $http.post("sendVotes.php", {'candidate': candidate, 'votes': votesObj}).then(function(response)
             {
                 alert("Thank you for voting!");
                 console.log("after sendVotes.php:");
                 console.log(response.data);
                 return response.data;
-                //TODO update page showing results?
             })
         }
-
         return votesObj;
 
     });
 
+    //custom service to handle voters information - retrieving from and sending to the server
+    app.factory('voters', function($http)
+    {
+        var voterObj = {};
+
+        //get current voters from server
+        voterObj.get = function(voter)
+        {
+            $http.post("getVoters.php?voter", voter).success(function(data)
+            {
+                console.log("From getVoters.php: " + data);
+                if(data == true)
+                {
+                    alert("I'm sorry, you've already voted.");
+                }
+            })
+        }
+        voterObj.add = function(voter)
+        {
+            $http.post("addVoters.php", voter).then(function(response)
+            {
+                console.log("after addVoters.php: ");
+                if(response.data == false)
+                {
+                    alert("you already voted");
+                }
+                else
+                {
+                    console.log(response.data);
+                }
+                return response.data;
+            })
+        }
+
+        return voterObj;
+    });
 
     </script>
 
