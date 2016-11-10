@@ -4,6 +4,7 @@
 $votersFile = fopen("/Applications/XAMPP/xamppfiles/htdocs/portfolio2/voters.json", "r") or die("Unable to open voters.json");
 
 $currentvoter = json_decode(file_get_contents("php://input"));
+echo $currentvoter;
 $succeeded = true;
 $failed = false;
 

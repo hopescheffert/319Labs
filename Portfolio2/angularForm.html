@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <button class="button" type="submit" ng-model="user.hasVoted">VOTE</button>
+            <button class="button" type="submit">VOTE</button>
             <br>
         </form>
 
@@ -140,18 +140,15 @@
         $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
         {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
         //TODO implement a user object and check for ability to vote
-
         $scope.submitForm = function(isValid)
         {
             $scope.submitted = true;
             if(isValid)
             {
-                votesService.add($scope.mySelect);
-                // console.log("going to call voters service get");
-                // votersService.get($scope.user);
-                console.log("going to call votersservice add:");
-                votersService.add($scope.user);
 
+                console.log($scope.user);
+                var v = votersService.add($scope.user);
+                votesService.add($scope.mySelect);
             }
             else
             {
@@ -190,31 +187,34 @@
         var voterObj = {};
 
         //get current voters from server
-        voterObj.get = function(voter)
-        {
-            $http.post("getVoters.php?voter", voter).success(function(data)
-            {
-                console.log("From getVoters.php: " + data);
-                if(data == true)
-                {
-                    alert("I'm sorry, you've already voted.");
-                }
-            })
-        }
+        // voterObj.get = function(voter)
+        // {
+        //     $http.post("getVoters.php?voter", voter).success(function(data)
+        //     {
+        //         console.log("From getVoters.php: " + data);
+        //         if(data == true)
+        //         {
+        //             alert("I'm sorry, you've already voted.");
+        //         }
+        //     })
+        // }
         voterObj.add = function(voter)
         {
             $http.post("addVoters.php", voter).then(function(response)
             {
                 console.log("after addVoters.php: ");
-                if(response.data == false)
+                if(response.data == "false")
                 {
+                    console.log("FOUND ONE THAT ARLEADY VOTED");
                     alert("you already voted");
+                    return false;
                 }
                 else
                 {
+                    console.log("respnse.data: ");
                     console.log(response.data);
                 }
-                return response.data;
+                return true;
             })
         }
 
