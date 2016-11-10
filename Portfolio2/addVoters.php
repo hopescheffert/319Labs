@@ -6,7 +6,7 @@ $currentvoter = json_decode(file_get_contents("php://input"));
 $path = "/Applications/XAMPP/xamppfiles/htdocs/portfolio2/voters.json";
 $votersFile = fopen($path, "r") or die("Unable to open voters.json");
 
-
+//NOTE THAT AS LONG AS THEY HAVE DIFFERENT SOCIAL SECURITY NUMBERS, THEY ARE ALLOWED TO VOTE
 $found = false;
 while(!feof($votersFile) && !$found)
 {
