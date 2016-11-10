@@ -57,7 +57,7 @@ transform: translateY(4px);
         <p><span style="color:red">* indicates a required field</span></p>
         <form name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
             First Name
-            <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required>
+            <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required>
             <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.fname.$invalid">
                 <span ng-show="myForm.fname.$error.required">First name is required.<br></span>
@@ -67,7 +67,7 @@ transform: translateY(4px);
             </span>
 
             <br><br>Last Name
-            <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^(\D)+$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required>
+            <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required>
             <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.lname.$invalid">
                 <span ng-show="myForm.lname.$error.required">Last name is required.<br></span>
@@ -154,30 +154,26 @@ transform: translateY(4px);
     </div>
 
     <script>
-
-    // console.log("number of total votes: " + votes);
-
-    //TODO must make sure that each user can only have one vote!
-    //TODO make/store user objects with variable hasVoted
-
-
     var app = angular.module('myValidationApp', []);
+
     app.controller('formCtrl', function($scope, votes) {
-        //check age
+
+        var votesService = votes;
+
+        //check minimum age for DOB in form
         var today = new Date();
         var minAge = 18;
         $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
-        // $scope.master = {firstName:"John", lastName:"Doe"};
+        //object representing candidates
         $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton", "votes": 0}, {"id": "trump", "name": "Donald Trump", "votes": 0},
         {"id": "johnson", "name": "Gary Johnson", "votes": 0}, {"id": "stein", "name": "Jill Stein", "votes": 0}];
-        var votesService = votes;
-        //$scope.votes = 0;
+        //TODO implement a user object and check for ability to vote
 
         $scope.hasUserVoted = function(userSSN)
         {
             if(user.ssn.hasVoted)
             {
-                return false;
+                return false; //already voted
             }
             else return true; //can vote
         }
@@ -187,110 +183,57 @@ transform: translateY(4px);
             $scope.submitted = true;
             if(isValid)
             {
-                alert("form is valid");
-                //$scope.vote();
                 votesService.vote($scope.mySelect);
             }
             else
             {
-                alert("form not valid");
+                alert("Form not valid. Please fix the required fields");
             }
         }
         votesService.vote = function(candidate)
         {
             votes.add(candidate);
-        }
-        // $scope.vote = function()
-        // {
-        //     $scope.watch('votes', function()
-        //     {
-        //         $scope.votes = $scope.votes++;
-        //
-        //     }, true);
-        //
-        //     if($scope.mySelect == "clinton")
-        //     {
-        //         clintonCount += 1;
-        //     }
-        //     else if($scope.mySelect == "trump")
-        //     {
-        //         trumpCount += 1;
-        //     }
-        //     else if($scope.mySelect == "johnson")
-        //     {
-        //         johnsonCount += 1;
-        //     }
-        //     else if($scope.mySelect == "stein")
-        //     {
-        //         steinCount += 1;
-        //     }
-        //
-        //     console.log("thank you for voting, now total votes is: " + votes);
-        //     console.log("clinton: " + clintonCount);
-        //     console.log("trump: " + trumpCount);
-        //     console.log("johsnon: " + johnsonCount);
-        //     console.log("stein: " + steinCount);
-        //
-        // }
-    });
 
+            $scope.getData = function(){
+                votesService.add(candidate).then(function(data){
+                    $scope.getData = data;
+                    console.log("in controller dta is ");
+                    console.log(data);
+                });
+            };
+        }
+    });
+    //custom service to handle voting - retrieving from and sending to the server
     app.factory('votes', function($http)
     {
-        var trumpCount = 0;
-        var clintonCount = 0;
-        var johnsonCount = 0;
-        var steinCount = 0;
+        var votesObj = {};
         //get current votes from server
 
-
-        var votes = {'clinton': 7, 'trump': 8, 'johnson': 3, 'stein': 0};
         $http.get("getVotes.php").success(function(data)
         {
-            console.log("from get Votes:");
-            console.log(data);
-            votes = data;
+            console.log("From getVotes.php:");
+            votesObj = data;
+            console.log(votesObj);
+
         })
-
-        //console.log("AT FIRST");
-        //console.log(votes);
-
-        votes.add = function(candidate)
+        votesObj.add = function(candidate)
         {
-            $http.post("sendVotes.php", {'candidate': candidate, 'votes': votes}).success(function(data)
+
+            $http.post("sendVotes.php", {'candidate': candidate, 'votes': votesObj}).then(function(response)
             {
-                console.log(data);
+                alert("Thank you for voting!");
+                console.log("after sendVotes.php:");
+                console.log(response.data);
+                return response.data;
+                //TODO update page showing results?
             })
-
-            // if(candidate == "clinton")
-            // {
-            //     votes.clinton++;
-            //     console.log("votes for clinton " + clintonCount);
-            // }
-            // else if(candidate == "trump")
-            // {
-            //     votes.trump++;
-            //     console.log("votes for trump " + trumpCount);
-            //
-            // }
-            // else if(candidate == "johnson")
-            // {
-            //     votes.johnson++;
-            //     console.log("votes for johnson " + johnsonCount);
-            // }
-            // else if(candidate == "stein")
-            // {
-            //     votes.stein++;
-            //     console.log("votes for stein " + steinCount);
-            // }
-
-            //console.log("NOW");
-            //console.log(votes);
-
-            //TODO write/send votes object to votes.json using $http.post?
-            //http://stackoverflow.com/questions/27074471/sending-form-data-to-server-in-angularjs
         }
-        return votes;
+
+        return votesObj;
+
     });
+
+
     </script>
 
 </body>
