@@ -6,9 +6,9 @@
 <script type="text/javascript" src="/Users/jacobneyens/Documents/coms319/angularjs/angular-fusioncharts.js"></script>
 <!-- <script type="text/javascript" src="/angularjs/angular-fusioncharts.js"></script> -->
 
-<body ng-app="myApp">
+<body ng-app="myGraphApp">
 
-<div ng-controller="MyController">
+<div ng-controller="MyGraphController">
   <div fusioncharts
     width="600"
     height="400"
@@ -29,9 +29,9 @@
 
 <script>
 
-var app = angular.module("myApp", ["ng-fusioncharts"])
+var graphApp = angular.module("myGraphApp", ["ng-fusioncharts"])
 
-app.controller('MyController', function ($scope) {
+graphApp.controller('MyGraphController', function ($scope) {
   $scope.myDataSource = {
     chart: {
       caption: "2016 Presidential Election",
@@ -68,7 +68,7 @@ app.controller('MyController', function ($scope) {
   };
 });
 
-app.controller('MyController2', function ($scope) {
+graphApp.controller('MyController2', function ($scope) {
   $scope.myDataSource = {
     chart: {
       caption: "2016 Presidential Election",
