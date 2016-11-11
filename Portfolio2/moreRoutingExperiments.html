@@ -37,7 +37,7 @@
         }
         else
         {
-            $scope.tasks = JSON.parse(localStorage.getItem("tasks1"));//listService;
+            $scope.tasks = angular.fromJson(localStorage.getItem("tasks1"));//listService;
         }
         //adds the task to the to do list at the end
         $scope.addTask = function()
@@ -49,8 +49,10 @@
             }
             if($scope.tasks.indexOf($scope.addThis) == -1)
             {
-                $scope.tasks.push($scope.addThis);
-                localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
+                task = {"taskName": $scope.addThis, "priorityLevel": $scope.priority};
+                $scope.tasks.push(angular.toJson(task));
+                console.log($scope.tasks);
+                localStorage.setItem("tasks1", angular.toJson(task));
             }
             else
             {
@@ -62,7 +64,7 @@
         {
             $scope.error = "";
             $scope.tasks.splice(x, 1);
-            localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
+            localStorage.setItem("tasks1", angular.toJson($scope.tasks));
         }
     })
     app.controller("myListCtrl2", function($scope)

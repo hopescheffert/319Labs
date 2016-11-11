@@ -38,6 +38,7 @@ app.factory('votes', function($http)
     $http.get("getVotes.php").success(function(data)
     {
         votesObj = data;
+        console.log(data);
     })
 
     //NOTE THAT AS LONG AS THEY HAVE DIFFERENT SOCIAL SECURITY NUMBERS, THEY ARE ALLOWED TO VOTE
