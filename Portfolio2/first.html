@@ -28,14 +28,16 @@
             </header>
             <ul class="w3-ul">
                 <li ng-repeat="task in tasks track by $index" class="w3-padding-16 priority{{task.priorityLevel}}">{{task.taskName}}
-                    <!-- <div class="priority{{task.priorityLevel}}">{{task.taskName}}</div> -->
                     <span ng-click="removeTask($index)" style="cursor:pointer;" class="w3-right w3-margin-right">&times;</span></li>
             </ul>
             <div class="w3-container w3-light-grey w3-padding-16">
                 <div class="w3-row w3-margin-top">
                     <div class="w3-col s10">
                         <input placeholder="Add task" ng-model="addThis" class="w3-input w3-border w3-padding">
-                        <input placeholder="Priority: 1, 2, 3" ng-model="priority" class="w3-input w3-border w3-padding">
+                        <input placeholder="Priority: 1, 2, 3" name="priority" ng-model="priority" ng-pattern="/[1-3]?/" class="w3-input w3-border w3-padding">
+                        <span style="color:red" ng-show="priority.$invalid">
+                            <span ng-show="priority.$error.pattern">Either 1,2, or 3<br></span>
+                        </span>
                     </div>
                     <div class="w3-col s2">
                         <button ng-click="addTask()" class="w3-btn w3-padding w3-blue">Add</button>
@@ -45,21 +47,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-console.log("hello");
-    for(var i = 0; i < {{$index}}; i ++)
-    {
-        p = document.getElementById(i).priority;
-        if(p == 1)
-        {
-            console.log("it has priority 1");
-        }
-    }
-
-    </script>
-
-
 
 </body>
 </html>

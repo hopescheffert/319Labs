@@ -37,7 +37,6 @@
         }
         else
         {
-            // $scope.tasks = JSON.parse(angular.toJson(localStorage.getItem("tasks1")));
             $scope.tasks = JSON.parse(localStorage.getItem("tasks1"));
         }
         //adds the task to the to do list at the end
@@ -48,12 +47,18 @@
             {
                 return;
             }
-            if($scope.tasks.indexOf($scope.addThis) == -1)
+            if(($scope.priority  != 1) && ($scope.priority != 2) && ($scope.priority != 3))
+            {
+                $scope.error = "You must enter either 1,2, or 3";
+            }
+            else if($scope.tasks.indexOf($scope.addThis) == -1)
             {
                 task = {taskName: $scope.addThis, priorityLevel: $scope.priority};
                 $scope.tasks.push(task);
                 console.log($scope.tasks);
                 localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
+                $scope.addThis = "";
+                $scope.priority = "";
             }
             else
             {
@@ -65,7 +70,7 @@
         {
             $scope.error = "";
             $scope.tasks.splice(x, 1);
-            localStorage.setItem("tasks1", angular.toJson($scope.tasks));
+            localStorage.setItem("tasks1", JSON.stringify($scope.tasks));
         }
     })
     app.controller("myListCtrl2", function($scope)
@@ -86,10 +91,18 @@
             {
                 return;
             }
-            if($scope.tasks.indexOf($scope.addThis) == -1)
+            if(($scope.priority  != 1) && ($scope.priority != 2) && ($scope.priority != 3))
             {
-                $scope.tasks.push($scope.addThis);
+                $scope.error = "You must enter either 1,2, or 3";
+            }
+            else if($scope.tasks.indexOf($scope.addThis) == -1)
+            {
+                task = {taskName: $scope.addThis, priorityLevel: $scope.priority};
+                $scope.tasks.push(task);
+                console.log($scope.tasks);
                 localStorage.setItem("tasks2", JSON.stringify($scope.tasks));
+                $scope.addThis = "";
+                $scope.priority = "";
             }
             else
             {
@@ -113,7 +126,7 @@
         }
         else
         {
-            $scope.tasks = JSON.parse(localStorage.getItem("tasks3"));//listService;
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks3"));
         }
         //adds the task to the to do list at the end
         $scope.addTask = function()
@@ -123,10 +136,18 @@
             {
                 return;
             }
-            if($scope.tasks.indexOf($scope.addThis) == -1)
+            if(($scope.priority  != 1) && ($scope.priority != 2) && ($scope.priority != 3))
             {
-                $scope.tasks.push($scope.addThis);
+                $scope.error = "You must enter either 1,2, or 3";
+            }
+            else if($scope.tasks.indexOf($scope.addThis) == -1)
+            {
+                task = {taskName: $scope.addThis, priorityLevel: $scope.priority};
+                $scope.tasks.push(task);
+                console.log($scope.tasks);
                 localStorage.setItem("tasks3", JSON.stringify($scope.tasks));
+                $scope.addThis = "";
+                $scope.priority = "";
             }
             else
             {
