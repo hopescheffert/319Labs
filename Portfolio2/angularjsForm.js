@@ -1,17 +1,18 @@
+//Validation app
 var app = angular.module('myValidationApp', []);
-
+//Validation form controller
 app.controller('formCtrl', function($scope, votes, voters)
 {
 
-    //init custom services/factories
+    //Init custom services/factories
     var votesService = votes;
     var votersService = voters;
 
-    //check minimum age for DOB in form (so that if enter age under 18, not valid)
+    //Check minimum age for DOB in form (so that if enter age under 18, form is not valid, cannot vote)
     var today = new Date();
     var minAge = 18;
     $scope.minAge = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
-    //object representing candidates, used in drop down menu
+    //Object representing candidates, used in drop down menu
     $scope.candidates = [{"id": "clinton", "name": "Hillary Clinton"}, {"id": "trump", "name": "Donald Trump"},
     {"id": "johnson", "name": "Gary Johnson"}, {"id": "stein", "name": "Jill Stein"}];
     $scope.submitForm = function(isValid)
@@ -28,12 +29,12 @@ app.controller('formCtrl', function($scope, votes, voters)
         }
     }
 });
-//custom service to handle voting - retrieving from and sending to the server
+//Custom service to handle voting - retrieving from/sending to the server
 app.factory('votes', function($http)
 {
     var votesObj = {};
 
-    //get current votes from server
+    //Get current votes from server
     $http.get("getVotes.php").success(function(data)
     {
         votesObj = data;
@@ -53,7 +54,7 @@ app.factory('votes', function($http)
 
 });
 
-//custom service to handle voters information - retrieving from and sending to the server
+//Custom service to handle voters information - sending information to the server
 app.factory('voters', function($http)
 {
     var voterObj = {};
@@ -61,19 +62,18 @@ app.factory('voters', function($http)
     {
         $http.post("addVoters.php", voter).then(function(response)
         {
-            console.log("after addVoters.php: ");
+            // console.log("after addVoters.php: ");
             if(response.data == "false")
             {
-                //NOTE we found a match in voters.json file, so we can't let them vote again
-
-                console.log("FOUND ONE THAT ARLEADY VOTED");
+                //We found a match in voters.json file, so we can't let them vote again
+                //FOUND PERSON THAT ARLEADY VOTED
                 alert("You already voted, you cannot vote again!");
                 return false;
             }
             else
             {
                 alert("Thank you for voting!");
-                console.log("FOUND NEW VOTER");
+                //FOUND NEW VOTER
                 console.log(response.data);
                 return true;
             }

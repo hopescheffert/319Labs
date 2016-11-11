@@ -22,11 +22,8 @@
 <body>
 
     <div ng-app="myValidationApp" class="container" ng-controller="formCtrl">
-        <h1>Cast Your Vote</h1>
+        <h1>2016 Presidential Election</h1>
         <hr>
-        <p>First and last name must be alphabetical</p>
-        <p>Social security number must be 9 digits long, no dashes necessary</p>
-        <p>If given, phone number must be 10 digits long, no dashes necessary</p>
         <p><b>In order to vote, you must be at least 18 years of age</b></p>
         <hr>
         <p><span style="color:red">* indicates a required field</span></p>
@@ -52,25 +49,21 @@
             </span>
 
             <br><br>Social Security Number
-            <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d)+$/" ng-minlength="9" ng-maxlength="9" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
+            <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d{3})[-]?(\d{2})[-]?(\d{4})$/" ng-minlength="9" ng-maxlength="11" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
             <span style="color:red"> *</span>
-            <span style="color:grey" ng-show="myForm.ssn.$error.minlength || myForm.ssn.$error.maxlength">Social Security number must be 9 digits long</span>
             <span style="color:red" ng-show="submitted && myForm.ssn.$invalid">
                 <span ng-show="myForm.ssn.$error.required">Social Security number is required.<br></span>
-            </span>
-            <span style="color:red" ng-show="myForm.ssn.$invalid">
-                <span ng-show="myForm.ssn.$error.pattern">Digits only<br></span>
+                <span ng-show="myForm.ssn.$error.pattern">Please format as 123-45-6789 <br></span>
             </span>
 
             <br><br>Phone Number
-            <input type="tel" name="phone" ng-model="user.phone" ng-pattern="/^(\d)+$/" ng-minlength="10" ng-maxlength="10">
-            <span style="color:grey" ng-show="myForm.phone.$error.minlength || myForm.phone.$error.maxlength">Phone number must be 10 digits long</span>
-            <span style="color:red" ng-show="myForm.phone.$invalid">
-                <span ng-show="myForm.phone.$error.pattern">Digits only<br></span>
+            <input type="tel" name="phone" ng-model="user.phone" ng-pattern="/^(\d{3})[-]?(\d{3})[-]?(\d{4})$/" ng-minlength="10" ng-maxlength="12">
+            <span style="color:red" ng-show="submitted && myForm.phone.$invalid">
+                <span ng-show="myForm.phone.$error.pattern">Please format as 012-345-6789 or 0123456789<br></span>
             </span>
 
             <br><br>Email
-            <input type="email" name="email" ng-model="user.email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
+            <input type="text" name="email" ng-model="user.email" ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
             <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.email.$invalid">
                 <span ng-show="myForm.email.$error.required">Email is required.<br></span>
@@ -78,10 +71,11 @@
             </span>
 
             <br><br>DOB
-            <input type="date" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
+            <input type="text" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-pattern="/^\d{2}([/])\d{2}([/])\d{4}$/" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
             <span style="color:red"> *</span>
             <span style="color:red" ng-show="submitted && myForm.DOB.$invalid">
                 <span ng-show="myForm.DOB.$error.required">Date of birth is required.<br></span>
+                <span ng-show="myForm.DOB.$error.pattern">Please format as MM/DD/YYYY<br></span>
             </span>
             <span style="color:red" ng-show="submitted && myForm.DOB.$error.max">Must be at least 18 years of age<br></span>
 
@@ -93,7 +87,7 @@
                 <span style="color:red"> *</span>
 
                 <span style="color:red" ng-show="submitted && myForm.candidate.$invalid">
-                    <span ng-show="myForm.candidate.$error.required"><br>{{msg}}You must select a candidate<br></span>
+                    <span ng-show="myForm.candidate.$error.required"><br>You must select a candidate.<br></span>
                 </span>
                 <div ng-switch="user.Choice">
                     <div ng-switch-when="clinton">
