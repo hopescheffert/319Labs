@@ -1,42 +1,55 @@
 angular.module('myApp', [])
 .controller('myController', function($scope) {
-   $scope.idk = ["something", "something else","again something else"];
-   $scope.personinfo = [
-       {
-            "Name" : "Hope",
-            "Address" : "450 Pine Rd"
-        },{
-            "Name" : "Jacob Neyens",
-            "Address" : "300 Davis Ct"
+    $scope.idk = ["something", "something else","even something else"];
+    $scope.personinfo = [
+        {
+            "Name" : "Hillary Clinton",
+            "Party" : "Democratic"
+        },
+        {
+            "Name" : "Donald Trump",
+            "Party" : "Republican"
         }
     ]
 
 })
 .directive('firstDirective', function() {
-  return {
-    restrict: 'AE', // to allow directive in element and in attributes
-    replace: true, // replaces element declared on
+    return {
+        restrict: 'AE', // to allow directive in element and in attributes
+        replace: true, // replaces element declared on
 
-    templateUrl: 'firstDirectiveTemplate.html'
-  }
+        templateUrl: 'firstDirectiveTemplate.html',
+        link: function(scope, elem, attrs)
+        {
+            elem.bind('mouseover', function() {
+                elem.css('color','blue');
+                elem.css('fontSize', '40px');
+            });
+            elem.bind('mouseout', function() {
+                elem.css('color','red');
+                elem.css('fontSize', '20px');
+            });
+        }
+
+    }
 })
-.directive('secondDirective', function() { // note NAME does not use -
-  return {
-    restrict: 'AE', // to allow directive in element and in attributes
-    replace: true, // replaces element declared on
+.directive('secondDirective', function() {
+    return {
+        scope: true,
+        restrict: 'AE', // to allow directive in element and in attributes
+        replace: true, // replaces element declared on
 
-    templateUrl: 'secondDirectiveTemplate.html',
+        templateUrl: 'secondDirectiveTemplate.html',
 
-    // link: function(scope, elem, attrs) {
-    //   elem.bind('mouseover', function() {
-    //     elem.css('cursor', 'pointer');
-    //     elem.css('color','green');
-    //     elem.css('fontSize', '40px');
-    //   });
-    //   elem.bind('mouseout', function() {
-    //     elem.css('color','red');
-    //     elem.css('fontSize', '20px');
-    //   });
-    // } // end of link
-  };
+        link: function(scope, elem, attrs)
+        {
+            elem.bind('click', function()
+            {
+                console.log(scope);
+                document.body.append("Hello, my name is " + scope.personinfo[0].Name + " and I am running in the " + scope.personinfo[0].Party+  " party");
+                document.body.append("Hello, my name is " + scope.personinfo[1].Name + " and I am running in the " + scope.personinfo[1].Party+  " party");
+
+            });
+        }
+    };
 });

@@ -3,11 +3,11 @@
     <table border="1">
         <tr>
             <th>Name</th>
-            <th>Address</th>
+            <th>Party</th>
         </tr>
         <tr ng-repeat="p in personinfo">
-            <td>{{p.Name}}</td>
-            <td>{{p.Address}}</td>
+            <td ngModel="name">{{p.Name}}</td>
+            <td ngModel="party">{{p.Party}}</td>
         </tr>
     </table>
 </h2>

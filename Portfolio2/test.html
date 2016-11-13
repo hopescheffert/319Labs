@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js" type="text/javascript"></script>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <style type="text/css">
+    .bigGraph {width:600px;height:600px;float:center;}
+    </style>
+</head>
+<body ng-controller="IndexCtrl">
+    <div google-chart="PieChart" ng-model="data1" class="bigGraph"></div>
+    <div google-chart="BarChart" ng-model="data2" class="bigGraph"></div>
+</body>
+
+
+<script>
+"use strict";
+
+/*We need to manually start angular as we need to
+wait for the google charting libs to be ready*/
+google.setOnLoadCallback(function () {
+    angular.bootstrap(document.body, ['my-app']);
+});
+google.load('visualization', '1', {packages: ['corechart']});
+
+
+var myApp = myApp || angular.module("my-app",["google-chart"]);
+
+// myApp.factory('votes', function($http)
+// {
+//   var votesObj = {};
+//
+//   votesObj.getVotes = function(){
+//     $http.get("getVotes.php").then(function(response)
+//     {
+//       votesObj = response.data;
+//       console.log(votesObj);
+//       return votesObj;
+//     })
+//
+//   }
+//   return votesObj;
+//
+// });
+
+myApp.controller("IndexCtrl",function($scope, $http){
+    var votesObj = {};
+    // $scope.getVotes = function(){
+
+    var clintonVotes = 0;
+    var trumpVotes = 0;
+    var johnsonVotes = 0;
+    var steinVotes = 0;
+    var done = false;
+
+
+
+
+
+    var getData = function()
+    {
+        $http.get("getVotes.php").then(function(response)
+        {
+            votesObj = response.data;
+
+            console.log("inside get" + votesObj.clinton);
+            // return votesObj;
+
+            clintonVotes = votesObj.clinton;
+            trumpVotes = votesObj.trump;
+            johnsonVotes = votesObj.johnson;
+            steinVotes = votesObj.stein;
+
+            done = true;
+
+        })
+    }
+    // while(!done)
+    // {
+    //
+    //   console.log("waiting");
+    // }
+
+    $scope.data1 = {};
+    $scope.data1.dataTable = new google.visualization.DataTable();
+    $scope.data1.dataTable.addColumn("string","Candidate")
+    $scope.data1.dataTable.addColumn("number","Votes")
+
+    $scope.data2 = {};
+    $scope.data2.dataTable = new google.visualization.DataTable();
+    $scope.data2.dataTable.addColumn("string","Candidate")
+    $scope.data2.dataTable.addColumn("number","Votes")
+
+    console.log(clintonVotes);
+
+    $scope.data1.dataTable.addRow(["Clinton",clintonVotes]);
+    $scope.data1.dataTable.addRow(["Trump",trumpVotes]);
+    $scope.data1.dataTable.addRow(["Johnson",johnsonVotes]);
+    $scope.data1.dataTable.addRow(["Stein",steinVotes]);
+    $scope.data1.title="My Pie"
+
+
+    $scope.data2.dataTable.addRow(["Clinton",17]);
+    $scope.data2.dataTable.addRow(["Trump",18]);
+    $scope.data2.dataTable.addRow(["Johnson",7]);
+    $scope.data2.dataTable.addRow(["Stein",3]);
+
+    // var votesService = votes;
+    // var votesObj = votesService.getVotes();
+    // console.log($scope.getVotes());
+    // $scope.data1 = {};
+    // $scope.data1.dataTable = new google.visualization.DataTable();
+    // $scope.data1.dataTable.addColumn("string","Candidate")
+    // $scope.data1.dataTable.addColumn("number","Votes")
+    // $scope.data1.dataTable.addRow(["Clinton",votesObj.clinton]);
+    // $scope.data1.dataTable.addRow(["Trump",votesObj.trump]);
+    // $scope.data1.dataTable.addRow(["Johnson",votesObj.johnson]);
+    // $scope.data1.dataTable.addRow(["Stein",votesObj.stein]);
+    // $scope.data1.title="My Pie"
+    //
+    // $scope.data2 = {};
+    // $scope.data2.dataTable = new google.visualization.DataTable();
+    // $scope.data2.dataTable.addColumn("string","Candidate")
+    // $scope.data2.dataTable.addColumn("number","Votes")
+    // $scope.data2.dataTable.addRow(["Clinton",17]);
+    // $scope.data2.dataTable.addRow(["Trump",18]);
+    // $scope.data2.dataTable.addRow(["Johnson",7]);
+    // $scope.data2.dataTable.addRow(["Stein",3]);
+
+});
+
+"use strict";
+
+var googleChart = googleChart || angular.module("google-chart",[]);
+
+googleChart.directive("googleChart",function(){
+    return{
+        restrict : "A",
+        link: function($scope, $elem, $attr){
+            var dt = $scope[$attr.ngModel].dataTable;
+
+            var options = {};
+            if($scope[$attr.ngModel].title)
+            options.title = $scope[$attr.ngModel].title;
+
+            var googleChart = new google.visualization[$attr.googleChart]($elem[0]);
+            googleChart.draw(dt,options)
+        }
+    }
+});
+
+</script>
+
+</html>

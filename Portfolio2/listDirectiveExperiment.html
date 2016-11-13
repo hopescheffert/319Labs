@@ -4,6 +4,10 @@
 <body>
 
     <div ng-app="myList" ng-controller="myListCtrl">
+        <my-list ng-translude>Here's a list</my-list>
+    </div>
+
+    <!-- <div ng-app="myList" ng-controller="myListCtrl">
         <div id="toDo" ng-app="myList" ng-cloak ng-controller="myListCtrl" class="w3-card-2 w3-margin" style="max-width:400px;">
             <header class="w3-container w3-light-grey w3-padding-16">
                 <h3>To Do</h3>
@@ -24,7 +28,7 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 
@@ -48,10 +52,23 @@
         </div>
     </div>
 
+    <button onlick="createNewList()" value="Add List"></button>
+
     <script>
 
     app = angular.module("myList", []);
-    app.controller("myListCtrl", function($scope)
+    //TODO directive for each list
+    app.directive('myList', function()
+    {
+        return {
+            restrict: 'E',
+            replace: true,
+            transclude: true,
+            scope: {},
+            templateUrl: 'my-list.html'
+        };
+    })
+    app.controller("myListCtrl", ['myList' , function($scope)
     {
         $scope.stuff = ["Get milk", "Do lab 7"];
         //adds the task to the to do list at the end
@@ -77,20 +94,9 @@
             $scope.error = "";
             $scope.stuff.splice(x, 1);
         }
-    })
+    }])
 
-    //TODO directive for each list
-    app.directive('myList', function()
-    {
-        return {
-            restrict: 'E',
-            replace: true,
-            // transclude: true,
-            // scope: {},
-            templateUrl: 'my-list.html'
-            //template: '<p>{{stuff}}</p>'
-        };
-    })
+
 
 
 

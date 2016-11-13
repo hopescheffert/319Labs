@@ -29,7 +29,7 @@
         });
     });
 
-    app.controller("myListCtrl1", function($scope)//, listService)
+    app.controller("myListCtrl1", function($scope)
     {
         if(localStorage.getItem("tasks1") == null)
         {
@@ -37,7 +37,7 @@
         }
         else
         {
-            $scope.tasks = JSON.parse(localStorage.getItem("tasks1"));//listService;
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks1"));
         }
         //adds the task to the to do list at the end
         $scope.addTask = function()
@@ -73,7 +73,7 @@
         }
         else
         {
-            $scope.tasks = JSON.parse(localStorage.getItem("tasks2"));//listService;
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks2"));
         }
         //adds the task to the to do list at the end
         $scope.addTask = function()
@@ -110,7 +110,7 @@
         }
         else
         {
-            $scope.tasks = JSON.parse(localStorage.getItem("tasks3"));//listService;
+            $scope.tasks = JSON.parse(localStorage.getItem("tasks3"));
         }
         //adds the task to the to do list at the end
         $scope.addTask = function()
