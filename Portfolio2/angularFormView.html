@@ -1,120 +1,131 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
     <script src="angularjsForm.js"></script>
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <style type="text/css">
     .container {
-        text-align: left;
+        text-align: center;
         height: auto;
-        width: 700px;
+        width: 600px;
         clear: both;
     }
     .container input {
-        text-align: left;
-        width: 95%;
+        text-align: center;
+        width: 50%;
         clear: both;
     }
-}
-</style>
+    .bigGraph {
+        width:500px;
+        height:500px;
+        float:center;
+    }
+    </style>
 </head>
 
 <body>
 
-    <div ng-app="myValidationApp" class="container" ng-controller="formCtrl">
-        <h1>2016 Presidential Election</h1>
-        <hr>
-        <p><b>In order to vote, you must be at least 18 years of age</b></p>
-        <hr>
-        <p><span style="color:red">* indicates a required field</span></p>
-        <form name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
-            First Name
-            <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required>
-            <span style="color:red"> *</span>
-            <span style="color:red" ng-show="submitted && myForm.fname.$invalid">
-                <span ng-show="myForm.fname.$error.required">First name is required.<br></span>
-            </span>
-            <span style="color:red" ng-show="myForm.fname.$invalid">
-                <span ng-show="myForm.fname.$error.pattern">Only alphabetical characters allowed<br></span>
-            </span>
-
-            <br><br>Last Name
-            <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required>
-            <span style="color:red"> *</span>
-            <span style="color:red" ng-show="submitted && myForm.lname.$invalid">
-                <span ng-show="myForm.lname.$error.required">Last name is required.<br></span>
-            </span>
-            <span style="color:red" ng-show="myForm.lname.$invalid">
-                <span ng-show="myForm.lname.$error.pattern">Only alphabetical characters allowed<br></span>
-            </span>
-
-            <br><br>Social Security Number
-            <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d{3})[-]?(\d{2})[-]?(\d{4})$/" ng-minlength="9" ng-maxlength="11" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
-            <span style="color:red"> *</span>
-            <span style="color:red" ng-show="submitted && myForm.ssn.$invalid">
-                <span ng-show="myForm.ssn.$error.required">Social Security number is required.<br></span>
-                <span ng-show="myForm.ssn.$error.pattern">Please format as 123-45-6789 <br></span>
-            </span>
-
-            <br><br>Phone Number
-            <input type="tel" name="phone" ng-model="user.phone" ng-pattern="/^(\d{3})[-]?(\d{3})[-]?(\d{4})$/" ng-minlength="10" ng-maxlength="12">
-            <span style="color:red" ng-show="submitted && myForm.phone.$invalid">
-                <span ng-show="myForm.phone.$error.pattern">Please format as 012-345-6789 or 0123456789<br></span>
-            </span>
-
-            <br><br>Email
-            <input type="text" name="email" ng-model="user.email" ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
-            <span style="color:red"> *</span>
-            <span style="color:red" ng-show="submitted && myForm.email.$invalid">
-                <span ng-show="myForm.email.$error.required">Email is required.<br></span>
-                <span ng-show="myForm.email.$error.pattern">Invalid email address.<br></span>
-            </span>
-
-            <br><br>DOB
-            <input type="text" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-pattern="/^\d{2}([/])\d{2}([/])\d{4}$/" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
-            <span style="color:red"> *</span>
-            <span style="color:red" ng-show="submitted && myForm.DOB.$invalid">
-                <span ng-show="myForm.DOB.$error.required">Date of birth is required.<br></span>
-                <span ng-show="myForm.DOB.$error.pattern">Please format as MM/DD/YYYY<br></span>
-            </span>
-            <span style="color:red" ng-show="submitted && myForm.DOB.$error.max">Must be at least 18 years of age<br></span>
-
-            <br><br>Choose a candidate<br>
-            <select name="candidate" ng-model="user.Choice" ng-class="{ 'has-error' : myForm.candidate.$invalid && !myForm.candidate.$pristine && submitted}" required>
-                <option value="">--Select--
-                    <option ng-repeat="c in candidates" value="{{c.id}}">{{c.name}}</option>
-                </select>
+    <div align="center">
+        <div ng-app="myValidationApp" class="container" ng-controller="formCtrl">
+            <h1>2016 Presidential Election</h1>
+            <hr>
+            <p><b>In order to vote, you must be at least 18 years of age</b></p>
+            <hr>
+            <p><span style="color:red">* indicates a required field</span></p>
+            <form name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
+                First Name
+                <input type="text" name="fname" ng-model="user.firstName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.fname.$invalid && !myForm.fname.$pristine && submitted}" required>
                 <span style="color:red"> *</span>
-
-                <span style="color:red" ng-show="submitted && myForm.candidate.$invalid">
-                    <span ng-show="myForm.candidate.$error.required"><br>You must select a candidate.<br></span>
+                <span style="color:red" ng-show="submitted && myForm.fname.$invalid">
+                    <span ng-show="myForm.fname.$error.required">First name is required.<br></span>
                 </span>
-                <div ng-switch="user.Choice">
-                    <div ng-switch-when="clinton">
-                        <h1>Hillary Clinton </h1>
-                        <p> Democrat </p>
-                        <img src="clinton.jpg" height="200px" width="200px">
-                    </div>
-                    <div ng-switch-when="trump">
-                        <h1>Donald Trump </h1>
-                        <p> Republican </p>
-                        <img src="trump.jpg" height="200px" width="200px">
-                    </div>
-                    <div ng-switch-when="johnson">
-                        <h1>Gary Johnson</h1>
-                        <p> Libritarian </p>
-                        <img src="johnson.png" height="200px" width="200px">
-                    </div>
-                    <div ng-switch-when="stein">
-                        <h1>Jill Stein</h1>
-                        <p> Green </p>
-                        <img src="stein.jpg" height="200px" width="200px">
+                <span style="color:red" ng-show="myForm.fname.$invalid">
+                    <span ng-show="myForm.fname.$error.pattern">Only alphabetical characters allowed<br></span>
+                </span>
+
+                <br><br>Last Name
+                <input type="text" name="lname" ng-model="user.lastName" ng-pattern="/^[a-zA-Z]*$/" ng-class="{ 'has-error' : myForm.lname.$invalid && !myForm.lname.$pristine && submitted} "required>
+                <span style="color:red"> *</span>
+                <span style="color:red" ng-show="submitted && myForm.lname.$invalid">
+                    <span ng-show="myForm.lname.$error.required">Last name is required.<br></span>
+                </span>
+                <span style="color:red" ng-show="myForm.lname.$invalid">
+                    <span ng-show="myForm.lname.$error.pattern">Only alphabetical characters allowed<br></span>
+                </span>
+
+                <br><br>Social Security Number
+                <input type="text" name="ssn" ng-model="user.ssn" ng-pattern="/^(\d{3})[-]?(\d{2})[-]?(\d{4})$/" ng-minlength="9" ng-maxlength="11" ng-class="{ 'has-error' : myForm.ssn.$invalid && !myForm.ssn.$pristine && submitted}" required>
+                <span style="color:red"> *</span>
+                <span style="color:red" ng-show="submitted && myForm.ssn.$invalid">
+                    <span ng-show="myForm.ssn.$error.required">Social Security number is required.<br></span>
+                    <span ng-show="myForm.ssn.$error.pattern">Please format as 123-45-6789 <br></span>
+                </span>
+
+                <br><br>Phone Number
+                <input type="tel" name="phone" ng-model="user.phone" ng-pattern="/^(\d{3})[-]?(\d{3})[-]?(\d{4})$/" ng-minlength="10" ng-maxlength="12">
+                <span style="color:red" ng-show="submitted && myForm.phone.$invalid">
+                    <span ng-show="myForm.phone.$error.pattern">Please format as 012-345-6789 or 0123456789<br></span>
+                </span>
+
+                <br><br>Email
+                <input type="text" name="email" ng-model="user.email" ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-class="{ 'has-error' : myForm.email.$invalid && !myForm.email.$pristine && submitted}" required>
+                <span style="color:red"> *</span>
+                <span style="color:red" ng-show="submitted && myForm.email.$invalid">
+                    <span ng-show="myForm.email.$error.required">Email is required.<br></span>
+                    <span ng-show="myForm.email.$error.pattern">Invalid email address.<br></span>
+                </span>
+
+                <br><br>DOB
+                <input type="text" name="DOB" max="{{minAge | date:'yyyy-MM-dd'}}" ng-pattern="/^\d{2}([/])\d{2}([/])\d{4}$/" ng-model="user.DOB" ng-class="{ 'has-error' : myForm.DOB.$invalid && !myForm.DOB.$pristine && submitted}" required>
+                <span style="color:red"> *</span>
+                <span style="color:red" ng-show="submitted && myForm.DOB.$invalid">
+                    <span ng-show="myForm.DOB.$error.required">Date of birth is required.<br></span>
+                    <span ng-show="myForm.DOB.$error.pattern">Please format as MM/DD/YYYY<br></span>
+                </span>
+                <span style="color:red" ng-show="submitted && myForm.DOB.$error.max">Must be at least 18 years of age<br></span>
+
+                <br><br>Choose a candidate<br>
+                <select name="candidate" ng-model="user.Choice" ng-class="{ 'has-error' : myForm.candidate.$invalid && !myForm.candidate.$pristine && submitted}" required>
+                    <option value="">--Select--
+                        <option ng-repeat="c in candidates" value="{{c.id}}">{{c.name}}</option>
+                    </select>
+                    <span style="color:red"> *</span>
+
+                    <span style="color:red" ng-show="submitted && myForm.candidate.$invalid">
+                        <span ng-show="myForm.candidate.$error.required"><br>You must select a candidate.<br></span>
+                    </span>
+                    <div ng-switch="user.Choice">
+                        <div ng-switch-when="clinton">
+                            <h1>Hillary Clinton </h1>
+                            <p> Democrat </p>
+                            <img src="clinton.jpg" height="200px" width="200px">
+                        </div>
+                        <div ng-switch-when="trump">
+                            <h1>Donald Trump </h1>
+                            <p> Republican </p>
+                            <img src="trump.jpg" height="200px" width="200px">
+                        </div>
+                        <div ng-switch-when="johnson">
+                            <h1>Gary Johnson</h1>
+                            <p> Libritarian </p>
+                            <img src="johnson.png" height="200px" width="200px">
+                        </div>
+                        <div ng-switch-when="stein">
+                            <h1>Jill Stein</h1>
+                            <p> Green </p>
+                            <img src="stein.jpg" height="200px" width="200px">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button class="button" type="submit">VOTE</button>
-            <br>
-        </form>
-</body>
-</html>
+                <button class="button" type="submit">VOTE</button>
+                <br>
+            </form>
+
+            <div ng-controller="indexctrl" ng-model="data1" id="pie" class="bigGraph">
+            </div>
+        </div>
+    </body>
+    </html>

@@ -83,3 +83,70 @@ app.factory('voters', function($http)
 
     return voterObj;
 });
+
+/*We need to manually start angular as we need to
+wait for the google charting libs to be ready*/
+google.setOnLoadCallback(function () {
+    angular.bootstrap(document.getElementById('pie'), ['myApp']);
+});
+google.load('visualization', '1', {packages: ['corechart']});
+
+
+angular.module('myApp',[]).
+controller("indexctrl",function($scope, $http) {
+    var votesObj = {};
+    var clintonVotes = 0;
+    var trumpVotes = 0;
+    var johnsonVotes = 0;
+    var steinVotes = 0;
+    var done = false;
+
+    // set up the basic chart
+    $scope.data1 = new google.visualization.DataTable();
+    $scope.data1.addColumn("string","Candidate")
+    $scope.data1.addColumn("number","Votes")
+
+    // watch any changes to data1
+    // if any change noticed - change graph
+    $scope.$watch("data1",function(newValue,oldValue){
+        var options = {'title':'Current Election Results',
+                     'width':400,
+                     'height':400};
+        var googleChart = new
+        google.visualization.PieChart(document.getElementById('pie'));
+        googleChart.draw(newValue, options);
+    }, true
+);
+
+// Here the goal is to make a request to get data and then wait
+// u do not have to even call php file, you can just get the json
+// file  $http.get("votes.json",...) should do the trick
+var myPromise = new Promise(function(resolve, reject) {
+    $http.get("getVotes.php",{cache: true})
+    .success(function(data) {
+        resolve(data);
+    });
+
+});
+myPromise.then(function(data) {
+    votesObj = data;
+    clintonVotes = votesObj.clinton;
+    trumpVotes = votesObj.trump;
+    johnsonVotes = votesObj.johnson;
+    steinVotes = votesObj.stein;
+
+    modifyGraph();
+    // this function makes $watch work
+    $scope.$apply(function(){});
+})
+
+
+// This is where the graph data is modified
+function modifyGraph() {
+    $scope.data1.addRow(["Clinton",clintonVotes]);
+    $scope.data1.addRow(["Trump",trumpVotes]);
+    $scope.data1.addRow(["Johnson",johnsonVotes]);
+    $scope.data1.addRow(["Stein",steinVotes]);
+
+}
+}) // end of controller
