@@ -38,7 +38,6 @@ app.factory('votes', function($http)
     $http.get("getVotes.php").success(function(data)
     {
         votesObj = data;
-        console.log(data);
     })
 
     //NOTE THAT AS LONG AS THEY HAVE DIFFERENT SOCIAL SECURITY NUMBERS, THEY ARE ALLOWED TO VOTE
@@ -47,7 +46,6 @@ app.factory('votes', function($http)
     {
         $http.post("sendVotes.php", {'candidate': candidate, 'votes': votesObj}).then(function(response)
         {
-            console.log(response.data);
             return response.data;
         })
     }
@@ -63,7 +61,6 @@ app.factory('voters', function($http)
     {
         $http.post("addVoters.php", voter).then(function(response)
         {
-            // console.log("after addVoters.php: ");
             if(response.data == "false")
             {
                 //We found a match in voters.json file, so we can't let them vote again
@@ -101,13 +98,13 @@ controller("indexctrl",function($scope, $http) {
     var steinVotes = 0;
     var done = false;
 
-    // set up the basic chart
+    //set up the basic chart
     $scope.data1 = new google.visualization.DataTable();
     $scope.data1.addColumn("string","Candidate")
     $scope.data1.addColumn("number","Votes")
 
-    // watch any changes to data1
-    // if any change noticed - change graph
+    //watch any changes to data1
+    //if any change noticed - change graph
     $scope.$watch("data1",function(newValue,oldValue){
         var options = {'title':'Current Election Results',
                      'width':400,
@@ -118,9 +115,7 @@ controller("indexctrl",function($scope, $http) {
     }, true
 );
 
-// Here the goal is to make a request to get data and then wait
-// u do not have to even call php file, you can just get the json
-// file  $http.get("votes.json",...) should do the trick
+//Make a request to get data and then wait using a "promise"
 var myPromise = new Promise(function(resolve, reject) {
     $http.get("getVotes.php",{cache: true})
     .success(function(data) {
@@ -128,6 +123,7 @@ var myPromise = new Promise(function(resolve, reject) {
     });
 
 });
+//Once get the data, save it for the graph
 myPromise.then(function(data) {
     votesObj = data;
     clintonVotes = votesObj.clinton;

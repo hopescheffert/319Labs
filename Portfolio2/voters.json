@@ -1,1 +1,15 @@
 {"firstName":"test","lastName":"test","ssn":"234987567","phone":"3456754323","email":"abc@def.com","DOB":"1994-09-08T05:00:00.000Z","Choice":"trump"}***
+{"firstName":"hope","lastName":"aschl","ssn":"123-45-6789","phone":"399-987-9766","email":"hopescheffert@yahoo.com","DOB":"09\/07\/1995","Choice":"trump"}***
+{"firstName":"hope","lastName":"aschl","ssn":"123-45-6689","phone":"399-987-9766","email":"hopescheffert@yahoo.com","DOB":"09\/07\/1995","Choice":"clinton"}***
+{"firstName":"asdf","lastName":"asdfsdg","ssn":"123-32-3456","phone":"123-456-4323","email":"hope3@yahoo.com","DOB":"09\/08\/1994","Choice":"clinton"}***
+{"firstName":"poop","lastName":"asdfsdg","ssn":"123-32-3056","phone":"123-456-4323","email":"hope3@yahoo.com","DOB":"09\/08\/1994","Choice":"clinton"}***
+{"firstName":"one","lastName":"test","ssn":"123-34-2345","email":"hopescheffert@yahoo.com","DOB":"09\/07\/1995","Choice":"clinton"}***
+{"firstName":"two","lastName":"sdlk","ssn":"123-87-4567","phone":"345-235-2569","email":"hopescheffert@yahoo.com","DOB":"08\/04\/1993","Choice":"trump"}***
+{"firstName":"two","lastName":"sdlk","ssn":"123-87-4067","phone":"345-235-2569","email":"hopescheffert@yahoo.com","DOB":"08\/04\/1993","Choice":"trump"}***
+{"firstName":"third","lastName":"asldkjf","ssn":"129-86-9876","email":"hopescheffert@yahoo.com","DOB":"09\/03\/1990","Choice":"trump"}***
+{"firstName":"ds","lastName":"sdf","ssn":"987-09-7739","email":"hopescheffert@yahoo.com","DOB":"08\/25\/1992","Choice":"trump"}***
+{"firstName":"adf","lastName":"asdg","ssn":"345-32-3456","email":"hopescheffert@yahoo.com","DOB":"09\/07\/1993","Choice":"trump"}***
+{"firstName":"sdf","lastName":"aef","ssn":"654-34-5677","email":"hopescheffert@yahoo.com","DOB":"04\/20\/1990","Choice":"trump"}***
+{"firstName":"adf","lastName":"acas","ssn":"245-28-1340","email":"abc@def.com","DOB":"07\/30\/1990","Choice":"johnson"}***
+{"firstName":"adf","lastName":"acas","ssn":"245-28-1341","email":"abc@def.com","DOB":"07\/30\/1990","Choice":"clinton"}***
+{"firstName":"asdf","lastName":"dad","ssn":"134-23-6765","email":"hopescheffert@yahoo.com","DOB":"09\/07\/1995","Choice":"clinton"}***
