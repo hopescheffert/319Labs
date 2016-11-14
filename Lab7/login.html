@@ -1,24 +1,4 @@
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
-    <script src="app.js"></script>
-</head>
-
-
-<body>
-
-
-    <div ng-app="myLibrary" ng-controller="libraryController">
-        Username<br><input type="text" id="username" ng-model="username" /><br>
-        Password<br><input type="password" id="password" ng-model="password" /><br>
-        <input type="button" value="Login" ng-click="login(username, password)"></input>
-    </div>
-
-    <a href="#undergrad">Go to Library</a>
-    <a href="#librarian">Go to Library</a>
-
-    <div ng-view></div>
-</body>
-
-</html>
+<h1> Login </h1>
+Username<br><input type="text" id="username" ng-model="username" /><br>
+Password<br><input type="password" id="password" ng-model="password" /><br>
+<input type="button" value="Login" ng-click="login(username, password)"></input>

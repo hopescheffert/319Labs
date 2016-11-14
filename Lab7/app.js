@@ -3,30 +3,43 @@ var myLibrary = angular.module("myLibrary", ["ngRoute"]);
 myLibrary.config(function($routeProvider)
 {
     $routeProvider
-    .when("/", {
-        templateUrl : "login.html"
+    .when("/login", {
+        templateUrl : "login.html",
+        controller : 'libraryController'
+
     })
     .when("/librarian", {
-        templateUrl : "librarian.html"
+        templateUrl : "librarian.html",
+        controller : 'librarianController'
+
     })
     .when("/undergrad", {
-        templateUrl : "undergrad.html"
-    })
+        templateUrl : "undergrad.html",
+        controller : 'undergradController'
+
+    }).otherwise({ redirectTo: '/'});
 });
-myLibrary.controller('libraryController', function($scope)
+myLibrary.controller('indexController', function($scope,$location){
+    $location.path("/login");
+
+});
+myLibrary.controller('libraryController', function($scope, $location)
 {
     $scope.login = function()
     {
-        console.log($scope.username + " "+ $scope.password);
         if($scope.username == "admin" && $scope.password == "admin")
         {
             //log in as a librarian
             $scope.userType = "librarian";
+            alert("Success, logged in as a librarian");
+            $location.path("/librarian");
         }
         else if($scope.username.startsWith("u",0))
         {
             //log in as an undergrad student
             $scope.userType = "undergrad";
+            alert("Success, logged in as an undergrad");
+            $location.path("/undergrad");
         }
         else
         {
@@ -34,4 +47,19 @@ myLibrary.controller('libraryController', function($scope)
             return;
         }
     }
-})
+});
+
+myLibrary.controller("librarianController", function($scope)
+{
+
+
+
+
+});
+myLibrary.controller("undergradController", function($scope)
+{
+
+
+
+
+});
