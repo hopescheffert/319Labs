@@ -7,10 +7,10 @@ Undergrad
         <th style='background-color:green'>Art Shelf</th>
 
         <tr ng-repeat="book in books">
-            <td ng-if="book.shelf === 0" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
-            <td ng-if="book.shelf === 1" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
-            <td ng-if="book.shelf === 2" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
-            <td ng-if="book.shelf === 3" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
+            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 0" >{{book.name}} </span></td>
+            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 1" >{{book.name}} </span></td>
+            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 2" >{{book.name}} </span></td>
+            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 3" >{{book.name}} </span></td>
         </tr>
     </table>
 </div>

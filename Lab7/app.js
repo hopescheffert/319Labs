@@ -22,7 +22,7 @@ myLibrary.config(function($routeProvider)
 myLibrary.controller('indexController', function($scope, $location){
     $location.path("/login");
 });
-myLibrary.controller('loginController', function($scope, $location, userService)
+myLibrary.controller('loginController', function($scope, $location, userService, booksService)
 {
     $scope.login = function()
     {
@@ -48,6 +48,30 @@ myLibrary.controller('loginController', function($scope, $location, userService)
             return;
         }
     }
+
+
+    //initialize library with 25 books (20 ordinary and 5 reference)
+    for(var i = 1; i < 21; i++)
+    {
+        sid = i % 4;
+        if(sid == 0) s = "literature";
+        else if(sid == 1) s = "science";
+        else if(sid == 2) s = "sports";
+        else s = "art"
+        var b = {name: "B" + i, type: "ordinary", borrowedBy: "nobody", presence: 1, shelf: sid};
+
+        booksService.addToBooks(b);
+    }
+    for(var i = 1; i < 6; i++)
+    {
+        sid = i % 4;
+        if(sid == 0) s = "literature";
+        else if(sid == 1) s = "science";
+        else if(sid == 2) s = "sports";
+        else s = "art"
+        var r = {name: "R" + i, type: "reference", borrowedBy: "nobody", presence: 1, shelf : sid};
+        booksService.addToBooks(r);
+    }
 });
 
 myLibrary.service('userService', function()
@@ -62,8 +86,6 @@ myLibrary.service('userService', function()
         setUsername: function(name)
         {
             username = name;
-            console.log('hello in user serbice we set username to ' + username);
-
         }
     };
 });
@@ -72,8 +94,7 @@ myLibrary.service('userService', function()
 myLibrary.service('booksService', function()
 {
     var books = [];
-    return
-    {
+    return  {
         getBooks: function()
         {
             return books;
@@ -82,52 +103,24 @@ myLibrary.service('booksService', function()
         {
             books.push(book);
             //use local storage to store presence and borrowed by attributes
-            localStorage.setItem("p"+ b.name, 1);
-            localStorage.setItem("b"+ b.name, "nobody");
+            //but check first if it has already been stored - don't reset it
+            if(localStorage.getItem("p" + book.name) == undefined)
+            {
+                localStorage.setItem("p"+ book.name, 1);
+            }
+            if(localStorage.getItem("b" + book.name) == undefined)
+            {
+                localStorage.setItem("b"+ book.name, "nobody");
+            }
         }
     };
 
 });
 
-
 myLibrary.controller("librarianController", function($scope, booksService)
 {
-    $scope.books = booksService.books;
+    $scope.books = booksService.getBooks();
     $scope.shelves = ["literature", "science", "sports", "art"];
-
-    //initialize library with 25 books (20 ordinary and 5 reference)
-    for(var i = 1; i < 21; i++)
-    {
-        sid = i % 4;
-        if(sid == 0) s = "literature";
-        else if(sid == 1) s = "science";
-        else if(sid == 2) s = "sports";
-        else s = "art"
-        var b = {name: "B" + i, type: "ordinary", borrowedBy: "nobody", presence: 1, shelf: sid};
-
-        // //use local storage to store presence and borrowed by attributes
-        // localStorage.setItem("p"+ b.name, 1);
-        // localStorage.setItem("b"+ b.name, "nobody");
-
-        booksService.addToBooks(b);
-        $scope.books.push(b);
-    }
-    for(var i = 1; i < 6; i++)
-    {
-        sid = i % 4;
-        if(sid == 0) s = "literature";
-        else if(sid == 1) s = "science";
-        else if(sid == 2) s = "sports";
-        else s = "art"
-        var r = {name: "R" + i, type: "reference", borrowedBy: "nobody", presence: 1, shelf : sid};
-
-        // //use local storage to store presence and borrowed by attributes
-        // localStorage.setItem("p"+ b.name, 1);
-        // localStorage.setItem("b"+ b.name, "nobody");
-
-        booksService.addToBooks(b);
-        $scope.books.push(r);
-    }
 
     $scope.addBook = function(bookName, bookShelf, isReferenceBook)
     {
@@ -137,14 +130,8 @@ myLibrary.controller("librarianController", function($scope, booksService)
         else if(bookShelf == "science") sid = 1;
         else if(bookShelf == "sports") sid = 2;
         else sid = 3;
-
-        // //use local storage to store presence and borrowed by attributes
-        // localStorage.setItem("p"+ b.name, 1);
-        // localStorage.setItem("b"+ b.name, "nobody");
-
         var b = {name: bookName, type: t, borrowedBy: "nobody", presence: 1, shelf: sid};
         booksService.addToBooks(b);
-        $scope.books.push(b);
     }
     $scope.displayBookInfo = function(book)
     {
@@ -158,12 +145,11 @@ myLibrary.controller("librarianController", function($scope, booksService)
 
 myLibrary.controller("undergradController", function($scope, userService, booksService)
 {
-    //TODO how do we get access to same library?
-    $scope.books = booksService.books;
+    $scope.books = booksService.getBooks();
     $scope.shelves = ["literature", "science", "sports", "art"];
     $scope.currentCheckedOut = 0;
 
-    $scope.check(book)
+    $scope.check = function(book)
     {
         if(book.type == "reference")
         {
@@ -171,29 +157,44 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
         }
         else
         {
-            if(document.getElementById(book.name).style.color = "white")
+            if(document.getElementById(book.name).style.backgroundColor = "white" && localStorage.getItem("p" + book.name) == 1)
             {
-                if($scope.currentCheckedOut == 2)
+                //trying to check the book out
+                if($scope.currentCheckedOut == 2) //not allowed
                 {
                     alert("Cannot check out more than two books at a time");
                 }
                 else
                 {
-                    //check out the book
-                    $scope.currentCheckedOut += 1;
-                    localStorage.setItem("p" + book.name, 0);
-                    localStorage.setItem("b" + book.name, userService.getUsername());
-                    //TODO how to get username - service?
-                    book.presence = 0;
-                    book.borrowedBy = userService.getUsername();
-                    document.getElementById(book.name).style.backgroundColor = "red";
+                    if(localStorage.getItem("p" + book.name) == 0 && localStorage.getItem("b" + book.name) != userService.getUsername())
+                    {
+                        //someone already has the book
+                        console.log("someone has this book already");
+                        alert("Someone has already checked out this book");
+                    }
+                    else if(localStorage.getItem("p" + book.name) == 1)
+                    {
+                        //check out the book
+                        console.log("need to check out");
+                        $scope.currentCheckedOut += 1;
+                        localStorage.setItem("p" + book.name, 0);
+                        localStorage.setItem("b" + book.name, userService.getUsername());
+                        console.log("now " + book.name + " has presence " +localStorage.getItem("p" + book.name)+ " and has borrowed by " + localStorage.getItem("b" + book.name));
+                        book.presence = 0;
+                        book.borrowedBy = userService.getUsername();
+                        document.getElementById(book.name).style.backgroundColor = "red";
+
+                    }
+
                 }
             }
-            else
+            else if(document.getElementById(book.name).style.backgroundColor = "red" && localStorage.getItem("p" + book.name) == 0 && localStorage.getItem("b" + book.name) == userService.getUsername())
             {
-                //check book back in
+                //user is trying to check book back in
                 localStorage.setItem("p" + book.name, 1);
                 localStorage.setItem("b" + book.name, "nobody")
+                console.log("need to check back in");
+                console.log("now " + book.name + " has presence " +localStorage.getItem("p" + book.name)+ " and has borrowed by " + localStorage.getItem("b" + book.name));
                 book.presence = 1;
                 book.borrowedBy = "nobody";
                 document.getElementById(book.name).style.backgroundColor = "white";
