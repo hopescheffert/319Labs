@@ -5,33 +5,48 @@ Librarian
         <th style='background-color:green'>Science Shelf</th>
         <th style='background-color:green'>Sports Shelf</th>
         <th style='background-color:green'>Art Shelf</th>
-
+        <!-- note that this displays with alot of empty cells this way but it works correctly - that's why I created a new "rows" object
         <tr ng-repeat="book in books">
-            <td><span ng-if="book.shelf == 0" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
-            <td><span ng-if="book.shelf == 1" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
-            <td><span ng-if="book.shelf == 2" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
-            <td><span ng-if="book.shelf == 3" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
-        </tr>
-    </table>
-    <br><br>
-    <hr>
+        <td><span ng-if="book.shelf == 0" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
+        <td><span ng-if="book.shelf == 1" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
+        <td><span ng-if="book.shelf == 2" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
+        <td><span ng-if="book.shelf == 3" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
+    </tr> -->
+    <tr ng-repeat="row in rows">
+        <td id="{{row[0].name}}" ng-click="displayBookInfo(row[0])">{{row[0].name}}</td>
+        <td id="{{row[1].name}}" ng-click="displayBookInfo(row[1])">{{row[1].name}}</td>
+        <td id="{{row[2].name}}" ng-click="displayBookInfo(row[2])">{{row[2].name}}</td>
+        <td id="{{row[3].name}}" ng-click="displayBookInfo(row[3])">{{row[3].name}}</td>
+    </tr>
+    <!-- have to show last row that hasn't made a row yet (r) we call this the incompleteRow -->
+    <tr>
+        <td id="{{incompleteRow[0].name}}" ng-click="displayBookInfo(incompleteRow[0])">{{incompleteRow[0].name}}</td>
+        <td id="{{incompleteRow[1].name}}" ng-click="displayBookInfo(incompleteRow[1])">{{incompleteRow[1].name}}</td>
+        <td id="{{incompleteRow[2].name}}" ng-click="displayBookInfo(incompleteRow[2])">{{incompleteRow[2].name}}</td>
+        <td id="{{incompleteRow[3].name}}" ng-click="displayBookInfo(incompleteRow[3])">{{incompleteRow[3].name}}</td>
+    </tr>
 
-    <p><b>Add Book</b></p>
-    <table>
-        <tr>
-            <td>Book Name (example: B36)</td>
-            <td><input ng-model="bookName" type="text"></input></td>
-        </tr>
-        <tr>
-            <td>Book Shelf </td>
-            <td><select ng-model="bookShelf" ng-options="s for s in shelves"></select></td>
-        </tr>
-        <tr>
-            <td>This is a reference book </td>
-            <td><input type="checkbox" ng-model="isReferenceBook"></input></td>
-        </tr>
-        <tr>
-            <td><button id="addBook" ng-click="addBook(bookName, bookShelf, isReferenceBook)">Add Book</button></td>
-        </tr>
-    </table>
+
+</table>
+<br><br>
+<hr>
+
+<p><b>Add Book</b></p>
+<table>
+    <tr>
+        <td>Book Name (example: B36)</td>
+        <td><input ng-model="bookName" type="text"></input></td>
+    </tr>
+    <tr>
+        <td>Book Shelf </td>
+        <td><select ng-model="bookShelf" ng-options="s for s in shelves"></select></td>
+    </tr>
+    <tr>
+        <td>This is a reference book </td>
+        <td><input type="checkbox" ng-model="isReferenceBook"></input></td>
+    </tr>
+    <tr>
+        <td><button id="addBook" ng-click="addBook(bookName, bookShelf, isReferenceBook)">Add Book</button></td>
+    </tr>
+</table>
 </div>

@@ -94,14 +94,41 @@ myLibrary.service('userService', function()
 myLibrary.service('booksService', function()
 {
     var books = [];
+    var rows = []; //holds arrays of 4 book objects (represents one row for displaying in views)
+    var count = 0;
+    var r = []; //4 book objects
+
     return  {
         getBooks: function()
         {
             return books;
         },
+        getRows: function()
+        {
+            return rows;
+        },
+        getIncompleteRow: function()
+        {
+            return r;
+        },
         addToBooks: function(book)
         {
             books.push(book);
+            if(count == 4)
+            {
+                rows.push(r);
+                r = [];
+                r[0] = book;
+                count = 0;
+            }
+            else
+            {
+                if(book.shelf == 0) r[0] = book;
+                else if(book.shelf == 1) r[1] = book;
+                else if(book.shelf == 2) r[2] = book;
+                else r[3] = book;
+                count++;
+            }
             //use local storage to store presence and borrowed by attributes
             //but check first if it has already been stored - don't reset it
             if(localStorage.getItem("p" + book.name) == undefined)
@@ -120,6 +147,8 @@ myLibrary.service('booksService', function()
 myLibrary.controller("librarianController", function($scope, booksService)
 {
     $scope.books = booksService.getBooks();
+    $scope.rows = booksService.getRows();
+    $scope.incompleteRow = booksService.getIncompleteRow();
     $scope.shelves = ["literature", "science", "sports", "art"];
 
     $scope.addBook = function(bookName, bookShelf, isReferenceBook)
@@ -146,6 +175,8 @@ myLibrary.controller("librarianController", function($scope, booksService)
 myLibrary.controller("undergradController", function($scope, userService, booksService)
 {
     $scope.books = booksService.getBooks();
+    $scope.rows = booksService.getRows();
+    $scope.incompleteRow = booksService.getIncompleteRow();
     $scope.shelves = ["literature", "science", "sports", "art"];
     $scope.currentCheckedOut = 0;
 
@@ -157,7 +188,7 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
         }
         else
         {
-            if(document.getElementById(book.name).style.backgroundColor = "white" && localStorage.getItem("p" + book.name) == 1)
+            if(localStorage.getItem("p" + book.name) == 1) //&& document.getElementById(book.name).style.backgroundColor = "white")
             {
                 //trying to check the book out
                 if($scope.currentCheckedOut == 2) //not allowed
@@ -166,6 +197,7 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
                 }
                 else
                 {
+                    console.log("presence is " + localStorage.getItem("p" + book.name) + " and borrowed by is "  + localStorage.getItem("b" + book.name));
                     if(localStorage.getItem("p" + book.name) == 0 && localStorage.getItem("b" + book.name) != userService.getUsername())
                     {
                         //someone already has the book
@@ -183,7 +215,6 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
                         book.presence = 0;
                         book.borrowedBy = userService.getUsername();
                         document.getElementById(book.name).style.backgroundColor = "red";
-
                     }
 
                 }

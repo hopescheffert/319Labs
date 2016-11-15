@@ -5,12 +5,30 @@ Undergrad
         <th style='background-color:green'>Science Shelf</th>
         <th style='background-color:green'>Sports Shelf</th>
         <th style='background-color:green'>Art Shelf</th>
-
+        <!-- note that this displays with alot of empty cells this way but it works correctly - that's why I created a new "rows" object
         <tr ng-repeat="book in books">
-            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 0" >{{book.name}} </span></td>
-            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 1" >{{book.name}} </span></td>
-            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 2" >{{book.name}} </span></td>
-            <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 3" >{{book.name}} </span></td>
-        </tr>
-    </table>
+        <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 0" >{{book.name}} </span></td>
+        <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 1" >{{book.name}} </span></td>
+        <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 2" >{{book.name}} </span></td>
+        <td  ng-click="check(book)"><span id="{{book.name}}" ng-if="book.shelf == 3" >{{book.name}} </span></td>
+    </tr> -->
+
+    <!-- this way works but it's messy in booksService because you can only push a r onto rows when you've made a full
+    row of books (r) -->
+
+    <tr ng-repeat="row in rows">
+        <td id="{{row[0].name}}" ng-click="check(row[0])">{{row[0].name}}</td>
+        <td id="{{row[1].name}}" ng-click="check(row[1])">{{row[1].name}}</td>
+        <td id="{{row[2].name}}" ng-click="check(row[2])">{{row[2].name}}</td>
+        <td id="{{row[3].name}}" ng-click="check(row[3])">{{row[3].name}}</td>
+    </tr>
+    <!-- have to show last row that hasn't made a row yet (r) we call this the incompleteRow -->
+    <tr>
+        <td id="{{incompleteRow[0].name}}" ng-click="check(incompleteRow[0])">{{incompleteRow[0].name}}</td>
+        <td id="{{incompleteRow[1].name}}" ng-click="check(incompleteRow[1])">{{incompleteRow[1].name}}</td>
+        <td id="{{incompleteRow[2].name}}" ng-click="check(incompleteRow[2])">{{incompleteRow[2].name}}</td>
+        <td id="{{incompleteRow[3].name}}" ng-click="check(incompleteRow[3])">{{incompleteRow[3].name}}</td>
+    </tr>
+
+</table>
 </div>
