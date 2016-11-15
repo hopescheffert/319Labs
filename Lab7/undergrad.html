@@ -1,1 +1,16 @@
 Undergrad
+<div ng-controller="undergradController">
+    <table id="undergradTable" border="1px solid black">
+        <th style='background-color:green'>Literature Shelf</th>
+        <th style='background-color:green'>Science Shelf</th>
+        <th style='background-color:green'>Sports Shelf</th>
+        <th style='background-color:green'>Art Shelf</th>
+
+        <tr ng-repeat="book in books">
+            <td ng-if="book.shelf === 0" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 1" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 2" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 3" id="{{book.name}}" ng-click="check(book)">{{book.name}} </td>
+        </tr>
+    </table>
+</div>

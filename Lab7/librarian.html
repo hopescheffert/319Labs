@@ -1,1 +1,43 @@
 Librarian
+<div ng-controller="librarianController">
+    <table id="librarianTable" border="1px solid black">
+        <th style='background-color:green'>Literature Shelf</th>
+        <th style='background-color:green'>Science Shelf</th>
+        <th style='background-color:green'>Sports Shelf</th>
+        <th style='background-color:green'>Art Shelf</th>
+
+        <!-- <tr ng-repeat="book in books">
+            <td ng-if="book.shelf === 0" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 1" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 2" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-if="book.shelf === 3" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+        </tr> -->
+        <tr ng-repeat="book in books" ng-switch="book.shelf">
+            <td ng-switch-when="0" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-switch-when="1" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-switch-when="2" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+            <td ng-switch-when="3" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </td>
+        </tr>
+    </table>
+    <br><br>
+    <hr>
+
+    <p><b>Add Book</b></p>
+    <table>
+        <tr>
+            <td>Book Name (example: B36)</td>
+            <td><input ng-model="bookName" type="text"></input></td>
+        </tr>
+        <tr>
+            <td>Book Shelf </td>
+            <td><select ng-model="bookShelf" ng-options="s for s in shelves"></select></td>
+        </tr>
+        <tr>
+            <td>This is a reference book </td>
+            <td><input type="checkbox" ng-model="isReferenceBook"></input></td>
+        </tr>
+        <tr>
+            <td><button id="addBook" ng-click="addBook(bookName, bookShelf, isReferenceBook)">Add Book</button></td>
+        </tr>
+    </table>
+</div>
