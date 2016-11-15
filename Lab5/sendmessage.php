@@ -1,8 +1,8 @@
 <?php
 session_start();
-$path = 'phpseclib';
+$path = 'Exercise05_js_ajax/phpseclib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-include_once('Crypt/RSA.php');
+include_once('Exercise05_js_ajax/phpseclib/Crypt/RSA.php');
 
 $curUser = $_SESSION['username'];
 $user = $_REQUEST['user'];
@@ -90,7 +90,7 @@ function rsa_decrypt($string, $private_key)
 // extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
 
 
-$userFile = fopen("/Applications/XAMPP/xamppfiles/htdocs/lab5/users.txt", "r") or die("Unable to open users.txt");
+$userFile = fopen("users.txt", "r") or die("Unable to open users.txt");
 $foundpublickey = 0;
 $foundprivatekey = 0;
 
@@ -126,9 +126,9 @@ $decipheredtext = rsa_decrypt($ciphertext, $private_key);
 
 // echo "<br> encrypted text " . $ciphertext;
 // echo "<br> decrypted text " . $decipheredtext;
-$messageFile = "/Applications/XAMPP/xamppfiles/htdocs/lab5/messages.txt";
+$messageFile = "/Applications/XAMPP/xamppfiles/htdocs/lab5/posts.txt";
 $message = array('user' => $curUser, 'reciever' => $reciever, 'body' => $ciphertext);
 $entry = json_encode($message) . "\n";
-file_put_contents("$messageFile, $entry, FILE_APPEND);
+file_put_contents($messageFile, $entry, FILE_APPEND);
 
 ?>

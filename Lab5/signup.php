@@ -2,16 +2,19 @@
 session_start();
 // signup.php
 //does the encryption and decryption
-$path = '/Applications/XAMPP/xamppfiles/htdocs/lab5/Exercise05_js_ajax/phpseclib';
+$path = 'Exercise05_js_ajax/phpseclib';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-include_once('Crypt/RSA.php');
+include_once('Exercise05_js_ajax/phpseclib/Crypt/RSA.php');
 if(isset($_POST["username"]))
 {
 	$curUser = $_POST["username"];
 	$_SESSION['username'] = $curUser;
 	echo "<br>user is ". $curUser;
 }
-if(isset( $_POST["password"]))
+else {
+  die("current user is null");
+}
+if(isset($_POST["password"]))
 {
 	$curPass = $_POST["password"];
 	$_SESSION['password'] = $curPass;
@@ -30,18 +33,19 @@ $public_key = $publickey;
 // echo "private " . $private_key . " ";
 // echo "public " . $public_key;
 
-$userFile = "/Applications/XAMPP/xamppfiles/htdocs/lab5/users.txt";
+$userFile = "/Applications/XAMPP/xamppfiles/htdocs/Lab5/users.txt";
 
 if($curUser != null)
 {
 	$user = array('username' => $curUser, 'password' => $curPass, 'publickey' => $public_key, 'privatekey' => $private_key);
 	$entry = json_encode($user) . "***\n";
+	echo "here";
 	file_put_contents($userFile, $entry, FILE_APPEND);
 	header('Location: login.html');
 
 }
 else {
-	echo "cur user is null";
+	echo "current user is null";
 }
 
 

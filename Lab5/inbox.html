@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+    <table id='inboxTable' border=2>
+        <th>From</th>
+        <th>Message</th>
+    </table>
+    <br>
+    <br>
+    <form action = "sendmessage.php">
+      <input type = "submit" value = "Send New Message">
+    </form>
+    <br>
+    <br>
+    <form action="Logout.php">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+
+</html>
+
+
+<!-- // create an html to display everything in the inbox
+
+// also use to send messages -->
+
+
+<script>
+
+var inboxTable = document.getElementById("inboxTable");
+
+$(document).ready(function()
+{
+    $.get("inInbox.php", function(messages)
+    {
+        var messageObject = JSON.parse(messages);
+        for(var i = 0; i < messageObject.length; i++)
+        {
+            row = inboxTable.insertRow(-1);
+            user = row.insertCell(0);
+            body = row.insertCell(1);
+            user.innerHTML = messageObject[i].user;
+            body.innerHTML = messageObject[i].body;
+        }
+    })
+
+
+});
+
+
+
+
+
+
+
+</script>
