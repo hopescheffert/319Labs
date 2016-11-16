@@ -1,0 +1,4 @@
+Hope Scheffert worked on this lab because jacob was trying to figure out the issues with lab 5
+Jacob Neyens worked on lab 5 issues
+
+Lab 7: Angular JS Library

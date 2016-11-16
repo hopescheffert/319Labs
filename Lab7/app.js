@@ -114,12 +114,16 @@ myLibrary.service('booksService', function()
         addToBooks: function(book)
         {
             books.push(book);
+            //NOTE: this is done to display books by rows in html's
             if(count == 4)
             {
                 rows.push(r);
                 r = [];
-                r[0] = book;
-                count = 0;
+                if(book.shelf == 0) r[0] = book;
+                else if(book.shelf == 1) r[1] = book;
+                else if(book.shelf == 2) r[2] = book;
+                else r[3] = book;
+                count = 1;
             }
             else
             {
@@ -139,6 +143,7 @@ myLibrary.service('booksService', function()
             {
                 localStorage.setItem("b"+ book.name, "nobody");
             }
+
         }
     };
 
@@ -188,7 +193,7 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
         }
         else
         {
-            if(localStorage.getItem("p" + book.name) == 1) //&& document.getElementById(book.name).style.backgroundColor = "white")
+            if(localStorage.getItem("p" + book.name) == 1)
             {
                 //trying to check the book out
                 if($scope.currentCheckedOut == 2) //not allowed
@@ -198,7 +203,7 @@ myLibrary.controller("undergradController", function($scope, userService, booksS
                 else
                 {
                     console.log("presence is " + localStorage.getItem("p" + book.name) + " and borrowed by is "  + localStorage.getItem("b" + book.name));
-                    if(localStorage.getItem("p" + book.name) == 0 && localStorage.getItem("b" + book.name) != userService.getUsername())
+                    if(localStorage.getItem("p" + book.name) == 0)
                     {
                         //someone already has the book
                         console.log("someone has this book already");

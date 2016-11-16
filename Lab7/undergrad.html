@@ -1,4 +1,6 @@
 Undergrad
+<br>
+<b>**Note: if you attempt to click on a book that has already been checked out, nothing happens (won't let you check it out)</b>
 <div ng-controller="undergradController">
     <table id="undergradTable" border="1px solid black">
         <th style='background-color:green'>Literature Shelf</th>
@@ -23,7 +25,7 @@ Undergrad
         <td id="{{row[3].name}}" ng-click="check(row[3])">{{row[3].name}}</td>
     </tr>
     <!-- have to show last row that hasn't made a row yet (r) we call this the incompleteRow -->
-    <tr>
+    <tr ng-if="incompleteRow.length != 0">
         <td id="{{incompleteRow[0].name}}" ng-click="check(incompleteRow[0])">{{incompleteRow[0].name}}</td>
         <td id="{{incompleteRow[1].name}}" ng-click="check(incompleteRow[1])">{{incompleteRow[1].name}}</td>
         <td id="{{incompleteRow[2].name}}" ng-click="check(incompleteRow[2])">{{incompleteRow[2].name}}</td>

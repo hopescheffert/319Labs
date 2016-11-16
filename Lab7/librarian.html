@@ -12,7 +12,7 @@ Librarian
         <td><span ng-if="book.shelf == 2" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
         <td><span ng-if="book.shelf == 3" id="{{book.name}}" ng-click="displayBookInfo(book)">{{book.name}} </span></td>
     </tr> -->
-    <tr ng-repeat="row in rows">
+    <tr ng-repeat="row in rows track by $index">
         <td id="{{row[0].name}}" ng-click="displayBookInfo(row[0])">{{row[0].name}}</td>
         <td id="{{row[1].name}}" ng-click="displayBookInfo(row[1])">{{row[1].name}}</td>
         <td id="{{row[2].name}}" ng-click="displayBookInfo(row[2])">{{row[2].name}}</td>
@@ -26,7 +26,6 @@ Librarian
         <td id="{{incompleteRow[3].name}}" ng-click="displayBookInfo(incompleteRow[3])">{{incompleteRow[3].name}}</td>
     </tr>
 
-
 </table>
 <br><br>
 <hr>
@@ -34,7 +33,7 @@ Librarian
 <p><b>Add Book</b></p>
 <table>
     <tr>
-        <td>Book Name (example: B36)</td>
+        <td>Book Name (example: B36 or R49)</td>
         <td><input ng-model="bookName" type="text"></input></td>
     </tr>
     <tr>
