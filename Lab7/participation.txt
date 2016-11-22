@@ -1,4 +1,7 @@
-Hope Scheffert worked on this lab because jacob was trying to figure out the issues with lab 5
-Jacob Neyens worked on lab 5 issues
+Hope Scheffert worked on this lab mainly at first (everything but less so in add books) because Jacob was trying to figure out the issues with lab 5
+Jacob Neyens worked on lab 5 issues and at the end worked on this as well for mainly the adding book part.
 
 Lab 7: Angular JS Library
+
+
+NOTE: must use XAMPP for running. 
