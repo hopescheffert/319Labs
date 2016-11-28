@@ -1,15 +1,4 @@
-lexer grammar xmltokenizer;
-<<<<<<< HEAD
-//element names must start with a letter or underscore
-//element names cannot start with letters XML or xml, etc
-fragment OKSTART: [a-zA-Z_]['XML' | 'xml' | 'Xml' | 'XMl' | 'XmL' | 'xML'] ;
-//element names can contain letters, digits, hyphens, underscores or periods
-//cannot contain spaces
-fragment OKNAME: [a-zA-z0-9-_.][^ ] ;
-
-fragment ELEMENTNAME: ^OKSTART+ OKNAME+;
-
-=======
+lexer grammar jsontokenizer;
 
 //NOTE: test/check on http://www.regexpal.com/
 
@@ -31,9 +20,9 @@ fragment DOMAINPART: [a-zA-Z0-9-.]+? ;
 
 EMAIL: LOCALPART+ '@' DOMAINPART+ ;
 
-EMAILELEMENT: ('<email>' | '<EMAIL>') EMAIL ('</email>' | '</EMAIL>')
+EMAILELEMENT: ('"EMAIL":' | '"email":') '"' EMAIL '",'
 {
-    System.out.println("****EMAILELEMENT FOUND**** " + getText());
+    System.out.println("****EMAIL ELEMENT FOUND**** " + getText());
 };
 
 
@@ -54,9 +43,9 @@ DAY: ('0'[1-9] | '1' DIGIT | '2' DIGIT |'3' [0-1]) ;
 
 DATE: DAY[/]+MONTH[/]+YEAR ;
 
-DATEELEMENT: ('<date>' | '<DATE>') DATE ('</date>' | '</DATE>')
+DATEELEMENT: ('"DATE":' | '"date":') '"' DATE '",'
 {
-    System.out.println("****DATEELEMENT FOUND**** " + getText());
+    System.out.println("****DATE ELEMENT FOUND**** " + getText());
 };
 
 
@@ -79,9 +68,9 @@ OP4: '('THREENUMS')'[ ]THREENUMS[-]THREENUMS DIGIT ;
 //matches either of the four formats from PDF **NOTE that we took this very literally**
 PHONE: OP1 | OP2 | OP3 | OP4 ;
 
-PHONEELEMENT: ('<phone>' | '<PHONE>') PHONE ('</phone>' | '</PHONE>')
+PHONEELEMENT: ('"PHONE":' | '"phone":') '"' PHONE '",'
 {
-    System.out.println("****PHONEELEMENT FOUND****" + getText());
+    System.out.println("****PHONE ELEMENT FOUND****" + getText());
 };
 
 //CREDIT CARD
@@ -113,9 +102,9 @@ JCB: '2131'ELEVEN | '1800'ELEVEN | '35'FOURTEEN ;
 
 CREDITCARD: VISA | MASTERCARD | AMERICANEXP | DINERSCLUB | DISCOVER | JCB;
 
-CREDITCARDELEMENT: ('<creditcard>' | '<CREDITCARD>') CREDITCARD ('</creditcard>' | '</CREDITCARD>')
+CREDITCARDELEMENT: ('"CREDITCARD":' | '"creditcard":') '"' CREDITCARD '",'
 {
-    System.out.println("****CREDITCARDELEMENT FOUND****" + getText());
+    System.out.println("****CREDIT CARD ELEMENT FOUND****" + getText());
 };
 
 
@@ -126,7 +115,7 @@ CREDITCARDELEMENT: ('<creditcard>' | '<CREDITCARD>') CREDITCARD ('</creditcard>'
 //element names can contain letters, digits, hyphens, underscores or periods
 //element names cannot contain spaces?
 //names cannot contain spaces?
-ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
+ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.] ;
 //element strings can consist of the following:
 //Uppercase and lowercase Latin letters (a–z, A–Z)
 //Digits 0 to 9
@@ -134,12 +123,11 @@ ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
 //and space
 ELEMENTSTRING: [a-zA-Z0-9-_~!$&'()*+,;=: ]+ ;
 
-CUSTOM: ('<' ELEMENTNAME '>') ELEMENTSTRING ('</' ELEMENTNAME '>')
+CUSTOM: '"'ELEMENTNAME'":' '"' ELEMENTSTRING '"' ','? '}'?
 {
     System.out.println("***CUSTOM ELEMENT FOUND****" + getText());
 };
 
 
-//skip whitespace
->>>>>>> master
-WS: [ \r\n\t]+ {skip();} ;
+//skip whitespace and {}
+WS: [ \r\n\t{}]+ {skip();} ;
