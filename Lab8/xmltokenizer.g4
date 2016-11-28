@@ -14,8 +14,6 @@ lexer grammar xmltokenizer;
 
 
 fragment LOCALPART: [a-zA-Z0-9-_~!$&'()*+,;=:]+([.][a-zA-Z0-9-_~!$&'()*+,;=:]+)? ;
-
-//**********************************************************TODO do we need to check for these? ('.com' | '.edu' | '.org')+?
 fragment DOMAINPART: [a-zA-Z0-9-.]+? ;
 
 EMAIL: LOCALPART+ '@' DOMAINPART+ ;
@@ -115,7 +113,15 @@ CREDITCARDELEMENT: ('<creditcard>' | '<CREDITCARD>') CREDITCARD ('</creditcard>'
 //element names can contain letters, digits, hyphens, underscores or periods
 //element names cannot contain spaces?
 //names cannot contain spaces?
-ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
+//fragment NOTXML: ~('x' | 'X')~('m' | 'M')~('l' | 'L').;
+//starts with anything other than x
+CASE1:[a-wy-zA-WY-Z_][a-zA-z0-9-_.]+ ;
+//starts with x and anything other than m
+CASE2: ('X'|'x')[a-ln-zA-LN-Z0-9-_.]+ ;
+//starst with xm and has anything other than l
+CASE3: ('X'|'x')('M'|'m')[a-km-zA-KM-Z0-9-_.]+ ;
+ELEMENTNAME: CASE1 | CASE2 | CASE3 ;
+
 //element strings can consist of the following:
 //Uppercase and lowercase Latin letters (a–z, A–Z)
 //Digits 0 to 9
@@ -127,7 +133,6 @@ CUSTOM: ('<' ELEMENTNAME '>') ELEMENTSTRING ('</' ELEMENTNAME '>')
 {
     System.out.println("***CUSTOM ELEMENT FOUND****" + getText());
 };
-
 
 //skip whitespace
 WS: [ \r\n\t]+ {skip();} ;
