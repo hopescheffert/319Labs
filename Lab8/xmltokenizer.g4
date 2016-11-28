@@ -1,15 +1,4 @@
 lexer grammar xmltokenizer;
-<<<<<<< HEAD
-//element names must start with a letter or underscore
-//element names cannot start with letters XML or xml, etc
-fragment OKSTART: [a-zA-Z_]['XML' | 'xml' | 'Xml' | 'XMl' | 'XmL' | 'xML'] ;
-//element names can contain letters, digits, hyphens, underscores or periods
-//cannot contain spaces
-fragment OKNAME: [a-zA-z0-9-_.][^ ] ;
-
-fragment ELEMENTNAME: ^OKSTART+ OKNAME+;
-
-=======
 
 //NOTE: test/check on http://www.regexpal.com/
 
@@ -103,6 +92,17 @@ fragment FOURTEEN: THIRTEEN DIGIT ;
 fragment FIFTEEN: FOURTEEN DIGIT ;
 fragment SIXTEEN: FIFTEEN DIGIT ;
 
+XML1: 'XML' ;
+XML2: 'xML' ;
+XML3: 'xmL' ;
+XML4: 'xml' ;
+XML5: 'XMl' ;
+XML6: 'Xml' ;
+XML7: 'XmL' ;
+XML8: 'xMl' ;
+
+XMLSTRING: XML1 | XML2 | XML3 | XML4 | XML5 | XML6 | XML7 | XML8 ;
+
 VISA: '4'FIFTEEN | '4'TWELVE ;
 MASTERCARD: '51'FOURTEEN | '52'FOURTEEN | '53'FOURTEEN | '54'FOURTEEN | '55'FOURTEEN ;
 AMERICANEXP: '34'THIRTEEN | '37'THIRTEEN ;
@@ -124,9 +124,9 @@ CREDITCARDELEMENT: ('<creditcard>' | '<CREDITCARD>') CREDITCARD ('</creditcard>'
 //element names must start with a letter or underscore
 //element names cannot start with letters XML or xml, etc
 //element names can contain letters, digits, hyphens, underscores or periods
-//element names cannot contain spaces?
-//names cannot contain spaces?
+//element names cannot contain spaces
 ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
+//ELEMENTNAME: ([a-zA-Z_] | ~[xml])+[a-zA-z0-9-_.];
 //element strings can consist of the following:
 //Uppercase and lowercase Latin letters (a–z, A–Z)
 //Digits 0 to 9
@@ -141,5 +141,4 @@ CUSTOM: ('<' ELEMENTNAME '>') ELEMENTSTRING ('</' ELEMENTNAME '>')
 
 
 //skip whitespace
->>>>>>> master
 WS: [ \r\n\t]+ {skip();} ;
