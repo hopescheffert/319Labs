@@ -20,7 +20,7 @@ public class RPNParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, INT=13, WS=14;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, INT=15, WS=16;
 	public static final int
 		RULE_start = 0, RULE_num = 1, RULE_op = 2;
 	public static final String[] ruleNames = {
@@ -29,11 +29,11 @@ public class RPNParser extends Parser {
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "';'", "'+'", "'-'", "'*'", "'/'", "'%'", "'=='", "'!='", "'>'", 
-		"'<'", "'>='", "'<='"
+		"'<'", "'>='", "'<='", "'||'", "'&&'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, "INT", "WS"
+		null, null, null, "INT", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -157,6 +157,8 @@ public class RPNParser extends Parser {
 					case T__9:
 					case T__10:
 					case T__11:
+					case T__12:
+					case T__13:
 						{
 						setState(7);
 						op();
@@ -169,7 +171,7 @@ public class RPNParser extends Parser {
 					setState(10); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << INT))) != 0) );
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << INT))) != 0) );
 				setState(12);
 				match(T__0);
 				System.out.println("value = " + stack.pop()); val=0;
@@ -178,7 +180,7 @@ public class RPNParser extends Parser {
 				setState(17); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << INT))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << INT))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -254,7 +256,7 @@ public class RPNParser extends Parser {
 		OpContext _localctx = new OpContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_op);
 		try {
-			setState(44);
+			setState(48);
 			switch (_input.LA(1)) {
 			case T__1:
 				enterOuterAlt(_localctx, 1);
@@ -451,6 +453,48 @@ public class RPNParser extends Parser {
 				         
 				}
 				break;
+			case T__12:
+				enterOuterAlt(_localctx, 12);
+				{
+				setState(44);
+				match(T__12);
+
+				            b = stack.pop();
+				            a = stack.pop();
+				            if(a || b)
+				            {
+				                val = 1;
+				            }
+				            else
+				            {
+				                val = 0;
+				            }
+				            stack.push(val);
+				            System.out.println("after || evaluation stack is " + stack);
+				         
+				}
+				break;
+			case T__13:
+				enterOuterAlt(_localctx, 13);
+				{
+				setState(46);
+				match(T__13);
+
+				            b = stack.pop();
+				            a = stack.pop();
+				            if(a && b)
+				            {
+				                val = 1;
+				            }
+				            else
+				            {
+				                val = 0;
+				            }
+				            stack.push(val);
+				            System.out.println("after && evaluation stack is " + stack);
+				         
+				}
+				break;
 			default:
 				throw new NoViableAltException(this);
 			}
@@ -467,20 +511,22 @@ public class RPNParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\20\61\4\2\t\2\4\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\22\65\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\3\2\3\2\6\2\13\n\2\r\2\16\2\f\3\2\3\2\3\2\6\2\22\n\2\r\2"+
 		"\16\2\23\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3"+
-		"\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4/\n\4\3\4\2\2\5\2\4\6\2\2:\2"+
-		"\21\3\2\2\2\4\25\3\2\2\2\6.\3\2\2\2\b\13\5\4\3\2\t\13\5\6\4\2\n\b\3\2"+
-		"\2\2\n\t\3\2\2\2\13\f\3\2\2\2\f\n\3\2\2\2\f\r\3\2\2\2\r\16\3\2\2\2\16"+
-		"\17\7\3\2\2\17\20\b\2\1\2\20\22\3\2\2\2\21\n\3\2\2\2\22\23\3\2\2\2\23"+
-		"\21\3\2\2\2\23\24\3\2\2\2\24\3\3\2\2\2\25\26\7\17\2\2\26\27\b\3\1\2\27"+
-		"\5\3\2\2\2\30\31\7\4\2\2\31/\b\4\1\2\32\33\7\5\2\2\33/\b\4\1\2\34\35\7"+
-		"\6\2\2\35/\b\4\1\2\36\37\7\7\2\2\37/\b\4\1\2 !\7\b\2\2!/\b\4\1\2\"#\7"+
-		"\t\2\2#/\b\4\1\2$%\7\n\2\2%/\b\4\1\2&\'\7\13\2\2\'/\b\4\1\2()\7\f\2\2"+
-		")/\b\4\1\2*+\7\r\2\2+/\b\4\1\2,-\7\16\2\2-/\b\4\1\2.\30\3\2\2\2.\32\3"+
-		"\2\2\2.\34\3\2\2\2.\36\3\2\2\2. \3\2\2\2.\"\3\2\2\2.$\3\2\2\2.&\3\2\2"+
-		"\2.(\3\2\2\2.*\3\2\2\2.,\3\2\2\2/\7\3\2\2\2\6\n\f\23.";
+		"\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4\63\n\4\3\4"+
+		"\2\2\5\2\4\6\2\2@\2\21\3\2\2\2\4\25\3\2\2\2\6\62\3\2\2\2\b\13\5\4\3\2"+
+		"\t\13\5\6\4\2\n\b\3\2\2\2\n\t\3\2\2\2\13\f\3\2\2\2\f\n\3\2\2\2\f\r\3\2"+
+		"\2\2\r\16\3\2\2\2\16\17\7\3\2\2\17\20\b\2\1\2\20\22\3\2\2\2\21\n\3\2\2"+
+		"\2\22\23\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2\24\3\3\2\2\2\25\26\7\21\2"+
+		"\2\26\27\b\3\1\2\27\5\3\2\2\2\30\31\7\4\2\2\31\63\b\4\1\2\32\33\7\5\2"+
+		"\2\33\63\b\4\1\2\34\35\7\6\2\2\35\63\b\4\1\2\36\37\7\7\2\2\37\63\b\4\1"+
+		"\2 !\7\b\2\2!\63\b\4\1\2\"#\7\t\2\2#\63\b\4\1\2$%\7\n\2\2%\63\b\4\1\2"+
+		"&\'\7\13\2\2\'\63\b\4\1\2()\7\f\2\2)\63\b\4\1\2*+\7\r\2\2+\63\b\4\1\2"+
+		",-\7\16\2\2-\63\b\4\1\2./\7\17\2\2/\63\b\4\1\2\60\61\7\20\2\2\61\63\b"+
+		"\4\1\2\62\30\3\2\2\2\62\32\3\2\2\2\62\34\3\2\2\2\62\36\3\2\2\2\62 \3\2"+
+		"\2\2\62\"\3\2\2\2\62$\3\2\2\2\62&\3\2\2\2\62(\3\2\2\2\62*\3\2\2\2\62,"+
+		"\3\2\2\2\62.\3\2\2\2\62\60\3\2\2\2\63\7\3\2\2\2\6\n\f\23\62";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

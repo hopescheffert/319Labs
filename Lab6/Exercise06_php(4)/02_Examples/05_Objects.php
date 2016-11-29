@@ -40,11 +40,10 @@ $myObj = new Test("Timothy");
 // outside the class definition.
 // object:: is how we refer to static methods and variables from
 // outside the class definition.
-echo $myObj::$i. "  " .$myObj->getName();echo "<br>"; 
+echo $myObj::$i. "  " .$myObj->getName();echo "<br>";
 
 echo "<hr><br>";
 
 echo $myObj::getI();
 
 ?>
-

@@ -28,6 +28,7 @@ num:
             System.out.println("stack is " + stack);
         };
 op:
+    //NUMERICAL OPERATIONS
     '+'
      {
         val = stack.pop() + stack.pop();
@@ -61,6 +62,9 @@ op:
             stack.push(val);
             System.out.println("after % evaluation stack is " + stack);
          }
+
+         //RELATIONAL OPERATIONS
+
          | '=='
          {
             b = stack.pop();
@@ -157,6 +161,47 @@ op:
             System.out.println("after <= evaluation stack is " + stack);
 
          }
+
+         //LOGICAL OPERATIONS********************************TODO operands cannot be ints
+
+         | '||'
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a || b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after || evaluation stack is " + stack);
+         }
+         | '&&'
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a && b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after && evaluation stack is " + stack);
+         }
+         //*******************TODO not?
+         //| '!'
+         //{
+            //val = !(stack.pop());
+            //stack.push(val);
+            //System.out.println("after ! evaluation stack is " + stack);
+         //}
+
 
 
 

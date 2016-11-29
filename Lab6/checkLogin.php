@@ -13,6 +13,7 @@ $failed = false;
 $username = $_REQUEST["username"];
 $password= $_REQUEST["password"];
 
+
 if($_REQUEST["librarian"] == "true")
 {
     $isLibrarian = 1;
