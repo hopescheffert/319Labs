@@ -17,33 +17,156 @@ grammar RPN;
 
 }
 
-start
- 	 : (expr ';' {System.out.println("value = " + stack.pop()); val=0;} )+
- 	 ;
+start:
+    ((num | op)+ ';' {System.out.println("value = " + stack.pop()); val=0;} )+ ;
 
-expr
-   : INT
+num:
+    INT
         {
             a = $INT.int;
-            System.out.println("a = " + a);
             stack.push(a);
             System.out.println("stack is " + stack);
-
-        }
-     INT
-        {
-            b = $INT.int;
-            System.out.println("b = " + b);
-            stack.push(b);
-            System.out.println("stack is " + stack);
-
-        }
-     '+'
+        };
+op:
+    '+'
      {
         val = stack.pop() + stack.pop();
         stack.push(val);
-        System.out.println("after evaluation stack is " + stack);
-     };
+        System.out.println("after + evaluation stack is " + stack);
+     }
+     | '-'
+      {
+         a = stack.pop();
+         val = stack.pop() - a;
+         stack.push(val);
+         System.out.println("after - evaluation stack is " + stack);
+      }
+      | '*'
+       {
+          val = stack.pop() * stack.pop();
+          stack.push(val);
+          System.out.println("after * evaluation stack is " + stack);
+       }
+       | '/'
+        {
+            a = stack.pop();
+            val = stack.pop() / a;
+            stack.push(val);
+           System.out.println("after / evaluation stack is " + stack);
+        }
+        | '%'
+         {
+            a = stack.pop();
+            val = stack.pop() % a;
+            stack.push(val);
+            System.out.println("after % evaluation stack is " + stack);
+         }
+         | '=='
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a == b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after == evaluation stack is " + stack);
+
+         }
+         | '!='
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a != b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after != evaluation stack is " + stack);
+
+         }
+         | '>'
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a > b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after > evaluation stack is " + stack);
+
+         }
+         | '<'
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a < b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after < evaluation stack is " + stack);
+
+         }
+         | '>='
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a >= b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after >= evaluation stack is " + stack);
+
+         }
+         | '<='
+         {
+            b = stack.pop();
+            a = stack.pop();
+            if(a <= b)
+            {
+                val = 1;
+            }
+            else
+            {
+                val = 0;
+            }
+            stack.push(val);
+            System.out.println("after <= evaluation stack is " + stack);
+
+         }
+
+
+
+
+
+
+
+     ;
+
+
 
 
 //LEXER RULES

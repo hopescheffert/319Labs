@@ -154,7 +154,7 @@ expr
 INT : [0-9]+  ;
 WS : [ \r\t\n]+ {skip();} ;
 
-//works 
+//works
 
 start
  	 : ((num | op)+ ';' {System.out.println("value = " + stack.pop()); val=0;} )+
@@ -174,3 +174,34 @@ op
         stack.push(val);
         System.out.println("after evaluation stack is " + stack);
      };
+
+
+
+
+
+     //doesn't work
+     start
+      	 : (expr ';' {System.out.println("value = " + stack.pop()); val=0;} )+
+      	 ;
+
+     expr returns [int value]
+         @after
+         {
+             System.out.println("after: " + $value);
+         }
+        :
+        INT
+         {
+             $value = $INT.int;
+             stack.push($value);
+             System.out.println("it was an int: stack is " + stack);
+         }
+         | a=expr '+' b=expr
+         {
+              $value = $a.value + $b.value;
+              stack.pop();
+              stack.pop();
+              stack.push($value);
+              System.out.println("it was an addition: stack is " + stack);
+         }
+         ;

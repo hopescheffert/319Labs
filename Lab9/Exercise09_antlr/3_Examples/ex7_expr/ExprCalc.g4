@@ -1,5 +1,5 @@
 
-grammar ExprCalc;		
+grammar ExprCalc;
 
 
 // PARSER RULES
@@ -8,7 +8,7 @@ expr returns [long value]
     @after {
        System.out.println("after: " + $value);
     }
-    :	
+    :
       a=expr '*' b=expr  {$value = $a.value * $b.value;}
     | a=expr '/' b=expr  {$value = $a.value / $b.value;}
     | a=expr '+' b=expr  {$value = $a.value + $b.value;}

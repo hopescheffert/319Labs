@@ -13,8 +13,6 @@ $failed = false;
 $username = $_REQUEST["username"];
 $password= $_REQUEST["password"];
 
-//TODO doesn't check librarain attribute correctly
-echo "*****is librarian is" . $_REQUEST["librarian"] . "<BR>";
 if($_REQUEST["librarian"] == "true")
 {
     $isLibrarian = 1;

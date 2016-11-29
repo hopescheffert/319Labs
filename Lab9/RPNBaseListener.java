@@ -30,13 +30,25 @@ public class RPNBaseListener implements RPNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpr(RPNParser.ExprContext ctx) { }
+	@Override public void enterNum(RPNParser.NumContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpr(RPNParser.ExprContext ctx) { }
+	@Override public void exitNum(RPNParser.NumContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOp(RPNParser.OpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOp(RPNParser.OpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
