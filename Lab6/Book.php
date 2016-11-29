@@ -2,6 +2,10 @@
 //Book.php
 session_start();
 include("databaseconnection.php");
+if(isset($_SESSION["username"]))
+{
+    $userName = $_SESSION["username"];
+}
 
 if(($_GET['function']) == 'add')
 {
@@ -31,7 +35,7 @@ else if(($_GET['function']) == 'borrow')
 {
     $bookID = $_GET["bookID"];
     $bookObj = new Book($bookID);
-    $bookObj->borrowBook($bookID);
+    $bookObj->borrowBook($bookID, $userName);
 }
 else if(($_GET['function']) == 'return')
 {
@@ -142,7 +146,7 @@ class Book
         }
     }
 
-    function borrowBook($bookID) //student only
+    function borrowBook($bookID, $userName) //student only
     {
         global $conn;
 
@@ -159,11 +163,11 @@ class Book
             //echo "true";
             //echo "book can be borrowed! \n";
             $date = date("F j, Y, g:i a");
-            $sql = "UPDATE books SET availability = '0' WHERE bookID='" . $bookID . "'";
-            $sql .= "INSERT INTO loanHistory VALUES('" .$userName . "', '" . $bookID . "', '" . $date . "')";
-            if(mysqli_multi_query($conn, $sql1) === FALSE)
+            $sql = "UPDATE books SET availability = '0' WHERE bookID='" . $bookID . "';";
+            $sql .= "INSERT INTO loanHistory(userName, bookID, dueDate) VALUES('" .$userName . "', '" . $bookID . "', '" . $date . "')";
+            if(mysqli_multi_query($conn, $sql) === FALSE)
             {
-                echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
+                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
             else
             {
