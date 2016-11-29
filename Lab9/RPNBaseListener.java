@@ -1,5 +1,8 @@
 // Generated from RPN.g4 by ANTLR 4.5.3
 
+    import java.util.Stack;
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;

@@ -1,102 +1,49 @@
 grammar RPN;
 
+//http://stackoverflow.com/questions/26896668/antlr4-rpn-calc-final-result-on-stack-missing
+
+@header
+{
+    import java.util.Stack;
+}
+
 @members {
     int val = 0;
     int a = 0;
     int b = 0;
     int c = 0;
+
+    Stack<Integer> stack = new Stack<Integer>();
+
 }
 
 start
- 	 : (expr ';' {System.out.println("value = " + val); val=0;} )+
+ 	 : (expr ';' {System.out.println("value = " + stack.pop()); val=0;} )+
  	 ;
 
 expr
-   : INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '+' {val = a + b;}
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '-' {val = a - b;}
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '*' {val = a * b;}
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '/' {val = a / b;}
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '>'
-     {
-        if(a > b)
+   : INT
         {
-            val = 1;
+            a = $INT.int;
+            System.out.println("a = " + a);
+            stack.push(a);
+            System.out.println("stack is " + stack);
+
         }
-        else val = 0;
-     }
-     //***************TODO what to do for "true" and "false" if val is an int?
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '<'
-     {
-        if(a < b)
+     INT
         {
-            val = 1;
+            b = $INT.int;
+            System.out.println("b = " + b);
+            stack.push(b);
+            System.out.println("stack is " + stack);
+
         }
-        else val = 0;
-     }
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '>='
+     '+'
      {
-        if(a >= b)
-        {
-            val = 1;
-        }
-        else val = 0;
-     }
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '<='
-     {
-        if(a <= b)
-        {
-            val = 1;
-        }
-        else val = 0;
-     }
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '=='
-     {
-        if(a == b)
-        {
-            val = 1;
-        }
-        else val = 0;
-     }
-     |
-     INT {a = $INT.int; System.out.println("a = " + a);}
-     INT {b = $INT.int; System.out.println("b = " + b);}
-     '!='
-     {
-        if(a != b)
-        {
-            val = 1;
-        }
-        else val = 0;
+        val = stack.pop() + stack.pop();
+        stack.push(val);
+        System.out.println("after evaluation stack is " + stack);
      };
-
-
-
 
 
 //LEXER RULES
