@@ -86,9 +86,7 @@ public class RPNParser extends Parser {
 	    int a = 0;
 	    int b = 0;
 	    boolean bool = false;
-
 	    Stack stack = new Stack();
-
 
 	public RPNParser(TokenStream input) {
 		super(input);
@@ -292,9 +290,13 @@ public class RPNParser extends Parser {
 				setState(25);
 				match(T__1);
 
-				        val = (Integer)stack.pop() + (Integer)stack.pop();
-				        stack.push(val);
-				     
+				              if(stack.size() >= 2)
+				              {
+				                val = (Integer)stack.pop() + (Integer)stack.pop();
+				                stack.push(val);
+				              }
+				              else System.out.println("***We found an extra character, but we will ignore that***");
+				            
 				}
 				break;
 			case T__2:
@@ -303,10 +305,14 @@ public class RPNParser extends Parser {
 				setState(27);
 				match(T__2);
 
-				         a = (Integer) stack.pop();
-				         val = (Integer) stack.pop() - a;
-				         stack.push(val);
-				      
+				                if(stack.size() >= 2)
+				                {
+				                    a = (Integer) stack.pop();
+				                    val = (Integer) stack.pop() - a;
+				                    stack.push(val);
+				                }
+				                else System.out.println("***We found an extra character, but we will ignore that***");
+				              
 				}
 				break;
 			case T__3:
@@ -315,9 +321,13 @@ public class RPNParser extends Parser {
 				setState(29);
 				match(T__3);
 
-				          val = (Integer) stack.pop() * (Integer) stack.pop();
-				          stack.push(val);
-				       
+				                 if(stack.size() >= 2)
+				                 {
+				                    val = (Integer) stack.pop() * (Integer) stack.pop();
+				                    stack.push(val);
+				                 }
+				                 else System.out.println("***We found an extra character, but we will ignore that***");
+				               
 				}
 				break;
 			case T__4:
@@ -326,10 +336,14 @@ public class RPNParser extends Parser {
 				setState(31);
 				match(T__4);
 
-				            a = (Integer) stack.pop();
-				            val = (Integer) stack.pop() / a;
-				            stack.push(val);
-				        
+				                 if(stack.size() >= 2)
+				                 {
+				                     a = (Integer) stack.pop();
+				                     val = (Integer) stack.pop() / a;
+				                     stack.push(val);
+				                 }
+				                 else System.out.println("***We found an extra character, but we will ignore that***");
+				               
 				}
 				break;
 			case T__5:
@@ -338,10 +352,14 @@ public class RPNParser extends Parser {
 				setState(33);
 				match(T__5);
 
-				            a = (Integer) stack.pop();
-				            val = (Integer) stack.pop() % a;
-				            stack.push(val);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      a = (Integer) stack.pop();
+				                      val = (Integer) stack.pop() % a;
+				                      stack.push(val);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__6:
@@ -350,18 +368,22 @@ public class RPNParser extends Parser {
 				setState(35);
 				match(T__6);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a == b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a == b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__7:
@@ -370,18 +392,22 @@ public class RPNParser extends Parser {
 				setState(37);
 				match(T__7);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a != b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a != b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__8:
@@ -390,18 +416,22 @@ public class RPNParser extends Parser {
 				setState(39);
 				match(T__8);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a > b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a > b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__9:
@@ -410,18 +440,22 @@ public class RPNParser extends Parser {
 				setState(41);
 				match(T__9);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a < b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a < b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__10:
@@ -430,18 +464,22 @@ public class RPNParser extends Parser {
 				setState(43);
 				match(T__10);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a >= b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a >= b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__11:
@@ -450,18 +488,22 @@ public class RPNParser extends Parser {
 				setState(45);
 				match(T__11);
 
-				            b = (Integer) stack.pop();
-				            a = (Integer) stack.pop();
-				            if(a <= b)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      b = (Integer) stack.pop();
+				                      a = (Integer) stack.pop();
+				                      if(a <= b)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__12:
@@ -470,18 +512,22 @@ public class RPNParser extends Parser {
 				setState(47);
 				match(T__12);
 
-				            boolean tempb = (Boolean) stack.pop();
-				            boolean tempa = (Boolean) stack.pop();
-				            if(tempa || tempb)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      boolean tempb = (Boolean) stack.pop();
+				                      boolean tempa = (Boolean) stack.pop();
+				                      if(tempa || tempb)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__13:
@@ -490,18 +536,22 @@ public class RPNParser extends Parser {
 				setState(49);
 				match(T__13);
 
-				            boolean tempb = (Boolean) stack.pop();
-				            boolean tempa = (Boolean) stack.pop();
-				            if(tempa && tempb)
-				            {
-				                bool = true;
-				            }
-				            else
-				            {
-				                bool = false;
-				            }
-				            stack.push(bool);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      boolean tempb = (Boolean) stack.pop();
+				                      boolean tempa = (Boolean) stack.pop();
+				                      if(tempa && tempb)
+				                      {
+				                          bool = true;
+				                      }
+				                      else
+				                      {
+				                          bool = false;
+				                      }
+				                      stack.push(bool);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			case T__14:
@@ -510,9 +560,13 @@ public class RPNParser extends Parser {
 				setState(51);
 				match(T__14);
 
-				            boolean temp = (Boolean) stack.pop();
-				            stack.push(!temp);
-				         
+				                   if(stack.size() >= 2)
+				                   {
+				                      boolean temp = (Boolean) stack.pop();
+				                      stack.push(!temp);
+				                   }
+				                   else System.out.println("***We found an extra character, but we will ignore that***");
+				                 
 				}
 				break;
 			default:

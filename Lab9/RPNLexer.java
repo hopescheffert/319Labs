@@ -78,9 +78,7 @@ public class RPNLexer extends Lexer {
 	    int a = 0;
 	    int b = 0;
 	    boolean bool = false;
-
 	    Stack stack = new Stack();
-
 
 
 	public RPNLexer(CharStream input) {
