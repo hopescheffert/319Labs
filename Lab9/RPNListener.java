@@ -20,23 +20,23 @@ public interface RPNListener extends ParseTreeListener {
 	 */
 	void exitStart(RPNParser.StartContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RPNParser#num}.
+	 * Enter a parse tree produced by {@link RPNParser#operand}.
 	 * @param ctx the parse tree
 	 */
-	void enterNum(RPNParser.NumContext ctx);
+	void enterOperand(RPNParser.OperandContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RPNParser#num}.
+	 * Exit a parse tree produced by {@link RPNParser#operand}.
 	 * @param ctx the parse tree
 	 */
-	void exitNum(RPNParser.NumContext ctx);
+	void exitOperand(RPNParser.OperandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link RPNParser#op}.
+	 * Enter a parse tree produced by {@link RPNParser#operator}.
 	 * @param ctx the parse tree
 	 */
-	void enterOp(RPNParser.OpContext ctx);
+	void enterOperator(RPNParser.OperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link RPNParser#op}.
+	 * Exit a parse tree produced by {@link RPNParser#operator}.
 	 * @param ctx the parse tree
 	 */
-	void exitOp(RPNParser.OpContext ctx);
+	void exitOperator(RPNParser.OperatorContext ctx);
 }

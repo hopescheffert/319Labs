@@ -11,203 +11,185 @@ grammar RPN;
     int val = 0;
     int a = 0;
     int b = 0;
-    int c = 0;
+    boolean bool = false;
 
-    Stack<Integer> stack = new Stack<Integer>();
+    Stack stack = new Stack();
 
 }
 
 start:
-    ((num | op)+ ';' {System.out.println("value = " + stack.pop()); val=0;} )+ ;
+    ((operand | operator)+ ';' {System.out.println("answer = " + stack.pop()); val=0;} )+ ;
 
-num:
+operand:
     INT
         {
             a = $INT.int;
             stack.push(a);
-            System.out.println("stack is " + stack);
+        }
+    | BOOLEAN
+        {
+            boolean b;
+            if($BOOLEAN.text.equals("true"))
+            {
+                b = true;
+            }
+            else b = false;
+
+            stack.push(b);
         };
-op:
+operator:
     //NUMERICAL OPERATIONS
     '+'
      {
-        val = stack.pop() + stack.pop();
+        val = (Integer)stack.pop() + (Integer)stack.pop();
         stack.push(val);
-        System.out.println("after + evaluation stack is " + stack);
      }
      | '-'
       {
-         a = stack.pop();
-         val = stack.pop() - a;
+         a = (Integer) stack.pop();
+         val = (Integer) stack.pop() - a;
          stack.push(val);
-         System.out.println("after - evaluation stack is " + stack);
       }
       | '*'
        {
-          val = stack.pop() * stack.pop();
+          val = (Integer) stack.pop() * (Integer) stack.pop();
           stack.push(val);
-          System.out.println("after * evaluation stack is " + stack);
        }
        | '/'
         {
-            a = stack.pop();
-            val = stack.pop() / a;
+            a = (Integer) stack.pop();
+            val = (Integer) stack.pop() / a;
             stack.push(val);
-           System.out.println("after / evaluation stack is " + stack);
         }
         | '%'
          {
-            a = stack.pop();
-            val = stack.pop() % a;
+            a = (Integer) stack.pop();
+            val = (Integer) stack.pop() % a;
             stack.push(val);
-            System.out.println("after % evaluation stack is " + stack);
          }
 
          //RELATIONAL OPERATIONS
 
          | '=='
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a == b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after == evaluation stack is " + stack);
-
+            stack.push(bool);
          }
          | '!='
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a != b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after != evaluation stack is " + stack);
-
+            stack.push(bool);
          }
          | '>'
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a > b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after > evaluation stack is " + stack);
-
+            stack.push(bool);
          }
          | '<'
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a < b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after < evaluation stack is " + stack);
-
+            stack.push(bool);
          }
          | '>='
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a >= b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after >= evaluation stack is " + stack);
-
+            stack.push(bool);
          }
          | '<='
          {
-            b = stack.pop();
-            a = stack.pop();
+            b = (Integer) stack.pop();
+            a = (Integer) stack.pop();
             if(a <= b)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after <= evaluation stack is " + stack);
-
+            stack.push(bool);
          }
 
-         //LOGICAL OPERATIONS********************************TODO operands cannot be ints
+         //LOGICAL OPERATIONS
 
          | '||'
          {
-            b = stack.pop();
-            a = stack.pop();
-            if(a || b)
+            boolean tempb = (Boolean) stack.pop();
+            boolean tempa = (Boolean) stack.pop();
+            if(tempa || tempb)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after || evaluation stack is " + stack);
+            stack.push(bool);
          }
          | '&&'
          {
-            b = stack.pop();
-            a = stack.pop();
-            if(a && b)
+            boolean tempb = (Boolean) stack.pop();
+            boolean tempa = (Boolean) stack.pop();
+            if(tempa && tempb)
             {
-                val = 1;
+                bool = true;
             }
             else
             {
-                val = 0;
+                bool = false;
             }
-            stack.push(val);
-            System.out.println("after && evaluation stack is " + stack);
+            stack.push(bool);
          }
-         //*******************TODO not?
-         //| '!'
-         //{
-            //val = !(stack.pop());
-            //stack.push(val);
-            //System.out.println("after ! evaluation stack is " + stack);
-         //}
-
-
-
-
-
-
-
+         | '!'
+         {
+            boolean temp = (Boolean) stack.pop();
+            stack.push(!temp);
+         }
 
      ;
 
@@ -215,5 +197,6 @@ op:
 
 
 //LEXER RULES
-INT : [0-9]+  ;
+INT : [0-9]+ ;
+BOOLEAN : ('true') | ('false') | ('TRUE') | ('FALSE') ;
 WS : [ \r\t\n]+ {skip();} ;
