@@ -244,10 +244,6 @@ operator:
                    }
                    else System.out.println("***We found an extra character, but we will ignore that***");
                  };
-
-
-
-
 //LEXER RULES
 INT : [0-9]+ ;
 BOOLEAN : ('true') | ('false') | ('TRUE') | ('FALSE') ;

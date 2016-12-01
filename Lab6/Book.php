@@ -162,7 +162,7 @@ class Book
         {
             //echo "true";
             //echo "book can be borrowed! \n";
-            $date = date("F j, Y, g:i a");
+            $date = date("m/d/y");
             $sql = "UPDATE books SET availability = '0' WHERE bookID='" . $bookID . "';";
             $sql .= "INSERT INTO loanHistory(userName, bookID, dueDate) VALUES('" .$userName . "', '" . $bookID . "', '" . $date . "')";
             if(mysqli_multi_query($conn, $sql) === FALSE)
@@ -187,9 +187,9 @@ class Book
     function returnBook($bookID) //student only
     {
         global $conn;
-        $date = date("F j, Y, g:i a");
+        $date = date("m/d/y");
         $sql2 = "SELECT availability FROM books WHERE bookID= '" . $bookID . "'";
-        $sql2 .= "UPDATE loanHistory SET dueDate = $date WHERE $bookID='" .$bookID."'";
+        $sql2 .= "UPDATE loanHistory SET dueDate = '". $date . "' WHERE bookID='" .$bookID."'";
         $result = mysqli_query($conn, $sql2);
         $availability = mysqli_fetch_assoc($result);
         if($availability == 1)
@@ -198,7 +198,6 @@ class Book
         }
         else
         {
-            echo "book can be returned! \n";
             $sql = "UPDATE books SET availability = '1' WHERE bookID='" . $bookID . "'";
             if(mysqli_query($conn, $sql) === FALSE)
             {
@@ -206,7 +205,7 @@ class Book
             }
             else
             {
-                echo "returnBook worked!\n";
+                echo "true";
             }
         }
         //return the book and make the book available.

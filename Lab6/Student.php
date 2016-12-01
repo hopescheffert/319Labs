@@ -192,7 +192,15 @@ if(isset($_SESSION["username"]))
         returnBookButton.on("click", function()
         {
             bookID = prompt("Enter the book ID of the book you would like to return");
-            $.get("Book.php?function=return&bookID=" + bookID)
+            $.get("Book.php?function=return&bookID=" + bookID,
+            function(data)
+            {
+                console.log(data);
+                if(data == "true")
+                {
+                    alert("Returned Book Successfully");
+                }
+            })
         })
     })
 

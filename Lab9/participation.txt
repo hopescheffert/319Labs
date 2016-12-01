@@ -1,1 +1,6 @@
 Jacob Neyens and Hope Scheffert worked on lab 9 equally
+
+**NOTE: Expects correct input (valid RPN expression) but if not (ex. an extra operator like: 10 20 + 30 * + ;) we ignore it like it's not there)
+We check in the code to make sure that the stack has at least 2 things to pop to prevent errors when coming across this case.
+
+**NOTE: We asked Mitra and he said integer division is okay
