@@ -25,7 +25,7 @@ public class DrawingBoardParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "';'", "'draw'"
+		null, "';'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, "COMMANDNAME", "SHAPE", "INT", "WS"
@@ -127,7 +127,8 @@ public class DrawingBoardParser extends Parser {
 				match(T__0);
 				}
 
-				            System.out.println("FOUND COMMAND: " + name  + " " + shape + " " + x + " " + y + " " + r);
+				            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
+				            System.out.println("{"command": name, "shape" : shape, "paramx": x, "paramy": y, "paramr": r }");
 				            name = "";
 				            String shape = "";
 				            Integer x = 0;
@@ -255,7 +256,7 @@ public class DrawingBoardParser extends Parser {
 			((CommandnameContext)_localctx).COMMANDNAME = match(COMMANDNAME);
 
 			                    name = (((CommandnameContext)_localctx).COMMANDNAME!=null?((CommandnameContext)_localctx).COMMANDNAME.getText():null);
-			                    System.out.println("command name: " + name);
+			                    //System.out.println("command name: " + name);
 			                
 			}
 		}
@@ -297,7 +298,7 @@ public class DrawingBoardParser extends Parser {
 			((ShapeContext)_localctx).SHAPE = match(SHAPE);
 
 			                    shape = (((ShapeContext)_localctx).SHAPE!=null?((ShapeContext)_localctx).SHAPE.getText():null);
-			                    System.out.println("command shape: " + shape);
+			                    //System.out.println("command shape: " + shape);
 			                
 			}
 		}
@@ -339,7 +340,7 @@ public class DrawingBoardParser extends Parser {
 			((ParamxContext)_localctx).INT = match(INT);
 
 			            x = (((ParamxContext)_localctx).INT!=null?Integer.valueOf(((ParamxContext)_localctx).INT.getText()):0);
-			            System.out.println("shape x: " + x);
+			            //System.out.println("shape x: " + x);
 
 			        
 			}
@@ -382,7 +383,7 @@ public class DrawingBoardParser extends Parser {
 			((ParamyContext)_localctx).INT = match(INT);
 
 			            y = (((ParamyContext)_localctx).INT!=null?Integer.valueOf(((ParamyContext)_localctx).INT.getText()):0);
-			            System.out.println("shape y: " + y);
+			            //System.out.println("shape y: " + y);
 
 			        
 			}
@@ -425,7 +426,7 @@ public class DrawingBoardParser extends Parser {
 			((ParamrContext)_localctx).INT = match(INT);
 
 			            r = (((ParamrContext)_localctx).INT!=null?Integer.valueOf(((ParamrContext)_localctx).INT.getText()):0);
-			            System.out.println("shape radius: " + r);
+			            //System.out.println("shape radius: " + r);
 
 			        
 			}

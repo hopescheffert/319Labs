@@ -1,7 +1,6 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
 </head>
 <body>
 
@@ -12,8 +11,8 @@
     <textarea id="commands" rows="8" cols="50">draw circle 50 50 10;</textarea>
     <br>
     <button id="button">Do Commands!</button>
-    <svg height="100" width="100" id="mySvgContainer">
-    </svg>
+    <div height="100" width="100" id="myDiv">
+    </div>
 
     <script>
     $(document).ready(function()
@@ -24,12 +23,15 @@
         button.click(function()
         {
             var commands = $("#commands").val();
-            console.log(commands);
 
             $.get("ProcessCommands.php?commands=" + commands,
-            function(data,status)
+            function(data)
             {
-                $("#mySvgContainer").html(data);
+                console.log(data);
+                console.log(JSON.parse(data));
+
+                $("#myDiv").html(data);
+
             });
         });
 
