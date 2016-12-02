@@ -125,8 +125,8 @@ CREDITCARDELEMENT: ('<creditcard>' | '<CREDITCARD>') CREDITCARD ('</creditcard>'
 //element names cannot start with letters XML or xml, etc
 //element names can contain letters, digits, hyphens, underscores or periods
 //element names cannot contain spaces
-ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
-//ELEMENTNAME: ([a-zA-Z_] | ~[xml])+[a-zA-z0-9-_.];
+//ELEMENTNAME: ([a-zA-Z_ | ~('x'|'m'|'l'|'X'|'M'|'L')])+[a-zA-z0-9-_.];
+ELEMENTNAME: ([a-zA-Z_ |'x' ~'m' ~'l' | ~'x' .])+[a-zA-z0-9-_.];
 //element strings can consist of the following:
 //Uppercase and lowercase Latin letters (a–z, A–Z)
 //Digits 0 to 9
