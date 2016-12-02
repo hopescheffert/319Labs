@@ -27,8 +27,21 @@
             $.get("ProcessCommands.php?commands=" + commands,
             function(data)
             {
-                console.log(data);
-                console.log(JSON.parse(data));
+                var count = data.split("*").length - 1;
+                var newData = "";
+
+                for (var i = 0; i < count; i++)
+                {
+                    newData = data.substring(0, data.indexOf('*'));
+                    newIndex = newData.indexOf('*');
+
+                    s = JSON.stringify(newData);
+                    obj = JSON.parse(s);
+                    console.log(obj);
+                    data = data.substring(newIndex, -1);
+                }
+
+                //TODO not able to get this? console.log(obj.command);
 
                 $("#myDiv").html(data);
 

@@ -2,6 +2,7 @@ grammar DrawingBoard;
 
 //http://www.w3schools.com/html/html_googlemaps.asp
 
+
 @members{
     String name = "";
     String shape = "";
@@ -13,14 +14,15 @@ grammar DrawingBoard;
 //PARSE RULES
 start: ((command ';') {
             //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
-            System.out.println("{"command": name, "shape" : shape, "paramx": x, "paramy": y, "paramr": r }");
+            String s = "{'command': '" + name + "', 'shape' : '"+ shape +"', 'paramx': " + x +", 'paramy': "+y+", 'paramr': "+ r +"}*";
+            System.out.println(s.replaceAll("'", "\""));
             name = "";
             String shape = "";
             Integer x = 0;
             Integer y = 0;
             Integer r = 0;
             }
-        )+;
+        )+ ;
 
 command: commandname shape paramx paramy? paramr? ;
 

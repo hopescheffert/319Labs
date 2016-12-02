@@ -128,7 +128,8 @@ public class DrawingBoardParser extends Parser {
 				}
 
 				            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
-				            System.out.println("{"command": name, "shape" : shape, "paramx": x, "paramy": y, "paramr": r }";);
+				            String s = "{'command': '" + name + "', 'shape' : '"+ shape +"', 'paramx': " + x +", 'paramy': "+y+", 'paramr': "+ r +"}*";
+				            System.out.println(s.replaceAll("'", "\""));
 				            name = "";
 				            String shape = "";
 				            Integer x = 0;
