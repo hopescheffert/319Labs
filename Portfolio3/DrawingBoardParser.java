@@ -25,7 +25,7 @@ public class DrawingBoardParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "';'", "'draw'"
+		null, "';'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, "COMMANDNAME", "SHAPE", "INT", "WS"
