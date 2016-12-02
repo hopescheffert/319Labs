@@ -1,0 +1,43 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+
+    <h1>Welcome to Drawing Board!</h1>
+
+    <p>Enter some commands to draw shapes</p>
+    <textarea id="commands" rows="8" cols="50">draw circle 50 50 10;</textarea>
+    <br>
+    <button id="button">Do Commands!</button>
+    <svg height="100" width="100" id="mySvgContainer">
+    </svg>
+
+    <script>
+    $(document).ready(function()
+    {
+        var button = $("#button");
+
+        //AJAX call to php - send commands to parser
+        button.click(function()
+        {
+            var commands = $("#commands").val();
+            console.log(commands);
+
+            $.get("ProcessCommands.php?commands=" + commands,
+            function(data,status)
+            {
+                $("#mySvgContainer").html(data);
+            });
+        });
+
+    });
+
+    </script>
+
+
+
+</body>
+</html>
