@@ -12,7 +12,8 @@ grammar DrawingBoard;
 
 //PARSE RULES
 start: ((command ';') {
-            System.out.println("FOUND COMMAND: " + name  + " " + shape + " " + x + " " + y + " " + r);
+            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
+            System.out.println("{"command": name, "shape" : shape, "paramx": x, "paramy": y, "paramr": r }");
             name = "";
             String shape = "";
             Integer x = 0;
@@ -26,29 +27,29 @@ command: commandname shape paramx paramy? paramr? ;
 commandname: COMMANDNAME
                 {
                     name = $COMMANDNAME.text;
-                    System.out.println("command name: " + name);
+                    //System.out.println("command name: " + name);
                 };
 shape: SHAPE
                 {
                     shape = $SHAPE.text;
-                    System.out.println("command shape: " + shape);
+                    //System.out.println("command shape: " + shape);
                 };
 paramx: INT
         {
             x = $INT.int;
-            System.out.println("shape x: " + x);
+            //System.out.println("shape x: " + x);
 
         };
 paramy: INT
         {
             y = $INT.int;
-            System.out.println("shape y: " + y);
+            //System.out.println("shape y: " + y);
 
         };
 paramr: INT
         {
             r = $INT.int;
-            System.out.println("shape radius: " + r);
+            //System.out.println("shape radius: " + r);
 
         };
 
