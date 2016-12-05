@@ -4,3 +4,4 @@ SHAPE=3
 INT=4
 WS=5
 ';'=1
+'draw'=2

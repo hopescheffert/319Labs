@@ -19,13 +19,14 @@ public class DrawingBoardParser extends Parser {
 		T__0=1, COMMANDNAME=2, SHAPE=3, INT=4, WS=5;
 	public static final int
 		RULE_start = 0, RULE_command = 1, RULE_commandname = 2, RULE_shape = 3, 
-		RULE_paramx = 4, RULE_paramy = 5, RULE_paramr = 6;
+		RULE_param1 = 4, RULE_param2 = 5, RULE_param3 = 6, RULE_param4 = 7;
 	public static final String[] ruleNames = {
-		"start", "command", "commandname", "shape", "paramx", "paramy", "paramr"
+		"start", "command", "commandname", "shape", "param1", "param2", "param3", 
+		"param4"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "';'"
+		null, "';'", "'draw'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, "COMMANDNAME", "SHAPE", "INT", "WS"
@@ -78,9 +79,10 @@ public class DrawingBoardParser extends Parser {
 
 	    String name = "";
 	    String shape = "";
-	    Integer x = 0;
-	    Integer y = 0;
-	    Integer r = 0;
+	    Integer p1 = 0;
+	    Integer p2 = 0;
+	    Integer p3 = 0;
+	    Integer p4 = 0;
 
 	public DrawingBoardParser(TokenStream input) {
 		super(input);
@@ -114,31 +116,31 @@ public class DrawingBoardParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19); 
+			setState(21); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
 				{
-				setState(14);
+				setState(16);
 				command();
-				setState(15);
+				setState(17);
 				match(T__0);
 				}
 
-				            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
-				            String s = "{'command': '" + name + "', 'shape' : '"+ shape +"', 'paramx': " + x +", 'paramy': "+y+", 'paramr': "+ r +"}*";
-				            System.out.println(s.replaceAll("'", "\""));
+				            String s = "{'command':'" + name + "','shape' :'"+ shape +"','param1':" + p1 +",'param2':"+p2+",'param3':"+ p3 +",'param4':" + p4 +"}";
+				            System.out.println(s.replaceAll("'", "\"") + "*");
 				            name = "";
-				            String shape = "";
-				            Integer x = 0;
-				            Integer y = 0;
-				            Integer r = 0;
+				            shape = "";
+				            p1 = 0;
+				            p2 = 0;
+				            p3 = 0;
+				            p4 = 0;
 				            
 				}
 				}
-				setState(21); 
+				setState(23); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==COMMANDNAME );
@@ -162,14 +164,17 @@ public class DrawingBoardParser extends Parser {
 		public ShapeContext shape() {
 			return getRuleContext(ShapeContext.class,0);
 		}
-		public ParamxContext paramx() {
-			return getRuleContext(ParamxContext.class,0);
+		public Param1Context param1() {
+			return getRuleContext(Param1Context.class,0);
 		}
-		public ParamyContext paramy() {
-			return getRuleContext(ParamyContext.class,0);
+		public Param2Context param2() {
+			return getRuleContext(Param2Context.class,0);
 		}
-		public ParamrContext paramr() {
-			return getRuleContext(ParamrContext.class,0);
+		public Param3Context param3() {
+			return getRuleContext(Param3Context.class,0);
+		}
+		public Param4Context param4() {
+			return getRuleContext(Param4Context.class,0);
 		}
 		public CommandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -192,28 +197,30 @@ public class DrawingBoardParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(23);
-			commandname();
-			setState(24);
-			shape();
 			setState(25);
-			paramx();
+			commandname();
+			setState(26);
+			shape();
 			setState(27);
+			param1();
+			setState(28);
+			param2();
+			setState(30);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				{
-				setState(26);
-				paramy();
+				setState(29);
+				param3();
 				}
 				break;
 			}
-			setState(30);
+			setState(33);
 			_la = _input.LA(1);
 			if (_la==INT) {
 				{
-				setState(29);
-				paramr();
+				setState(32);
+				param4();
 				}
 			}
 
@@ -253,11 +260,10 @@ public class DrawingBoardParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(35);
 			((CommandnameContext)_localctx).COMMANDNAME = match(COMMANDNAME);
 
 			                    name = (((CommandnameContext)_localctx).COMMANDNAME!=null?((CommandnameContext)_localctx).COMMANDNAME.getText():null);
-			                    //System.out.println("command name: " + name);
 			                
 			}
 		}
@@ -295,11 +301,10 @@ public class DrawingBoardParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(38);
 			((ShapeContext)_localctx).SHAPE = match(SHAPE);
 
 			                    shape = (((ShapeContext)_localctx).SHAPE!=null?((ShapeContext)_localctx).SHAPE.getText():null);
-			                    //System.out.println("command shape: " + shape);
 			                
 			}
 		}
@@ -314,78 +319,33 @@ public class DrawingBoardParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ParamxContext extends ParserRuleContext {
+	public static class Param1Context extends ParserRuleContext {
 		public Token INT;
 		public TerminalNode INT() { return getToken(DrawingBoardParser.INT, 0); }
-		public ParamxContext(ParserRuleContext parent, int invokingState) {
+		public Param1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_paramx; }
+		@Override public int getRuleIndex() { return RULE_param1; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParamx(this);
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParam1(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParamx(this);
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParam1(this);
 		}
 	}
 
-	public final ParamxContext paramx() throws RecognitionException {
-		ParamxContext _localctx = new ParamxContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_paramx);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(38);
-			((ParamxContext)_localctx).INT = match(INT);
-
-			            x = (((ParamxContext)_localctx).INT!=null?Integer.valueOf(((ParamxContext)_localctx).INT.getText()):0);
-			            //System.out.println("shape x: " + x);
-
-			        
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class ParamyContext extends ParserRuleContext {
-		public Token INT;
-		public TerminalNode INT() { return getToken(DrawingBoardParser.INT, 0); }
-		public ParamyContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_paramy; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParamy(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParamy(this);
-		}
-	}
-
-	public final ParamyContext paramy() throws RecognitionException {
-		ParamyContext _localctx = new ParamyContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_paramy);
+	public final Param1Context param1() throws RecognitionException {
+		Param1Context _localctx = new Param1Context(_ctx, getState());
+		enterRule(_localctx, 8, RULE_param1);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(41);
-			((ParamyContext)_localctx).INT = match(INT);
+			((Param1Context)_localctx).INT = match(INT);
 
-			            y = (((ParamyContext)_localctx).INT!=null?Integer.valueOf(((ParamyContext)_localctx).INT.getText()):0);
-			            //System.out.println("shape y: " + y);
-
+			            p1 = (((Param1Context)_localctx).INT!=null?Integer.valueOf(((Param1Context)_localctx).INT.getText()):0);
 			        
 			}
 		}
@@ -400,35 +360,115 @@ public class DrawingBoardParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ParamrContext extends ParserRuleContext {
+	public static class Param2Context extends ParserRuleContext {
 		public Token INT;
 		public TerminalNode INT() { return getToken(DrawingBoardParser.INT, 0); }
-		public ParamrContext(ParserRuleContext parent, int invokingState) {
+		public Param2Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_paramr; }
+		@Override public int getRuleIndex() { return RULE_param2; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParamr(this);
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParam2(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParamr(this);
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParam2(this);
 		}
 	}
 
-	public final ParamrContext paramr() throws RecognitionException {
-		ParamrContext _localctx = new ParamrContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_paramr);
+	public final Param2Context param2() throws RecognitionException {
+		Param2Context _localctx = new Param2Context(_ctx, getState());
+		enterRule(_localctx, 10, RULE_param2);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(44);
-			((ParamrContext)_localctx).INT = match(INT);
+			((Param2Context)_localctx).INT = match(INT);
 
-			            r = (((ParamrContext)_localctx).INT!=null?Integer.valueOf(((ParamrContext)_localctx).INT.getText()):0);
-			            //System.out.println("shape radius: " + r);
+			            p2 = (((Param2Context)_localctx).INT!=null?Integer.valueOf(((Param2Context)_localctx).INT.getText()):0);
+			        
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
 
+	public static class Param3Context extends ParserRuleContext {
+		public Token INT;
+		public TerminalNode INT() { return getToken(DrawingBoardParser.INT, 0); }
+		public Param3Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_param3; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParam3(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParam3(this);
+		}
+	}
+
+	public final Param3Context param3() throws RecognitionException {
+		Param3Context _localctx = new Param3Context(_ctx, getState());
+		enterRule(_localctx, 12, RULE_param3);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(47);
+			((Param3Context)_localctx).INT = match(INT);
+
+			            p3 = (((Param3Context)_localctx).INT!=null?Integer.valueOf(((Param3Context)_localctx).INT.getText()):0);
+			        
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Param4Context extends ParserRuleContext {
+		public Token INT;
+		public TerminalNode INT() { return getToken(DrawingBoardParser.INT, 0); }
+		public Param4Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_param4; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).enterParam4(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DrawingBoardListener ) ((DrawingBoardListener)listener).exitParam4(this);
+		}
+	}
+
+	public final Param4Context param4() throws RecognitionException {
+		Param4Context _localctx = new Param4Context(_ctx, getState());
+		enterRule(_localctx, 14, RULE_param4);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(50);
+			((Param4Context)_localctx).INT = match(INT);
+
+			            p4 = (((Param4Context)_localctx).INT!=null?Integer.valueOf(((Param4Context)_localctx).INT.getText()):0);
 			        
 			}
 		}
@@ -444,18 +484,20 @@ public class DrawingBoardParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\7\62\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\3\2\3\2\3\2\3\2\6\2\26"+
-		"\n\2\r\2\16\2\27\3\3\3\3\3\3\3\3\5\3\36\n\3\3\3\5\3!\n\3\3\4\3\4\3\4\3"+
-		"\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\2\2\t\2\4\6\b\n\f\16"+
-		"\2\2-\2\25\3\2\2\2\4\31\3\2\2\2\6\"\3\2\2\2\b%\3\2\2\2\n(\3\2\2\2\f+\3"+
-		"\2\2\2\16.\3\2\2\2\20\21\5\4\3\2\21\22\7\3\2\2\22\23\3\2\2\2\23\24\b\2"+
-		"\1\2\24\26\3\2\2\2\25\20\3\2\2\2\26\27\3\2\2\2\27\25\3\2\2\2\27\30\3\2"+
-		"\2\2\30\3\3\2\2\2\31\32\5\6\4\2\32\33\5\b\5\2\33\35\5\n\6\2\34\36\5\f"+
-		"\7\2\35\34\3\2\2\2\35\36\3\2\2\2\36 \3\2\2\2\37!\5\16\b\2 \37\3\2\2\2"+
-		" !\3\2\2\2!\5\3\2\2\2\"#\7\4\2\2#$\b\4\1\2$\7\3\2\2\2%&\7\5\2\2&\'\b\5"+
-		"\1\2\'\t\3\2\2\2()\7\6\2\2)*\b\6\1\2*\13\3\2\2\2+,\7\6\2\2,-\b\7\1\2-"+
-		"\r\3\2\2\2./\7\6\2\2/\60\b\b\1\2\60\17\3\2\2\2\5\27\35 ";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\78\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\3\2\3\2"+
+		"\6\2\30\n\2\r\2\16\2\31\3\3\3\3\3\3\3\3\3\3\5\3!\n\3\3\3\5\3$\n\3\3\4"+
+		"\3\4\3\4\3\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\3\t\3\t\3\t\3"+
+		"\t\2\2\n\2\4\6\b\n\f\16\20\2\2\62\2\27\3\2\2\2\4\33\3\2\2\2\6%\3\2\2\2"+
+		"\b(\3\2\2\2\n+\3\2\2\2\f.\3\2\2\2\16\61\3\2\2\2\20\64\3\2\2\2\22\23\5"+
+		"\4\3\2\23\24\7\3\2\2\24\25\3\2\2\2\25\26\b\2\1\2\26\30\3\2\2\2\27\22\3"+
+		"\2\2\2\30\31\3\2\2\2\31\27\3\2\2\2\31\32\3\2\2\2\32\3\3\2\2\2\33\34\5"+
+		"\6\4\2\34\35\5\b\5\2\35\36\5\n\6\2\36 \5\f\7\2\37!\5\16\b\2 \37\3\2\2"+
+		"\2 !\3\2\2\2!#\3\2\2\2\"$\5\20\t\2#\"\3\2\2\2#$\3\2\2\2$\5\3\2\2\2%&\7"+
+		"\4\2\2&\'\b\4\1\2\'\7\3\2\2\2()\7\5\2\2)*\b\5\1\2*\t\3\2\2\2+,\7\6\2\2"+
+		",-\b\6\1\2-\13\3\2\2\2./\7\6\2\2/\60\b\7\1\2\60\r\3\2\2\2\61\62\7\6\2"+
+		"\2\62\63\b\b\1\2\63\17\3\2\2\2\64\65\7\6\2\2\65\66\b\t\1\2\66\21\3\2\2"+
+		"\2\5\31 #";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

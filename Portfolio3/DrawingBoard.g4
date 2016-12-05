@@ -6,59 +6,55 @@ grammar DrawingBoard;
 @members{
     String name = "";
     String shape = "";
-    Integer x = 0;
-    Integer y = 0;
-    Integer r = 0;
+    Integer p1 = 0;
+    Integer p2 = 0;
+    Integer p3 = 0;
+    Integer p4 = 0;
 }
 
 //PARSE RULES
-start: ((command ';') {
-            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
-            String s = "{'command': '" + name + "', 'shape' : '"+ shape +"', 'paramx': " + x +", 'paramy': "+y+", 'paramr': "+ r +"}*";
-            System.out.println(s.replaceAll("'", "\""));
+start: ((command ';')
+        {
+            String s = "{'command':'" + name + "','shape' :'"+ shape +"','param1':" + p1 +",'param2':"+p2+",'param3':"+ p3 +",'param4':" + p4 +"}";
+            System.out.println(s.replaceAll("'", "\"") + "*");
             name = "";
-            String shape = "";
-            Integer x = 0;
-            Integer y = 0;
-            Integer r = 0;
+            shape = "";
+            p1 = 0;
+            p2 = 0;
+            p3 = 0;
+            p4 = 0;
             }
         )+ ;
 
-command: commandname shape paramx paramy? paramr? ;
+command: commandname shape param1 param2 param3? param4?;
 
 commandname: COMMANDNAME
                 {
                     name = $COMMANDNAME.text;
-                    //System.out.println("command name: " + name);
                 };
 shape: SHAPE
                 {
                     shape = $SHAPE.text;
-                    //System.out.println("command shape: " + shape);
                 };
-paramx: INT
+param1: INT
         {
-            x = $INT.int;
-            //System.out.println("shape x: " + x);
-
+            p1 = $INT.int;
         };
-paramy: INT
+param2: INT
         {
-            y = $INT.int;
-            //System.out.println("shape y: " + y);
-
+            p2 = $INT.int;
         };
-paramr: INT
+param3: INT
         {
-            r = $INT.int;
-            //System.out.println("shape radius: " + r);
-
+            p3 = $INT.int;
+        };
+param4: INT
+        {
+            p4 = $INT.int;
         };
 
 //LEXER RULES
-COMMANDNAME: 'draw'  | 'fill' ;
-//circle
-SHAPE: 'circle' | 'rectangle' ;
-
+COMMANDNAME: 'draw' ;
+SHAPE: 'circle' | 'rectangle' | 'ellipse' | 'line' ;
 INT: [0-9]+;
 WS: [ \r\t\n]+ {skip();} ;

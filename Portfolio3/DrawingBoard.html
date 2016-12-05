@@ -8,22 +8,19 @@
 
 
     <h1>Welcome to Drawing Board!</h1>
-
-    <p>Enter some commands to draw shapes</p>
+    <p>Enter some commands to draw shapes.</p>
     <textarea id="commands" rows="8" cols="50">draw circle 50 50 10;</textarea>
     <br>
     <button id="button">Do Commands!</button>
     <br>
     <br>
-    <svg id="svgContainer" width="100" height="100">
-        <!-- <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" /> -->
-    </svg>
+    <!-- <svg id="svgContainer" width="100" height="100"></svg> -->
 
     <script>
     $(document).ready(function()
     {
         var button = $("#button");
-        var svg = $("#svgContainer");
+        // var svg = $("#svgContainer");
 
         //AJAX call to php - send commands to parser
         button.click(function()
@@ -33,35 +30,66 @@
             $.get("ProcessCommands.php?commands=" + commands,
             function(data)
             {
-                // var count = data.split("*").length - 1;
-                // var newData = "";
-                //
-                // for (var i = 0; i < count; i++)
-                // {
-                //     console.log("data is-----" + data);
-                //     newData = data.substring(0, data.indexOf('*'));
-                //     console.log("NEW data is-----" + data);
-                //
-                //     newIndex = newData.indexOf('*');
-                //     console.log("new index is-----" + newIndex);
-                //     data = newData.substring(newIndex, -1);
-                //
-                //     s = JSON.stringify(newData);
-                //     obj = JSON.parse(s);
-                //     console.log(obj);
-                //
-                //
-                // }
-                //
-                // //TODO not able to get this? console.log(obj.command);
-                //
-                // $("#myDiv").html(data);
+                var count = data.split("*").length - 1;
+                var newData = data.split("*");
 
-                circle = svg.append('circle');
-                d3.select("#svgContainer").append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple");
+                commandArray = [];
+                for(var i = 0; i < count; i++)
+                {
+                    obj = JSON.parse(newData[i]);
 
+                    console.log(obj);
+                    commandArray.push(obj);
+                }
+
+                //do the commands
+                for(var c = 0; c < commandArray.length; c++)
+                {
+                    if(commandArray[c].command == "draw")
+                    {
+                        if(commandArray[c].shape == "circle")
+                        {
+                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
+                            .append(commandArray[c].shape)
+                            .attr("cx", commandArray[c].param1)
+                            .attr("cy",commandArray[c].param2)
+                            .attr("r", commandArray[c].param3)
+                            .style("fill", "black");
+                        }
+                        else if(commandArray[c].shape == "rectangle")
+                        {
+                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
+                            .append("rect")
+                            .attr("height", commandArray[c].param1)
+                            .attr("width",commandArray[c].param2)
+                            .style("fill", "red");
+                        }
+                        else if(commandArray[c].shape == "ellipse")
+                        {
+                            d3.select("body").append("svg").attr("width", 500).attr("height", 300)
+                            .append(commandArray[c].shape)
+                            .attr("cx", commandArray[c].param1)
+                            .attr("cy",commandArray[c].param2)
+                            .attr("rx", commandArray[c].param3)
+                            .attr("ry", commandArray[c].param4)
+                            .style("fill", "green");
+                        }
+                        else if(commandArray[c].shape == "line")
+                        {
+                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
+                            .append(commandArray[c].shape)
+                            .attr("x1", commandArray[c].param1)
+                            .attr("y1",commandArray[c].param2)
+                            .attr("x2", commandArray[c].param3)
+                            .attr("y2", commandArray[c].param4)
+                            .attr("stroke-width", 2)
+                            .attr("stroke", "blue");
+                        }
+                    }
+                }
 
                 //https://www.dashingd3js.com/adding-an-svg-element
+                //https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
 
             });
