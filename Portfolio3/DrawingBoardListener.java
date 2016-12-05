@@ -37,15 +37,15 @@ public interface DrawingBoardListener extends ParseTreeListener {
 	 */
 	void exitCommandname(DrawingBoardParser.CommandnameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawingBoardParser#shape}.
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param0}.
 	 * @param ctx the parse tree
 	 */
-	void enterShape(DrawingBoardParser.ShapeContext ctx);
+	void enterParam0(DrawingBoardParser.Param0Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawingBoardParser#shape}.
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param0}.
 	 * @param ctx the parse tree
 	 */
-	void exitShape(DrawingBoardParser.ShapeContext ctx);
+	void exitParam0(DrawingBoardParser.Param0Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link DrawingBoardParser#param1}.
 	 * @param ctx the parse tree

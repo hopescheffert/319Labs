@@ -1,4 +1,2 @@
-draw circle 50 50 10;
 draw rectangle 50 100;
-draw ellipse 200 80 100 50;
-draw line 50 50 100 100;
+rotate 45;

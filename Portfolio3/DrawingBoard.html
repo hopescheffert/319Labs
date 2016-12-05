@@ -59,43 +59,102 @@
                 {
                     if(commandArray[c].command == "draw")
                     {
-                        if(commandArray[c].shape == "circle")
+                        //SYNTAX: draw <shape> [<param1>...<param4>]
+
+                        //param0 == shape
+                        if(commandArray[c].param0 == "circle")
                         {
                             d3.select("body").append("svg").attr("width", 200).attr("height", 200)
-                            .append(commandArray[c].shape)
+                            .append(commandArray[c].param0)
                             .attr("cx", commandArray[c].param1)
                             .attr("cy",commandArray[c].param2)
                             .attr("r", commandArray[c].param3)
                             .style("fill", "black");
                         }
-                        else if(commandArray[c].shape == "rectangle")
+                        else if(commandArray[c].param0 == "rectangle")
                         {
                             d3.select("body").append("svg").attr("width", 200).attr("height", 200)
                             .append("rect")
                             .attr("height", commandArray[c].param1)
                             .attr("width",commandArray[c].param2)
-                            .style("fill", "red");
+                            .style("fill", "black");
                         }
-                        else if(commandArray[c].shape == "ellipse")
+                        else if(commandArray[c].param0 == "ellipse")
                         {
                             d3.select("body").append("svg").attr("width", 500).attr("height", 300)
-                            .append(commandArray[c].shape)
+                            .append(commandArray[c].param0)
                             .attr("cx", commandArray[c].param1)
                             .attr("cy",commandArray[c].param2)
                             .attr("rx", commandArray[c].param3)
                             .attr("ry", commandArray[c].param4)
-                            .style("fill", "green");
+                            .style("fill", "black");
                         }
-                        else if(commandArray[c].shape == "line")
+                        else if(commandArray[c].param0 == "line")
                         {
                             d3.select("body").append("svg").attr("width", 200).attr("height", 200)
-                            .append(commandArray[c].shape)
+                            .append(commandArray[c].param0)
                             .attr("x1", commandArray[c].param1)
                             .attr("y1",commandArray[c].param2)
                             .attr("x2", commandArray[c].param3)
                             .attr("y2", commandArray[c].param4)
                             .attr("stroke-width", 2)
-                            .attr("stroke", "blue");
+                            .attr("stroke", "black");
+                        }
+                    }
+                    else if(commandArray[c].command == "fill")
+                    {
+                        //SYNTAX: fill <color>
+
+                        //NOTE will only fill shape right before it!
+
+                        //param0 == color to fill with
+
+                        if(commandArray[c - 1].param0 != "circle" && commandArray[c - 1].param0 != "rectangle" &&
+                        commandArray[c - 1].param0 != "ellipse" &&commandArray[c - 1].param0 != "line")
+                        {
+                            alert("You must 'fill' immediately after 'draw'");
+                            return;
+                        }
+                        else if(commandArray[c - 1].param0 == "rectangle")
+                        {
+                            d3.select("rect")
+                            .style("fill", commandArray[c].param0);
+                        }
+                        else if(commandArray[c - 1].param0 == "line")
+                        {
+                            //line is stroke not fill
+                            d3.select("line")
+                            .style("stroke", commandArray[c].param0);
+                        }
+                        else
+                        {
+                            d3.select(commandArray[c - 1].param0)
+                            .style("fill", commandArray[c].param0);
+                        }
+                    }
+                    else if(commandArray[c].command == "rotate")
+                    {
+                        if(commandArray[c - 1].param0 != "circle" && commandArray[c - 1].param0 != "rectangle" &&
+                        commandArray[c - 1].param0 != "ellipse" &&commandArray[c - 1].param0 != "line")
+                        {
+                            alert("You must 'rotate' immediately after 'draw'");
+                            return;
+                        }
+                        else if(commandArray[c - 1].param0 == "rectangle")
+                        {
+                            d3.select("rect")
+                            .attr("transform", "rotate(" +commandArray[c].param1 + ")");
+                        }
+                        else if(commandArray[c - 1].param0 == "line")
+                        {
+                            //line is stroke not fill
+                            d3.select("line")
+                            .attr("transform", "rotate(" +commandArray[c].param1 + ")");
+                        }
+                        else
+                        {
+                            d3.select(commandArray[c - 1].param0)
+                            .attr("transform", "rotate(" + commandArray[c].param1 + ")");
                         }
                     }
                 }

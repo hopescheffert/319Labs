@@ -51,13 +51,13 @@ public class DrawingBoardBaseListener implements DrawingBoardListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterShape(DrawingBoardParser.ShapeContext ctx) { }
+	@Override public void enterParam0(DrawingBoardParser.Param0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitShape(DrawingBoardParser.ShapeContext ctx) { }
+	@Override public void exitParam0(DrawingBoardParser.Param0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
