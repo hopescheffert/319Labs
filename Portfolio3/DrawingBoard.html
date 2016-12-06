@@ -8,169 +8,207 @@
 <body>
 
 
-    <h1>Welcome to Drawing Board!</h1>
+    <h1>Welcome to Drawing Board</h1>
     <p>Enter some commands to draw shapes.</p>
     <p><b>Hints:</b> <br>
-        To make a circle: draw circle [center of x coordinate] [center of y coordinate] [radius of circle] ;<br>
-        To make a rectangle: draw rectangle [width] [height] ; <br>
-        To make a line: draw line [start x] [start y] [end x] [end y] ; <br>
-        To make an ellipse: draw ellipse [center of x coordinate] [center of y coordinate] [radius of x] [radius of y] ;
+        To make a circle: draw circle [id] [center of x coordinate] [center of y coordinate] [radius of circle] ;<br>
+        To make a rectangle: draw rectangle [id] [width] [height] ; <br>
+        To make a line: draw line [id] [start x] [start y] [end x] [end y] ; <br>
+        To make an ellipse: draw ellipse [id] [center of x coordinate] [center of y coordinate] [radius of x] [radius of y] ;
     </p>
 
-    <textarea id="commands" rows="8" cols="50">draw circle 50 50 10;</textarea>
-    <br>
-    <button id="button">Do Commands!</button>
-    <br>
-    <script>
-    $(document).ready(function()
-    {
-        var button = $("#button");
+    <p><b>Note: These commands must be executed in sequence and at the same time!
+        (Write all of the commands in the box and click the button once to get correct results)</b></p>
 
-        //AJAX call to php - send commands to parser
-        button.click(function()
+        <textarea id="commands" rows="8" cols="50">draw circle c 50 50 10;</textarea>
+        <br>
+        <button id="button">Do Commands!</button>
+        <br>
+        <script>
+        $(document).ready(function()
         {
-            var commands = $("#commands").val();
+            var button = $("#button");
+            var refreshed = false;
 
-            $.get("ProcessCommands.php?commands=" + commands,
-            function(data)
+            //TODO handle refreshing?
+
+            //AJAX call to php - send commands to parser
+            button.click(function()
             {
-                var count = data.split("*").length - 1;
-                //check for errors...if there are any, print them
-                if(data.includes("line "))
-                {
-                    errors = data.substring(data.indexOf("line "), data.lastIndexOf("line "));
-                    console.log(errors);
-                    //alert("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
-                    document.body.append("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
-                }
 
-                var newData = data.split("*");
-                commandArray = [];
-                for(var i = 0; i < count; i++)
-                {
-                    obj = JSON.parse(newData[i]);
+                // if()
+                // {
+                //     //page was refreshed
+                //     refreshed = true;
+                // }
+                //empty the stuff from before (for refreshing purposes)
+                //$("svg").empty();
 
-                    console.log(obj);
-                    commandArray.push(obj);
-                }
+                var commands = $("#commands").val();
 
-                //do the commands
-                for(var c = 0; c < commandArray.length; c++)
+                $.get("ProcessCommands.php?commands=" + commands, //+ "&refreshed=" + refreshed,
+                function(data)
                 {
-                    if(commandArray[c].command == "draw")
+                    var count = data.split("*").length - 1;
+                    //check for errors...if there are any, print them
+                    if(data.includes("line "))
                     {
-                        //SYNTAX: draw <shape> [<param1>...<param4>]
+                        //TODO better way for error checking?
+                        errors = data;
+                        console.log(errors);
+                        alert("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
+                        // document.body.append("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
+                    }
 
-                        //param0 == shape
-                        if(commandArray[c].param0 == "circle")
+                    var newData = data.split("*");
+                    var commandArray = [];
+                    for(var i = 0; i < count; i++)
+                    {
+                        obj = JSON.parse(newData[i]);
+
+                        console.log(obj);
+                        commandArray.push(obj);
+                    }
+
+                    //do the commands
+                    for(var c = 0; c < commandArray.length; c++)
+                    {
+                        id = commandArray[c].param0.replace(/\s+/g, '');
+
+
+                        if(commandArray[c].command == "draw")
                         {
-                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
-                            .append(commandArray[c].param0)
-                            .attr("cx", commandArray[c].param1)
-                            .attr("cy",commandArray[c].param2)
-                            .attr("r", commandArray[c].param3)
-                            .style("fill", "black");
+                            //SYNTAX: draw <shape id> [<param1>...<param4>]
+
+                            //param0 == shape
+                            if(commandArray[c].param0.startsWith("circle"))
+                            {
+                                d3.select("body").append("svg").attr("width", commandArray[c].param1 * 2).attr("height", commandArray[c].param2 * 2).attr("id", id)
+
+                                .append("circle")
+                                .attr("cx", commandArray[c].param1)
+                                .attr("cy",commandArray[c].param2)
+                                .attr("r", commandArray[c].param3)
+                                .style("fill", "black");
+                            }
+                            else if(commandArray[c].param0.startsWith("rectangle"))
+                            {
+                                d3.select("body").append("svg").attr("width", commandArray[c].param1 * 2).attr("height", commandArray[c].param2 * 2).attr("id", id)
+                                .append("rect")
+                                .attr("height", commandArray[c].param1)
+                                .attr("width",commandArray[c].param2)
+                                .style("fill", "black");
+                            }
+                            else if(commandArray[c].param0.startsWith("ellipse"))
+                            {
+                                d3.select("body").append("svg").attr("width", commandArray[c].param1 * 2).attr("height", commandArray[c].param2 * 2).attr("id", id)
+                                .append("ellipse")
+                                .attr("cx", commandArray[c].param1)
+                                .attr("cy",commandArray[c].param2)
+                                .attr("rx", commandArray[c].param3)
+                                .attr("ry", commandArray[c].param4)
+                                .style("fill", "black");
+                            }
+                            else if(commandArray[c].param0.startsWith("line"))
+                            {
+                                d3.select("body").append("svg").attr("width", commandArray[c].param1 * 2).attr("height", commandArray[c].param2 * 2).attr("id", id)
+                                .append("line")
+                                .attr("x1", commandArray[c].param1)
+                                .attr("y1",commandArray[c].param2)
+                                .attr("x2", commandArray[c].param3)
+                                .attr("y2", commandArray[c].param4)
+                                .attr("stroke-width", 2)
+                                .attr("stroke", "black");
+                            }
                         }
-                        else if(commandArray[c].param0 == "rectangle")
+                        else if(commandArray[c].command == "fill")
                         {
-                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
-                            .append("rect")
-                            .attr("height", commandArray[c].param1)
-                            .attr("width",commandArray[c].param2)
-                            .style("fill", "black");
+                            //SYNTAX: fill <shape id> <color>
+
+                            //param0 == shape id to fill
+                            //param1 == color to fill with
+
+                            var fillSelection = d3.select("#" +id);
+                            //if you cannot find the shape they are trying to fill, alert them
+                            if(fillSelection._groups[0][0] == null)
+                            {
+                                alert("You have not made " + commandArray[c].param0 + " yet! So you cannot fill it.");
+                            }
+                            else
+                            {
+                                if(commandArray[c].param0.startsWith("rectangle"))
+                                {
+                                    fillSelection.select("rect")
+                                    .style("fill", commandArray[c].param1);
+                                }
+                                else if(commandArray[c].param0.startsWith("line"))
+                                {
+                                    //line is stroke not fill
+                                    fillSelection.select("line")
+                                    .style("stroke", commandArray[c].param1);
+                                }
+                                else if(commandArray[c].param0.startsWith("circle"))
+                                {
+                                    fillSelection.select("circle")
+                                    .style("fill", commandArray[c].param1);
+                                }
+                                else if(commandArray[c].param0.startsWith("ellipse"))
+                                {
+                                    fillSelection.select("ellipse")
+                                    .style("fill", commandArray[c].param1);
+                                }
+                            }
                         }
-                        else if(commandArray[c].param0 == "ellipse")
+                        else if(commandArray[c].command == "rotate")
                         {
-                            d3.select("body").append("svg").attr("width", 500).attr("height", 300)
-                            .append(commandArray[c].param0)
-                            .attr("cx", commandArray[c].param1)
-                            .attr("cy",commandArray[c].param2)
-                            .attr("rx", commandArray[c].param3)
-                            .attr("ry", commandArray[c].param4)
-                            .style("fill", "black");
-                        }
-                        else if(commandArray[c].param0 == "line")
-                        {
-                            d3.select("body").append("svg").attr("width", 200).attr("height", 200)
-                            .append(commandArray[c].param0)
-                            .attr("x1", commandArray[c].param1)
-                            .attr("y1",commandArray[c].param2)
-                            .attr("x2", commandArray[c].param3)
-                            .attr("y2", commandArray[c].param4)
-                            .attr("stroke-width", 2)
-                            .attr("stroke", "black");
+                            //SYNTAX: rotate <shape id> <degrees>
+                            //param0 == shape id to rotate
+                            //param1 == degrees to rotate;
+
+                            var rotateSelection = d3.select("#" +id);
+                            //if you cannot find the shape they are trying to rotate, alert them
+                            if(rotateSelection._groups[0][0] == null)
+                            {
+                                alert("You have not made " + commandArray[c].param0 + " yet! So you cannot rotate it.");
+                            }
+                            else
+                            {
+                                if(commandArray[c].param0.startsWith("rectangle"))
+                                {
+                                    rotateSelection.select("rect")
+                                    .attr("transform", 'rotate(' + commandArray[c].param1 + ')');
+                                }
+                                else if(commandArray[c].param0.startsWith("line"))
+                                {
+                                    rotateSelection.select("line")
+                                    .attr("transform", 'rotate(' + commandArray[c].param1 + ')');
+                                }
+                                else if(commandArray[c].param0.startsWith("circle"))
+                                {
+                                    rotateSelection.select("circle")
+                                    .attr("transform", 'rotate(' + commandArray[c].param1 + ')');
+                                }
+                                else if(commandArray[c].param0.startsWith("ellipse"))
+                                {
+                                    rotateSelection.select("ellipse")
+                                    .attr("transform", 'rotate(' + commandArray[c].param1 + ')');
+                                }
+                            }
                         }
                     }
-                    else if(commandArray[c].command == "fill")
-                    {
-                        //SYNTAX: fill <color>
 
-                        //NOTE will only fill shape right before it!
-
-                        //param0 == color to fill with
-
-                        if(commandArray[c - 1].param0 != "circle" && commandArray[c - 1].param0 != "rectangle" &&
-                        commandArray[c - 1].param0 != "ellipse" &&commandArray[c - 1].param0 != "line")
-                        {
-                            alert("You must 'fill' immediately after 'draw'");
-                            return;
-                        }
-                        else if(commandArray[c - 1].param0 == "rectangle")
-                        {
-                            d3.select("rect")
-                            .style("fill", commandArray[c].param0);
-                        }
-                        else if(commandArray[c - 1].param0 == "line")
-                        {
-                            //line is stroke not fill
-                            d3.select("line")
-                            .style("stroke", commandArray[c].param0);
-                        }
-                        else
-                        {
-                            d3.select(commandArray[c - 1].param0)
-                            .style("fill", commandArray[c].param0);
-                        }
-                    }
-                    else if(commandArray[c].command == "rotate")
-                    {
-                        if(commandArray[c - 1].param0 != "circle" && commandArray[c - 1].param0 != "rectangle" &&
-                        commandArray[c - 1].param0 != "ellipse" &&commandArray[c - 1].param0 != "line")
-                        {
-                            alert("You must 'rotate' immediately after 'draw'");
-                            return;
-                        }
-                        else if(commandArray[c - 1].param0 == "rectangle")
-                        {
-                            d3.select("rect")
-                            .attr("transform", "rotate(" +commandArray[c].param1 + ")");
-                        }
-                        else if(commandArray[c - 1].param0 == "line")
-                        {
-                            //line is stroke not fill
-                            d3.select("line")
-                            .attr("transform", "rotate(" +commandArray[c].param1 + ")");
-                        }
-                        else
-                        {
-                            d3.select(commandArray[c - 1].param0)
-                            .attr("transform", "rotate(" + commandArray[c].param1 + ")");
-                        }
-                    }
-                }
-
-                //https://www.dashingd3js.com/adding-an-svg-element
-                //https://www.dashingd3js.com/svg-basic-shapes-and-d3js
+                    //https://www.dashingd3js.com/adding-an-svg-element
+                    //https://www.dashingd3js.com/svg-basic-shapes-and-d3js
 
 
+                });
             });
+
         });
 
-    });
-
-    </script>
+        </script>
 
 
 
-</body>
-</html>
+    </body>
+    </html>

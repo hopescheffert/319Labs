@@ -5,10 +5,8 @@ grammar DrawingBoard;
 
 @members{
     String name = "";
-    //String shape = "";
-    //String color = "";
     String p0 = "";
-    Integer p1 = 0;
+    String p1 = "";
     Integer p2 = 0;
     Integer p3 = 0;
     Integer p4 = 0;
@@ -17,12 +15,11 @@ grammar DrawingBoard;
 //PARSE RULES
 start: ((command ';')
         {
-            String s = "{'command':'" + name + "','param0' :'"+ p0 +"','param1':" + p1 +",'param2':"+p2+",'param3':"+ p3 +",'param4':" + p4 +"}";
+            String s = "{'command':'" + name + "','param0' :'"+ p0 +"','param1':'" + p1 +"','param2':"+p2+",'param3':"+ p3 +",'param4':" + p4 +"}";
             System.out.println(s.replaceAll("'", "\"") + "*");
             name = "";
-            //shape = "";
             p0 = "";
-            p1 = 0;
+            p1 = "";
             p2 = 0;
             p3 = 0;
             p4 = 0;
@@ -35,21 +32,21 @@ commandname: COMMANDNAME
         {
             name = $COMMANDNAME.text;
         };
-param0: SHAPE
+param0: SHAPE ID
         {
-            p0 = $SHAPE.text;
-        }
-        | COLOR
-        {
-            p0 = $COLOR.text;
+            p0 = $SHAPE.text + $ID.text;
         };
 param1: INT
         {
-            p1 = $INT.int;
+            p1 = $INT.text;
+        }
+        | COLOR
+        {
+            p1 = $COLOR.text;
         }
         | DEGREE
         {
-            p1 = $DEGREE.int;
+            p1 = $DEGREE.text;
         };
 param2: INT
         {
@@ -67,7 +64,8 @@ param4: INT
 //LEXER RULES
 COMMANDNAME: 'draw' | 'fill' | 'rotate';
 COLOR: 'red' | 'green' | 'blue' | 'yellow' | 'black' | 'purple' | 'orange';
-SHAPE: 'circle' | 'rectangle' | 'ellipse' | 'line' ;
+SHAPE: 'circle ' | 'rectangle ' | 'ellipse ' | 'line ';
+ID: ('a'..'z'|'A'..'Z')+ ;
 INT: [0-9]+ ;
 DEGREE: [0-360] ;
 WS: [ \r\t\n]+ {skip();} ;

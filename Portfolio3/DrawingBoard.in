@@ -1,2 +1,2 @@
-draw rectangle 50 100;
-rotate 45;
+draw rectangle r 50 100;
+rotate rectangle r 45;
