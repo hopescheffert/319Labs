@@ -1,14 +1,6 @@
 <?php
 
 $commands = $_REQUEST["commands"];
-// $refreshed = $_REQUEST["refreshed"];
-
-// if(!$refreshed)
-// {
-//
-//
-// }
-
 
 //run the parser with commands!
 

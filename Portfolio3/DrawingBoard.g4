@@ -26,7 +26,15 @@ start: ((command ';')
             }
         )+ ;
 
-command: commandname param0 param1? param2? param3? param4?;
+command: //drawcommand | fillcommand | rotatecommand | movecommand | shrinkcommand | growcommand;
+commandname param0 param1? param2? param3? param4?;
+
+//drawcommand: 'draw' param0 param1 param2 param3? param4?;
+//fillcommand: 'fill' param0 param1;
+//rotatecommand: 'rotate' param0 param1;
+//movecommand: 'move' param0 param1 param2;
+//shrinkcommand: 'shrink' param0;
+//growcommand: 'grow' param0;
 
 commandname: COMMANDNAME
         {
