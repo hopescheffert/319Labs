@@ -62,7 +62,7 @@ param4: INT
         };
 
 //LEXER RULES
-COMMANDNAME: 'draw' | 'fill' | 'rotate';
+COMMANDNAME: 'draw' | 'fill' | 'rotate' | 'move' | 'shrink' | 'grow';
 COLOR: 'red' | 'green' | 'blue' | 'yellow' | 'black' | 'purple' | 'orange';
 SHAPE: 'circle ' | 'rectangle ' | 'ellipse ' | 'line ';
 ID: ('a'..'z'|'A'..'Z')+ ;
