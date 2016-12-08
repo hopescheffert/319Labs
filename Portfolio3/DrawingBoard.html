@@ -1,45 +1,339 @@
 <html>
 <head>
+    <title>Drawing Board</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
 
 
-    <h1>Welcome to Drawing Board!</h1>
+    <h1>Welcome to Drawing Board</h1>
+    <p>Enter some commands to draw shapes. There's an example already done for you.</p>
+    <p>For examples of syntax for this language, please visit: <a href="commandSyntax.html">Drawing Board Syntax</a>
 
-    <p>Enter some commands to draw shapes</p>
-    <textarea id="commands" rows="8" cols="50">draw circle 50 50 10;</textarea>
-    <br>
-    <button id="button">Do Commands!</button>
-    <div height="100" width="100" id="myDiv">
-    </div>
+        <p><b>Note: The button is disabled after doing the commands once. To try more commands, please refresh page</b></p>
 
-    <script>
-    $(document).ready(function()
-    {
-        var button = $("#button");
-
-        //AJAX call to php - send commands to parser
-        button.click(function()
+        <textarea id="commands" rows="8" cols="50">draw rectangle r 50 70;
+fill rectangle r purple;
+grow rectangle r;
+rotate rectangle r 20;
+move rectangle r 30 40;
+        </textarea>
+        <br>
+        <button id="button">Do Commands!</button>
+        <br>
+        <script>
+        $(document).ready(function()
         {
-            var commands = $("#commands").val();
+            var button = $("#button");
 
-            $.get("ProcessCommands.php?commands=" + commands,
-            function(data)
+            //AJAX call to php - send commands to parser
+            button.click(function()
             {
-                console.log(data);
-                console.log(JSON.parse(data));
+                //keeps from incorrect output when you don't refresh first
+                button.attr("disabled", "true");
 
-                $("#myDiv").html(data);
+                var commands = $("#commands").val();
+                if(!commands.startsWith("draw"))
+                {
+                    alert("The first thing you must do is a draw command");
+                }
+                else
+                {
+                    $.get("ProcessCommands.php?commands=" + commands,
+                    function(data)
+                    {
+                        var count = data.split("*").length - 1;
+                        //check for errors...if there are any, print them
+                        if(data.includes("line "))
+                        {
+                            //TODO better way for error checking? maybe in the grammar file?
+                            errors = data;
+                            alert("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
+                            // document.body.append("There was an error:\n" + errors + "\nPlease fix these errors to show the correct output.");
+                        }
 
+                        var newData = data.split("*");
+                        var commandArray = [];
+                        for(var i = 0; i < count; i++)
+                        {
+                            obj = JSON.parse(newData[i]);
+                            commandArray.push(obj);
+                        }
+                        //do the commands
+                        for(var c = 0; c < commandArray.length; c++)
+                        {
+                            id = commandArray[c].param0.replace(/\s+/g, '');
+                            if(d3.select("#" + id)._groups[0][0] != null)
+                            {
+                                //if it's a transformation...save current transformation element so that we can append later
+                                if(commandArray[c].param0.startsWith("rectangle"))
+                                {
+                                    currentTransformations = d3.select("#" + id).select("rect").attr("transform");
+                                }
+                                else if(commandArray[c].param0.startsWith("circle"))
+                                {
+                                    currentTransformations = d3.select("#" + id).select("circle").attr("transform");
+                                }
+                                else if(commandArray[c].param0.startsWith("ellipse"))
+                                {
+                                    currentTransformations = d3.select("#" + id).select("ellipse").attr("transform");
+                                }
+                                else if(commandArray[c].param0.startsWith("line"))
+                                {
+                                    currentTransformations = d3.select("#" + id).select("line").attr("transform");
+                                }
+                                //if it doesn't have any transformations, we don't need to append anything
+                                if(currentTransformations == null)
+                                {
+                                    currentTransformations = "";
+                                }
+                            }
+
+
+                            if(commandArray[c].command == "draw")
+                            {
+                                //SYNTAX: draw <shape id> [<param1>...<param4>]
+
+                                //param0 == shape
+                                if(commandArray[c].param0.startsWith("circle"))
+                                {
+                                    d3.select("body").append("svg").attr("width", commandArray[c].param1 * 4).attr("height", commandArray[c].param2 * 4)
+                                    .attr("id", id)
+                                    .attr("preserveAspectRatio", "xMaxYMin meet")
+                                    .style("background-color", "#bfcdc7")
+
+                                    .append("circle")
+                                    .attr("cx", commandArray[c].param1)
+                                    .attr("cy",commandArray[c].param2)
+                                    .attr("r", commandArray[c].param3)
+                                    .style("fill", "black");
+                                }
+                                else if(commandArray[c].param0.startsWith("rectangle"))
+                                {
+                                    d3.select("body").append("svg").attr("width", commandArray[c].param1 * 8).attr("height", commandArray[c].param2 * 8)
+                                    .attr("id", id)
+                                    .attr("preserveAspectRatio", "xMaxYMin meet")
+                                    .style("background-color", "#bfcdc7")
+
+                                    .append("rect")
+                                    .attr("height", commandArray[c].param1)
+                                    .attr("width",commandArray[c].param2)
+                                    .style("fill", "black");
+                                }
+                                else if(commandArray[c].param0.startsWith("ellipse"))
+                                {
+                                    d3.select("body").append("svg").attr("width", commandArray[c].param1 * 8).attr("height", commandArray[c].param2 * 8)
+                                    .attr("id", id)
+                                    .style("background-color", "#bfcdc7")
+
+                                    .append("ellipse")
+                                    .attr("cx", commandArray[c].param1)
+                                    .attr("cy",commandArray[c].param2)
+                                    .attr("rx", commandArray[c].param3)
+                                    .attr("ry", commandArray[c].param4)
+                                    .style("fill", "black");
+                                }
+                                else if(commandArray[c].param0.startsWith("line"))
+                                {
+                                    d3.select("body").append("svg").attr("width", commandArray[c].param1 * 8).attr("height", commandArray[c].param2 * 8)
+                                    .attr("id", id)
+                                    .style("background-color", "#bfcdc7")
+
+                                    .append("line")
+                                    .attr("x1", commandArray[c].param1)
+                                    .attr("y1",commandArray[c].param2)
+                                    .attr("x2", commandArray[c].param3)
+                                    .attr("y2", commandArray[c].param4)
+                                    .attr("stroke-width", 2)
+                                    .attr("stroke", "black");
+                                }
+                            }
+                            else if(commandArray[c].command == "fill")
+                            {
+                                //SYNTAX: fill <shape id> <color>
+
+                                //param0 == shape id to fill
+                                //param1 == color to fill with
+
+                                var fillSelection = d3.select("#" +id);
+                                //if you cannot find the shape they are trying to fill, alert them
+                                if(fillSelection._groups[0][0] == null)
+                                {
+                                    alert("You have not made " + commandArray[c].param0 + " yet! So you cannot fill it.");
+                                }
+                                else
+                                {
+                                    if(commandArray[c].param0.startsWith("rectangle"))
+                                    {
+                                        fillSelection.select("rect")
+                                        .style("fill", commandArray[c].param1);
+                                    }
+                                    else if(commandArray[c].param0.startsWith("line"))
+                                    {
+                                        fillSelection.select("line")
+                                        .style("stroke", commandArray[c].param1);
+                                    }
+                                    else if(commandArray[c].param0.startsWith("circle"))
+                                    {
+                                        fillSelection.select("circle")
+                                        .style("fill", commandArray[c].param1);
+                                    }
+                                    else if(commandArray[c].param0.startsWith("ellipse"))
+                                    {
+                                        fillSelection.select("ellipse")
+                                        .style("fill", commandArray[c].param1);
+                                    }
+                                }
+                            }
+                            else if(commandArray[c].command == "rotate")
+                            {
+                                //SYNTAX: rotate <shape id> <degrees>
+                                //param0 == shape id to rotate
+                                //param1 == degrees to rotate;
+
+                                var rotateSelection = d3.select("#" +id);
+                                //if you cannot find the shape they are trying to rotate, alert them
+                                if(rotateSelection._groups[0][0] == null)
+                                {
+                                    alert("You have not made " + commandArray[c].param0 + " yet! So you cannot rotate it.");
+                                }
+                                else
+                                {
+                                    if(commandArray[c].param0.startsWith("rectangle"))
+                                    {
+                                        rotateSelection.select("rect")
+                                        .attr("transform", currentTransformations + ' ' + 'rotate(' + commandArray[c].param1 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("line"))
+                                    {
+                                        rotateSelection.select("line")
+                                        .attr("transform", currentTransformations + ' ' + 'rotate(' + commandArray[c].param1 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("circle"))
+                                    {
+                                        rotateSelection.select("circle")
+                                        .attr("transform", currentTransformations + ' ' + 'rotate(' + commandArray[c].param1 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("ellipse"))
+                                    {
+                                        rotateSelection.select("ellipse")
+                                        .attr("transform", currentTransformations + ' ' + 'rotate(' + commandArray[c].param1 + ')');
+                                    }
+                                }
+                            }
+                            else if(commandArray[c].command == "move")
+                            {
+                                var moveSelection = d3.select("#" + id);
+                                //if you cannot find the shape they are trying to move, alert them
+                                if(moveSelection._groups[0][0] == null)
+                                {
+                                    alert("You have not made " + commandArray[c].param0 + " yet! So you cannot rotate it.");
+                                }
+                                else
+                                {
+                                    if(commandArray[c].param0.startsWith("rectangle"))
+                                    {
+                                        moveSelection.select("rect")
+                                        .attr("transform", currentTransformations + ' ' + 'translate(' + commandArray[c].param1 + ', ' + commandArray[c].param2 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("line"))
+                                    {
+                                        moveSelection.select("line")
+                                        .attr("transform", currentTransformations + ' ' + 'translate(' + commandArray[c].param1 + ', ' + commandArray[c].param2 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("circle"))
+                                    {
+                                        moveSelection.select("circle")
+                                        .attr("transform", currentTransformations + ' ' + 'translate(' + commandArray[c].param1 + ', ' + commandArray[c].param2 + ')');
+                                    }
+                                    else if(commandArray[c].param0.startsWith("ellipse"))
+                                    {
+                                        moveSelection.select("ellipse")
+                                        .attr("transform", currentTransformations + ' ' + 'translate(' + commandArray[c].param1 + ', ' + commandArray[c].param2 + ')');
+                                    }
+                                }
+
+                            }
+                            else if(commandArray[c].command == "grow")
+                            {
+                                var growSelection = d3.select("#" +id);
+                                //if you cannot find the shape they are trying to grow, alert them
+                                if(growSelection._groups[0][0] == null)
+                                {
+                                    alert("You have not made " + commandArray[c].param0 + " yet! So you cannot grow it.");
+                                }
+                                else
+                                {
+                                    //grow by set factor of 5
+                                    if(commandArray[c].param0.startsWith("rectangle"))
+                                    {
+                                        growSelection.select("rect")
+                                        .attr("transform", currentTransformations + ' ' + "scale(5)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("line"))
+                                    {
+                                        growSelection.select("line")
+                                        .attr("transform", currentTransformations + ' ' + "scale(5)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("circle"))
+                                    {
+                                        growSelection.select("circle")
+                                        .attr("transform", currentTransformations + ' ' + "scale(5)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("ellipse"))
+                                    {
+                                        growSelection.select("ellipse")
+                                        .attr("transform", currentTransformations + ' ' + "scale(5)");
+                                    }
+                                }
+
+                            }
+                            else if(commandArray[c].command == "shrink")
+                            {
+                                //shrink by set factor of .3
+                                var shrinkSelection = d3.select("#" +id);
+                                //if you cannot find the shape they are trying to shrink, alert them
+                                if(shrinkSelection._groups[0][0] == null)
+                                {
+                                    alert("You have not made " + commandArray[c].param0 + " yet! So you cannot shrink it.");
+                                }
+                                else
+                                {
+                                    if(commandArray[c].param0.startsWith("rectangle"))
+                                    {
+                                        shrinkSelection.select("rect")
+                                        .attr("transform", currentTransformations + ' ' + "scale(.3)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("line"))
+                                    {
+                                        shrinkSelection.select("line")
+                                        .attr("transform", currentTransformations + ' ' + "scale(.3)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("circle"))
+                                    {
+                                        shrinkSelection.select("circle")
+                                        .attr("transform", currentTransformations + ' ' + "scale(.3)");
+                                    }
+                                    else if(commandArray[c].param0.startsWith("ellipse"))
+                                    {
+                                        shrinkSelection.select("ellipse")
+                                        .attr("transform", currentTransformations + ' ' + "scale(.3)");
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             });
+
         });
 
-    });
 
-    </script>
-
+        </script>
 
 
-</body>
-</html>
+
+    </body>
+    </html>

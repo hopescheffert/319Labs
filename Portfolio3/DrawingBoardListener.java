@@ -37,43 +37,53 @@ public interface DrawingBoardListener extends ParseTreeListener {
 	 */
 	void exitCommandname(DrawingBoardParser.CommandnameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawingBoardParser#shape}.
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param0}.
 	 * @param ctx the parse tree
 	 */
-	void enterShape(DrawingBoardParser.ShapeContext ctx);
+	void enterParam0(DrawingBoardParser.Param0Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawingBoardParser#shape}.
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param0}.
 	 * @param ctx the parse tree
 	 */
-	void exitShape(DrawingBoardParser.ShapeContext ctx);
+	void exitParam0(DrawingBoardParser.Param0Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawingBoardParser#paramx}.
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param1}.
 	 * @param ctx the parse tree
 	 */
-	void enterParamx(DrawingBoardParser.ParamxContext ctx);
+	void enterParam1(DrawingBoardParser.Param1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawingBoardParser#paramx}.
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param1}.
 	 * @param ctx the parse tree
 	 */
-	void exitParamx(DrawingBoardParser.ParamxContext ctx);
+	void exitParam1(DrawingBoardParser.Param1Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawingBoardParser#paramy}.
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param2}.
 	 * @param ctx the parse tree
 	 */
-	void enterParamy(DrawingBoardParser.ParamyContext ctx);
+	void enterParam2(DrawingBoardParser.Param2Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawingBoardParser#paramy}.
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param2}.
 	 * @param ctx the parse tree
 	 */
-	void exitParamy(DrawingBoardParser.ParamyContext ctx);
+	void exitParam2(DrawingBoardParser.Param2Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawingBoardParser#paramr}.
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param3}.
 	 * @param ctx the parse tree
 	 */
-	void enterParamr(DrawingBoardParser.ParamrContext ctx);
+	void enterParam3(DrawingBoardParser.Param3Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawingBoardParser#paramr}.
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param3}.
 	 * @param ctx the parse tree
 	 */
-	void exitParamr(DrawingBoardParser.ParamrContext ctx);
+	void exitParam3(DrawingBoardParser.Param3Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawingBoardParser#param4}.
+	 * @param ctx the parse tree
+	 */
+	void enterParam4(DrawingBoardParser.Param4Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawingBoardParser#param4}.
+	 * @param ctx the parse tree
+	 */
+	void exitParam4(DrawingBoardParser.Param4Context ctx);
 }

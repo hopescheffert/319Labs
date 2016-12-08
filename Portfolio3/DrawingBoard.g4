@@ -1,62 +1,69 @@
 grammar DrawingBoard;
 
-//http://www.w3schools.com/html/html_googlemaps.asp
-
 @members{
     String name = "";
-    String shape = "";
-    Integer x = 0;
-    Integer y = 0;
-    Integer r = 0;
+    String p0 = "";
+    String p1 = "";
+    Integer p2 = 0;
+    Integer p3 = 0;
+    Integer p4 = 0;
 }
 
 //PARSE RULES
-start: ((command ';') {
-            //System.out.println(name  + " " + shape + " " + x + " " + y + " " + r);
-            System.out.println("{"command": name, "shape" : shape, "paramx": x, "paramy": y, "paramr": r }");
+start: ((command ';')
+        {
+            String s = "{'command':'" + name + "','param0' :'"+ p0 +"','param1':'" + p1 +"','param2':"+p2+",'param3':"+ p3 +",'param4':" + p4 +"}";
+            System.out.println(s.replaceAll("'", "\"") + "*");
             name = "";
-            String shape = "";
-            Integer x = 0;
-            Integer y = 0;
-            Integer r = 0;
+            p0 = "";
+            p1 = "";
+            p2 = 0;
+            p3 = 0;
+            p4 = 0;
             }
-        )+;
+        )+ ;
 
-command: commandname shape paramx paramy? paramr? ;
+command:commandname param0 param1? param2? param3? param4?;
+
 
 commandname: COMMANDNAME
-                {
-                    name = $COMMANDNAME.text;
-                    //System.out.println("command name: " + name);
-                };
-shape: SHAPE
-                {
-                    shape = $SHAPE.text;
-                    //System.out.println("command shape: " + shape);
-                };
-paramx: INT
         {
-            x = $INT.int;
-            //System.out.println("shape x: " + x);
-
+            name = $COMMANDNAME.text;
         };
-paramy: INT
+param0: SHAPE ID
         {
-            y = $INT.int;
-            //System.out.println("shape y: " + y);
-
+            p0 = $SHAPE.text + $ID.text;
         };
-paramr: INT
+param1: INT
         {
-            r = $INT.int;
-            //System.out.println("shape radius: " + r);
-
+            p1 = $INT.text;
+        }
+        | COLOR
+        {
+            p1 = $COLOR.text;
+        }
+        | DEGREE
+        {
+            p1 = $DEGREE.text;
+        };
+param2: INT
+        {
+            p2 = $INT.int;
+        };
+param3: INT
+        {
+            p3 = $INT.int;
+        };
+param4: INT
+        {
+            p4 = $INT.int;
         };
 
 //LEXER RULES
-COMMANDNAME: 'draw'  | 'fill' ;
-//circle
-SHAPE: 'circle' | 'rectangle' ;
-
-INT: [0-9]+;
+COMMANDNAME: 'draw' | 'fill' | 'rotate' | 'move' | 'shrink' | 'grow';
+COLOR: 'red' | 'green' | 'blue' | 'yellow' | 'black' | 'purple' | 'orange';
+SHAPE: 'circle ' | 'rectangle ' | 'ellipse ' | 'line ';
+ID: ('a'..'z'|'A'..'Z')+ ;
+INT: [0-9]+ ;
+DEGREE: [0-360] ;
 WS: [ \r\t\n]+ {skip();} ;

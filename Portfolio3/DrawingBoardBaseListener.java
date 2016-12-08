@@ -51,49 +51,61 @@ public class DrawingBoardBaseListener implements DrawingBoardListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterShape(DrawingBoardParser.ShapeContext ctx) { }
+	@Override public void enterParam0(DrawingBoardParser.Param0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitShape(DrawingBoardParser.ShapeContext ctx) { }
+	@Override public void exitParam0(DrawingBoardParser.Param0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamx(DrawingBoardParser.ParamxContext ctx) { }
+	@Override public void enterParam1(DrawingBoardParser.Param1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamx(DrawingBoardParser.ParamxContext ctx) { }
+	@Override public void exitParam1(DrawingBoardParser.Param1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamy(DrawingBoardParser.ParamyContext ctx) { }
+	@Override public void enterParam2(DrawingBoardParser.Param2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamy(DrawingBoardParser.ParamyContext ctx) { }
+	@Override public void exitParam2(DrawingBoardParser.Param2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamr(DrawingBoardParser.ParamrContext ctx) { }
+	@Override public void enterParam3(DrawingBoardParser.Param3Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamr(DrawingBoardParser.ParamrContext ctx) { }
+	@Override public void exitParam3(DrawingBoardParser.Param3Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParam4(DrawingBoardParser.Param4Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParam4(DrawingBoardParser.Param4Context ctx) { }
 
 	/**
 	 * {@inheritDoc}

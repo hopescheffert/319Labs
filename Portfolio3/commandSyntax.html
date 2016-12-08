@@ -1,0 +1,70 @@
+<html>
+
+<body>
+    <h1>Drawing Board Syntax</h1>
+    <h3>Each command must end with a semicolon ';'</h3>
+
+
+    <h4>DRAW</h4>
+    <p>
+        <b>To make a circle: </b> draw circle [id] [center of circle's x coordinate] [center of circle's y coordinate] [radius of circle] ;<br>
+        <i>Example: draw circle c 30 30 20;</i>
+        <br>
+        <b>To make a rectangle:</b> draw rectangle [id] [width] [height] ; <br>
+        <i>Example: draw rectangle r 30 50;</i>
+        <br>
+        <b>To make a line:</b> draw line [id] [start x] [start y] [end x] [end y] ; <br>
+        <i>Example: draw line l 5 5 20 20;</i>
+        <br>
+        <b>To make an ellipse:</b> draw ellipse [id] [center of ellipse's x coordinate] [center of ellipse's y coordinate] [radius of x] [radius of y] ;<br>
+        <i>Example: draw ellipse e 30 30 20 20;</i>
+
+    </p>
+
+    <h4>FILL</h4>
+    <p>
+        fill [shape] [id] [color] <br>
+        Available colors: red, green, blue, yellow, orange, purple, black<br>
+
+        <i>Example: fill circle c green;</i>
+
+    </p>
+
+    <h4>MOVE</h4>
+    <p>
+        move [shape] [id] [x coordinate to move to] [y coordinate to move to]<br>
+
+        <i>Example: move circle c 50 50;</i>
+
+    </p>
+
+    <h4>ROTATE</h4>
+    <p>
+        rotateSelection [shape] [id] [degrees (between 0-360)] <br>
+        <i>Example: rotate circle c 45;</i><br>
+        <strong>Be aware: you may rotate the shape out of the svg (grey box) view</strong>
+    </p>
+
+    <h4>GROW</h4>
+    <p>
+        grow [shape] [id] <br>
+        <i>Example: grow circle c;</i>
+
+    </p>
+
+    <h4>SHRINK</h4>
+    <p>
+        shrink [shape] [id] <br>
+        <i>Exampe: shrink circle c;</i>
+    </p>
+
+
+
+
+
+
+
+</body>
+
+
+</html>
