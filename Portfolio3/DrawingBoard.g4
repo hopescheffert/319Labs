@@ -1,8 +1,5 @@
 grammar DrawingBoard;
 
-//http://www.w3schools.com/html/html_googlemaps.asp
-
-
 @members{
     String name = "";
     String p0 = "";
@@ -26,15 +23,8 @@ start: ((command ';')
             }
         )+ ;
 
-command: //drawcommand | fillcommand | rotatecommand | movecommand | shrinkcommand | growcommand;
-commandname param0 param1? param2? param3? param4?;
+command:commandname param0 param1? param2? param3? param4?;
 
-//drawcommand: 'draw' param0 param1 param2 param3? param4?;
-//fillcommand: 'fill' param0 param1;
-//rotatecommand: 'rotate' param0 param1;
-//movecommand: 'move' param0 param1 param2;
-//shrinkcommand: 'shrink' param0;
-//growcommand: 'grow' param0;
 
 commandname: COMMANDNAME
         {
